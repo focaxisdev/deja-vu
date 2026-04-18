@@ -193,6 +193,70 @@ await engine.deleteMemory(id);
 - `summaryIfLoaded`
 - `chunksIfLoaded`
 
+## Agent integration
+
+Deja Vu is designed to be readable by agents, not just imported by humans.
+
+If an agent is told that this repository exists on the machine, it should be able to:
+
+1. Read this README and the type contracts.
+2. Infer that Deja Vu is a memory core, not a full memory operating system.
+3. Build a host-side handshake around recall, writeback, persistence, and scope isolation.
+
+Recommended host integration loop:
+
+1. Before each task or reply, call `recall()` with the current user intent or working query.
+2. Inject only `summaryIfLoaded` into prompt context by default.
+3. Load `chunksIfLoaded` only for strong matches and deeper follow-up work.
+4. After the task completes, write back only durable, high-value memory with `addMemory()` or `updateMemory()`.
+5. Periodically compact or archive older memories outside the core engine.
+
+Deja Vu itself does not decide what to remember. The host agent should normally write back:
+
+- durable decisions
+- project architecture intent
+- unresolved tasks or risks
+- user preferences that affect future work
+- milestone summaries
+
+The host agent should usually avoid writing back:
+
+- every conversational turn
+- transient chatter
+- duplicate summaries
+- low-signal logs with no future recall value
+
+## Scope and persistence
+
+To support long-term memory, agents should replace the default in-memory adapters with persistent implementations.
+
+Recommended minimum production shape:
+
+- persistent `MemoryStorage`
+- persistent `FamiliarityVectorStore`
+- persistent `ChunkVectorStore`
+- real `EmbeddingProvider`
+- explicit memory namespace or scope policy
+
+Recommended scope model:
+
+- `project:<project-id>` for repo-specific memory
+- `global:<user-or-machine>` for cross-project preferences and reusable habits
+
+Agents should query project scope first, then optionally query global scope if the project scope does not fully explain the current task.
+
+## Handshake contract
+
+If an agent is self-integrating Deja Vu into a host environment, it should treat these files as the primary contract:
+
+- `README.md`
+- `docs/architecture.md`
+- `docs/agent-handshake.md`
+- `src/types/plugins.ts`
+- `src/types/memory.ts`
+
+The detailed handshake guidance for agents lives in `docs/agent-handshake.md`.
+
 ## Plugin-first design
 
 Every major dependency can be swapped out.

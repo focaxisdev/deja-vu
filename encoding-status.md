@@ -9,6 +9,7 @@
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
 | `README.md` | 編碼正常（新建，UTF-8） | Updated in UTF-8; repo renamed to Deja Vu. |
 | `docs/architecture.md` | 編碼正常（新建，UTF-8） | Updated in UTF-8; product name renamed to Deja Vu. |
+| `docs/agent-handshake.md` | 編碼正常（新建，UTF-8） | New agent-readable handshake contract for host integration. |
 | `src/index.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/memory.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/plugins.ts` | 編碼正常（新建，UTF-8） | New text file. |
