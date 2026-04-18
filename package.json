@@ -1,0 +1,44 @@
+{
+  "name": "deja-vu",
+  "version": "0.1.0",
+  "description": "Deja Vu: a familiarity-first memory engine for AI agents.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "if exist dist rmdir /s /q dist",
+    "test": "node --test dist/tests/**/*.test.js",
+    "test:src": "node --loader ts-node/esm --test tests/**/*.test.ts",
+    "example:basic": "node --loader ts-node/esm examples/basic/index.ts",
+    "example:agent-pm": "node --loader ts-node/esm examples/agent-pm/index.ts",
+    "example:chat-memory": "node --loader ts-node/esm examples/chat-memory/index.ts",
+    "example:task-assistant": "node --loader ts-node/esm examples/task-assistant/index.ts"
+  },
+  "keywords": [
+    "memory",
+    "agent",
+    "semantic-search",
+    "recall",
+    "rag",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
