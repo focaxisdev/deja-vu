@@ -238,6 +238,45 @@ The host agent should usually avoid writing back:
 - duplicate summaries
 - low-signal logs with no future recall value
 
+## Memory granularity policy
+
+Deja Vu is designed to remember project context, not to mirror every file in the repository.
+
+Use this rule of thumb:
+
+- the repository is the source of truth for detailed implementation facts
+- Deja Vu is the source of truth for cross-conversation context
+
+Good memory granularity:
+
+- project goals
+- architecture intent
+- module responsibilities
+- major design decisions
+- active task lines
+- milestone summaries
+- unresolved risks or blockers
+- stable user preferences
+
+Bad memory granularity:
+
+- full file contents
+- line-by-line code edits
+- every small refactor detail
+- routine terminal output
+- low-value conversational turns
+- facts that can be cheaply re-read from the repository
+
+For large projects with many layers or many parallel tasks, prefer one memory per durable thread of work, such as:
+
+- one subsystem
+- one decision stream
+- one roadmap branch
+- one risk cluster
+- one milestone
+
+Do not create one memory per small file unless that file represents a durable project concept that will matter again later.
+
 ## If you are an agent
 
 If a user tells you this repository exists and asks you to use it for one project, your next step should be to bootstrap a project-local memory integration.
