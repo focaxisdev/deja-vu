@@ -27,11 +27,17 @@
     "example:task-assistant": "node --loader ts-node/esm examples/task-assistant/index.ts"
   },
   "keywords": [
-    "memory",
-    "agent",
+    "ai-memory",
+    "agent-memory",
+    "long-term-memory",
+    "semantic-recall",
+    "memory-engine",
+    "llm-memory",
+    "ai-agent",
+    "agent-framework",
+    "rag-alternative",
     "semantic-search",
     "recall",
-    "rag",
     "typescript"
   ],
   "author": "",

@@ -5,7 +5,19 @@
 
 **A familiarity-first memory engine for AI agents.**
 
+Keywords: `AI memory`, `agent memory`, `long-term memory`, `semantic recall`, `RAG alternative`, `TypeScript memory engine`.
+
 Deja Vu is a plugin-first memory module that helps agents decide whether something feels familiar before they load old context.
+
+It is designed for:
+
+- AI agents that need long-term memory without stuffing full history into every prompt
+- single-project memory systems with persistent recall
+- host runtimes that want an embeddable memory core instead of an always-on retrieval stack
+
+If you are evaluating this repository quickly, the core idea is simple:
+
+> Deja Vu helps an agent decide whether something is familiar before loading old context, so memory stays compact, selective, and cheaper in tokens.
 
 Instead of doing always-retrieve RAG, it uses a layered memory architecture:
 
@@ -226,6 +238,34 @@ The host agent should usually avoid writing back:
 - duplicate summaries
 - low-signal logs with no future recall value
 
+## If you are an agent
+
+If a user tells you this repository exists and asks you to use it for one project, your next step should be to bootstrap a project-local memory integration.
+
+Use this default plan unless the host project already has a stronger memory convention:
+
+1. Confirm the active project path and the Deja Vu repository path.
+2. Read `README.md`, `docs/agent-handshake.md`, `src/types/plugins.ts`, and `src/types/memory.ts`.
+3. Treat Deja Vu as a memory core, not a full memory operating system.
+4. Create or reuse a single-project scope in the form `project:<project-id>`.
+5. Keep all memory data inside the target project directory.
+6. Add or update persistent project rules so future conversations can rediscover the same memory setup.
+7. Use pre-task `recall()` and post-task selective writeback as the default workflow.
+
+For single-project isolation, prefer a layout like:
+
+```text
+<project-root>/
+  AGENTS.md
+  .memory/
+    deja-vu/
+      storage/
+      vectors/
+      snapshots/
+```
+
+The memory system for one project should not read from or write to another project's memory directory.
+
 ## Scope and persistence
 
 To support long-term memory, agents should replace the default in-memory adapters with persistent implementations.
@@ -245,6 +285,43 @@ Recommended scope model:
 
 Agents should query project scope first, then optionally query global scope if the project scope does not fully explain the current task.
 
+For the current maturity level of this repository, the recommended deployment target is:
+
+- one project
+- one project-local memory directory
+- one project scope
+- one set of persistent rules for future conversations
+
+## Keeping memory across new conversations
+
+If you want Deja Vu to keep working when you open a new conversation for the same repository, do not rely on the current chat transcript alone.
+
+Instead, put the Deja Vu integration rules into the target project's persistent project rules, such as `AGENTS.md` or an equivalent host rules file.
+
+Recommended references:
+
+- `docs/agent-handshake.md`
+- `docs/project-rules-template.md`
+- `docs/bootstrap-instructions.md`
+
+The project rules should tell future agents:
+
+- where the Deja Vu repository lives
+- which project scope id to use
+- when to run recall
+- when to write back memory
+- what kinds of memory are safe and useful to store
+
+At minimum, future agents should be able to infer these project rules from the repository or host setup:
+
+- use only project-local memory storage
+- do not mix memory with other repositories
+- inject summary-level memory by default
+- load chunks only when the match is strong or the task is deep
+- write back only durable, reusable memory
+
+If the host project has no persistent rules file yet, create one before claiming the memory integration is complete.
+
 ## Handshake contract
 
 If an agent is self-integrating Deja Vu into a host environment, it should treat these files as the primary contract:
@@ -256,6 +333,19 @@ If an agent is self-integrating Deja Vu into a host environment, it should treat
 - `src/types/memory.ts`
 
 The detailed handshake guidance for agents lives in `docs/agent-handshake.md`.
+
+## AI-readable repo files
+
+These files are intentionally useful for AI agents, repository summarizers, and human evaluators:
+
+- `README.md`
+- `llms.txt`
+- `docs/architecture.md`
+- `docs/agent-handshake.md`
+- `docs/project-rules-template.md`
+- `docs/bootstrap-instructions.md`
+- `src/types/plugins.ts`
+- `src/types/memory.ts`
 
 ## Plugin-first design
 

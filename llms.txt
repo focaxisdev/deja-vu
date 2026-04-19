@@ -1,0 +1,41 @@
+# Deja Vu
+
+> A familiarity-first memory engine for AI agents.
+
+Deja Vu is a TypeScript memory core for agents that need long-term memory without always-on retrieval. It uses a three-layer design:
+
+- familiarity index
+- summary layer
+- chunk layer
+
+The engine is intended to be embedded into a host agent runtime. The host is responsible for persistence, namespace policy, selective writeback, and prompt injection.
+
+## Best starting points
+
+- [README](./README.md): project overview, public API, integration model, and usage examples
+- [Architecture](./docs/architecture.md): engine flow and plugin seams
+- [Agent Handshake](./docs/agent-handshake.md): how an agent should integrate this repository as a memory core
+- [Plugin Types](./src/types/plugins.ts): embedding, storage, vector store, and scoring interfaces
+- [Memory Types](./src/types/memory.ts): memory records, recall result types, and chunk taxonomy
+- [Core Engine](./src/core/semantic-recall-engine.ts): reference implementation of add, recall, update, and delete flows
+
+## Concepts
+
+- familiarity-first recall
+- semantic recall
+- long-term memory for AI agents
+- project memory
+- selective context loading
+- threshold-gated retrieval
+- plugin-first memory architecture
+
+## Intended use
+
+Use Deja Vu when you want:
+
+- single-project long-term memory
+- compact prompt context
+- a RAG alternative for agent continuity
+- a host-managed memory bridge with persistent storage
+
+Do not treat this repository as a complete autonomous memory operating system. It is a memory core that expects a host integration layer.

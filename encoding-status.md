@@ -8,8 +8,11 @@
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
 | `README.md` | 編碼正常（新建，UTF-8） | Updated in UTF-8; repo renamed to Deja Vu. |
+| `llms.txt` | 編碼正常（新建，UTF-8） | New AI-readable repository index for agent and documentation discovery. |
 | `docs/architecture.md` | 編碼正常（新建，UTF-8） | Updated in UTF-8; product name renamed to Deja Vu. |
 | `docs/agent-handshake.md` | 編碼正常（新建，UTF-8） | New agent-readable handshake contract for host integration. |
+| `docs/project-rules-template.md` | 編碼正常（新建，UTF-8） | New copyable project rules template for persistent Deja Vu integration. |
+| `docs/bootstrap-instructions.md` | 編碼正常（新建，UTF-8） | New agent bootstrap guide for single-project memory setup. |
 | `src/index.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/memory.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/plugins.ts` | 編碼正常（新建，UTF-8） | New text file. |
