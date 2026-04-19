@@ -1,5 +1,5 @@
 {
-  "name": "deja-vu",
+  "name": "@focaxisdev/deja-vu",
   "version": "0.1.0",
   "description": "Deja Vu: a familiarity-first memory engine for AI agents.",
   "type": "module",

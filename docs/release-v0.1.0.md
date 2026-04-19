@@ -13,13 +13,13 @@ This first public release is aimed at developers who want to try a staged memory
 ## Install
 
 ```bash
-npm install deja-vu
+npm install @focaxisdev/deja-vu
 ```
 
 ## Try It In 3 Minutes
 
 ```ts
-import { createInMemorySemanticRecallEngine } from "deja-vu";
+import { createInMemorySemanticRecallEngine } from "@focaxisdev/deja-vu";
 
 const engine = createInMemorySemanticRecallEngine();
 
@@ -70,4 +70,3 @@ Deja Vu is a memory core, not a full hosted memory platform. This release is bes
 - Repo: https://github.com/focaxisdev/deja-vu
 - Docs: https://github.com/focaxisdev/deja-vu/tree/main/docs
 - Changelog: https://github.com/focaxisdev/deja-vu/blob/main/CHANGELOG.md
-

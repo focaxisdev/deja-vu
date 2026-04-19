@@ -13,7 +13,7 @@ This keeps agent memory more selective, cheaper in tokens, and less noisy than a
 ## Install
 
 ```bash
-npm install deja-vu
+npm install @focaxisdev/deja-vu
 ```
 
 If you want to try the repository locally before publishing:
@@ -27,7 +27,7 @@ npm run example:basic
 ## Try It In 3 Minutes
 
 ```ts
-import { createInMemorySemanticRecallEngine } from "deja-vu";
+import { createInMemorySemanticRecallEngine } from "@focaxisdev/deja-vu";
 
 const engine = createInMemorySemanticRecallEngine();
 
