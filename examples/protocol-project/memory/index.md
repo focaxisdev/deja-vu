@@ -1,0 +1,16 @@
+# Memory Index
+
+- Scope: `project:example-protocol-project`
+- Active summary: [summary.md](./summary.md)
+
+## Active decisions
+
+- [Protocol-first positioning](./decisions/protocol-first-positioning.md)
+
+## Active open loops
+
+- [Decide when to add the optional engine](./open-loops/add-engine-later.md)
+
+## Context
+
+- [Project context](./context/project-context.md)

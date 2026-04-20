@@ -1,7 +1,7 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.1.0",
-  "description": "Deja Vu: a familiarity-first memory engine for AI agents.",
+  "version": "0.2.0",
+  "description": "Deja Vu: a protocol-first memory system for AI agents with an optional semantic recall engine.",
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -23,7 +23,7 @@
     "prepack": "npm run clean && npm run build",
     "prepublishOnly": "npm test",
     "test": "npm run clean && npm run build && node --test dist/tests/**/*.test.js",
-    "test:src": "node --loader ts-node/esm --test tests/**/*.test.ts",
+    "test:src": "node --import \"data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));\" --test tests/**/*.test.ts",
     "example:basic": "node --loader ts-node/esm examples/basic/index.ts",
     "example:agent-pm": "node --loader ts-node/esm examples/agent-pm/index.ts",
     "example:chat-memory": "node --loader ts-node/esm examples/chat-memory/index.ts",
@@ -32,15 +32,15 @@
   "keywords": [
     "ai-memory",
     "agent-memory",
-    "long-term-memory",
+    "memory-protocol",
+    "project-memory",
+    "markdown-memory",
     "semantic-recall",
     "memory-engine",
-    "llm-memory",
     "ai-agent",
-    "agent-framework",
+    "agent-workflow",
     "rag-alternative",
     "semantic-search",
-    "recall",
     "typescript"
   ],
   "repository": {

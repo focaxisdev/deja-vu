@@ -1,69 +1,52 @@
 # Deja Vu v0.1.0
 
-Deja Vu is a familiarity-first memory engine for AI agents.
+Deja Vu is now framed as a protocol-first memory system for AI agents.
 
-This first public release is aimed at developers who want to try a staged memory model instead of always-on retrieval:
+This release centers the repo-first adoption path:
 
-- familiarity detection before context loading
-- threshold-gated summary access
-- chunk retrieval only when the match is strong enough
-- plugin-first architecture for embeddings, storage, and scoring
-- in-memory adapters for quick local evaluation
+- rules
+- workflow
+- Markdown memory templates
+- project-scoped continuity
 
-## Install
+The optional TypeScript engine remains included for hosts that want semantic recall and threshold-gated loading.
+
+## Primary adoption path
+
+Start with:
+
+- `docs/protocol.md`
+- `docs/workflow.md`
+- `docs/storage-markdown.md`
+- `docs/templates/`
+
+This path does not require npm or engine-backed retrieval.
+
+## Optional engine path
+
+If a host wants semantic recall:
 
 ```bash
 npm install @focaxisdev/deja-vu
 ```
 
-## Try It In 3 Minutes
+Use the TypeScript engine as an enhancement layer, not as the full product definition.
 
-```ts
-import { createInMemorySemanticRecallEngine } from "@focaxisdev/deja-vu";
+## Included in this release
 
-const engine = createInMemorySemanticRecallEngine();
+- protocol spec
+- workflow spec
+- Markdown storage contract
+- copyable project rules template
+- copyable memory templates
+- protocol-first example project
+- optional `SemanticRecallEngine` package and engine examples
 
-await engine.addMemory({
-  title: "Launch strategy",
-  content: "Use familiarity-first recall before loading long project history.",
-  tags: ["launch", "memory"],
-});
+## Current limits
 
-const result = await engine.recall({
-  text: "This sounds like the launch plan for the memory engine.",
-  loadChunks: true,
-});
-
-console.log({
-  matched: result.matched,
-  familiarityLevel: result.familiarityLevel,
-  score: result.score,
-});
-```
-
-## Included In v0.1.0
-
-- `SemanticRecallEngine` public API
-- hybrid scoring with semantic, recency, and importance signals
-- summary and chunk gating thresholds
-- in-memory storage and vector stores
-- mock embedding provider for deterministic local demos
-- examples and integration documentation
-
-## Current Scope
-
-Deja Vu is a memory core, not a full hosted memory platform. This release is best suited for:
-
-- coding agents
-- project memory
-- long-running task assistants
-- host runtimes that want an embeddable memory module
-
-## Current Limitations
-
-- the default adapters are in-memory only
-- production use still needs persistent storage and a real embedding provider
-- the bundled mock embedding provider is for demos, not semantic accuracy at scale
+- base protocol compaction is workflow-driven, not automated
+- the engine still ships only in-memory demo adapters by default
+- persistent engine-backed deployment still requires host-supplied adapters
 
 ## Links
 

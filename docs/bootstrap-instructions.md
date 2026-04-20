@@ -1,85 +1,78 @@
 # Bootstrap Instructions
 
-This document tells an agent how to bootstrap Deja Vu into a single project so new conversations can keep using the same memory discipline.
+This document tells an agent how to bootstrap Deja Vu into a project using the protocol-first path.
 
 ## Goal
 
-Turn Deja Vu from a discovered local repository into a project-level memory integration with stable rules.
+Give a project durable memory continuity using only:
+
+- project rules
+- a Markdown memory directory
+- the Deja Vu workflow
 
 ## Trigger conditions
 
 Bootstrap when at least one of these is true:
 
-- the user asks to integrate Deja Vu into the current project
-- the current project rules explicitly reference Deja Vu
-- the user says the project should retain memory across new conversations
+- the user asks for project memory across new conversations
+- the user asks to integrate Deja Vu
+- the project rules already reference Deja Vu
 
 ## Bootstrap checklist
 
-### 1. Confirm repository paths
+### 1. Confirm the project path
 
 - confirm the active project path
-- confirm the Deja Vu repository path
+- choose a stable `project:<project-id>` scope
 
-### 2. Read the contract files
+### 2. Read the protocol files
 
 Read:
 
 1. `README.md`
-2. `docs/agent-handshake.md`
-3. `docs/project-rules-template.md`
-4. `src/types/plugins.ts`
-5. `src/types/memory.ts`
+2. `docs/protocol.md`
+3. `docs/workflow.md`
+4. `docs/storage-markdown.md`
+5. `docs/templates/AGENTS.template.md`
 
-### 3. Decide whether integration already exists
+### 3. Check whether memory already exists
 
-Check whether the host project already has:
+Look for:
 
-- a project rules file such as `AGENTS.md`
-- a memory bridge or middleware
-- persistent storage for memory
-- an embedding provider
-- vector search support
+- `AGENTS.md` or equivalent rules
+- a `memory/` directory
+- existing decision or summary files
 
-If these already exist, integrate with the existing host shape instead of creating a competing path.
+Reuse and align existing structures when possible instead of creating a competing memory tree.
 
-### 4. Establish project scope
+### 4. Install the minimum protocol artifacts
 
-Use a stable scope id:
+Create or update:
 
-- `project:<project-id>`
+- `AGENTS.md`
+- `memory/index.md`
+- `memory/summary.md`
+- `memory/context/project-context.md`
+- `memory/decisions/`
+- `memory/open-loops/`
 
-Do not mix this scope with other projects.
+### 5. Apply the workflow
 
-### 5. Ensure rules persistence across new conversations
+Ensure future work follows:
 
-If the project lacks explicit memory rules, create or update project rules so future conversations can discover:
+1. pre-task recall from the memory files
+2. minimal detailed reads
+3. selective post-task writeback
+4. compaction when records become repetitive or stale
 
-- where Deja Vu lives
-- which scope to use
-- when to recall
-- when to write back
-- what not to store
+### 6. Optional engine adoption
 
-### 6. Connect the host workflow
+Only if the host needs semantic recall at higher scale:
 
-The host integration should support:
-
-1. pre-task recall
-2. summary-first prompt injection
-3. chunk loading only when justified
-4. selective post-task writeback
-5. persistent storage across new conversations
-
-### 7. Report gaps clearly
-
-If integration cannot be completed, report the exact missing pieces, such as:
-
-- no persistent storage adapter
-- no embedding provider
-- no vector store
-- no writable project rules file
+1. read `docs/engine/semantic-engine.md`
+2. keep Markdown memory as canonical
+3. add the engine as an enhancement layer
 
 ## Expected result
 
-After bootstrap, a new conversation in the same project should not depend on the previous chat transcript alone. It should be able to rediscover Deja Vu through project rules and reuse the same project memory scope.
+After bootstrap, a new conversation in the same project should be able to regain continuity by discovering the rules file and reading the project memory directory.

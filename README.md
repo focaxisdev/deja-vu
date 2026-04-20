@@ -1,122 +1,132 @@
 # Deja Vu
 
-**A familiarity-first memory engine for AI agents**
+**A protocol-first memory system for AI agents**
 
-Deja Vu helps an agent decide whether something feels familiar before it loads old context. Instead of always retrieving full history, it stages memory access:
+Deja Vu is a lightweight memory protocol built around three things:
 
-1. detect familiarity
-2. unlock a summary only when the match is strong enough
-3. open detailed chunks only when the interaction goes deeper
+- rules
+- workflow
+- project-local memory files
 
-This keeps agent memory more selective, cheaper in tokens, and less noisy than always-on retrieval.
+The goal is not to give every agent a heavy runtime. The goal is to give any agent a repeatable discipline for remembering the right things, reloading only what matters, and keeping memory useful as a project grows.
 
-## Install
+## What Deja Vu Is
+
+Deja Vu defines a shared memory behavior for agents working inside one project.
+
+It answers:
+
+- what should count as durable memory
+- when an agent should recall existing memory
+- how memory should be stored in ordinary project files
+- when memory should be updated, compacted, or retired
+
+The minimum viable setup uses Markdown files only. No npm package, embeddings, vector search, or database is required.
+
+## Start Here
+
+If you want to adopt Deja Vu in a project without extra infrastructure:
+
+1. Read [docs/protocol.md](./docs/protocol.md).
+2. Read [docs/workflow.md](./docs/workflow.md).
+3. Copy the templates from [docs/templates](./docs/templates).
+4. Add the generated rules and memory files to your project.
+
+Recommended first files:
+
+- [docs/templates/AGENTS.template.md](./docs/templates/AGENTS.template.md)
+- [docs/templates/memory/index.md](./docs/templates/memory/index.md)
+- [docs/templates/memory/summary.md](./docs/templates/memory/summary.md)
+- [docs/templates/memory/decisions/decision-template.md](./docs/templates/memory/decisions/decision-template.md)
+- [docs/templates/memory/open-loops/open-loop-template.md](./docs/templates/memory/open-loops/open-loop-template.md)
+
+## The Protocol in One Page
+
+Deja Vu follows a simple lifecycle:
+
+1. Recall before substantial planning, coding, or answering.
+2. Work using only the smallest memory slice needed.
+3. Write back only durable, reusable outcomes.
+4. Compact or supersede memories when detail becomes repetitive or stale.
+
+This keeps memory project-local, readable, and easy to maintain across new conversations.
+
+## Canonical Project Layout
+
+```text
+memory/
+  index.md
+  summary.md
+  context/
+    project-context.md
+  decisions/
+    decision-template.md
+  open-loops/
+    open-loop-template.md
+```
+
+The canonical layout and field rules are specified in [docs/storage-markdown.md](./docs/storage-markdown.md).
+
+## Core Rules
+
+- Use a single-project scope only in MVP: `project:<project-id>`.
+- Recall before substantial work.
+- Prefer summary memory first; open detailed records only when needed.
+- Write back only durable memory:
+  - decisions
+  - architecture intent
+  - stable preferences
+  - unresolved follow-up items
+  - milestone summaries
+- Never store:
+  - raw secrets or credentials
+  - full turn-by-turn transcripts
+  - low-signal chatter
+  - disposable exploration noise
+
+## Why This Exists
+
+Most agent memory systems fail in one of two ways:
+
+- they remember too little because nothing is written down in a reusable shape
+- they remember too much because every conversation turn is treated like durable knowledge
+
+Deja Vu stays closer to first principles:
+
+- memory should be explicit
+- memory should be scoped
+- memory should be cheap to inspect
+- memory should be easy to revise
+- memory behavior should survive a new conversation window
+
+## Optional Engine Layer
+
+This repository still includes the existing TypeScript semantic recall engine.
+
+Use it when you want:
+
+- stronger familiarity scoring
+- threshold-gated summary and chunk loading
+- embedding and vector ranking
+- an engine-backed implementation of the Deja Vu protocol
+
+Do not treat the engine as the product center. It is an optional acceleration layer.
+
+Start here if you want that path:
+
+- [docs/engine/semantic-engine.md](./docs/engine/semantic-engine.md)
+- [docs/engine/protocol-to-engine.md](./docs/engine/protocol-to-engine.md)
+- [docs/agent-handshake.md](./docs/agent-handshake.md)
+
+## Optional npm Install
 
 ```bash
 npm install @focaxisdev/deja-vu
 ```
 
-If you want to try the repository locally before publishing:
+The npm package provides the optional TypeScript engine. It is not required for base protocol adoption.
 
-```bash
-npm install
-npm run build
-npm run example:basic
-```
-
-## Try It In 3 Minutes
-
-```ts
-import { createInMemorySemanticRecallEngine } from "@focaxisdev/deja-vu";
-
-const engine = createInMemorySemanticRecallEngine();
-
-await engine.addMemory({
-  title: "Launch strategy",
-  content: "Use familiarity-first recall before loading long project history.",
-  tags: ["launch", "memory"],
-});
-
-const result = await engine.recall({
-  text: "This sounds like the launch plan for the memory engine.",
-  loadChunks: true,
-});
-
-console.log({
-  matched: result.matched,
-  familiarityLevel: result.familiarityLevel,
-  score: result.score,
-  summaryLoaded: Boolean(result.summaryIfLoaded),
-  chunkCount: result.chunksIfLoaded?.length ?? 0,
-});
-```
-
-Expected shape:
-
-```ts
-{
-  matched: true,
-  familiarityLevel: "strong",
-  score: 0.8,
-  summaryLoaded: true,
-  chunkCount: 1
-}
-```
-
-## When To Use It
-
-Use Deja Vu when you want:
-
-- long-term memory for AI agents without injecting full history every turn
-- project-scoped recall that feels selective instead of eager
-- an embeddable memory core you can wire into your own host runtime
-- a staged alternative to brute-force RAG for persistent agent systems
-
-Do not use Deja Vu as:
-
-- a replacement for your source repository
-- a hosted memory platform
-- a production persistence layer by itself
-- a reason to store every low-value conversational turn
-
-## Why It Is Different
-
-- Familiarity-first recall instead of always-on retrieval
-- Three-layer memory model instead of one large context blob
-- Threshold gating for summary and chunk loading
-- Hybrid ranking with semantic similarity, recency, and importance
-- Plugin-first architecture for embeddings, vector stores, storage, and scoring
-- In-memory mode for zero-infrastructure local trials
-
-## Architecture
-
-```text
-User Input
-  |
-Embedding
-  |
-Familiarity Index
-  |
-Threshold Gate
-  |- weak match -> minimal summary only
-  |- strong match -> full summary
-  |
-Scoped Chunk Retrieval
-```
-
-## Quick Mental Model
-
-Traditional retrieval asks:
-
-> Is this related enough to pull context?
-
-Deja Vu asks:
-
-> Does this feel familiar enough to unlock memory?
-
-That distinction matters when you want agents to stay disciplined instead of over-retrieving.
-
-## Public API
+## Engine API
 
 ```ts
 const engine = new SemanticRecallEngine(config);
@@ -129,134 +139,35 @@ await engine.updateMemory(id, input);
 await engine.deleteMemory(id);
 ```
 
-`recall(query)` returns:
-
-- `matched`
-- `candidates`
-- `topMatch`
-- `score`
-- `familiarityLevel`
-- `summaryIfLoaded`
-- `chunksIfLoaded`
-
-## Threshold Gating
-
-Default recall policy:
-
-- `similarity >= 0.85`: strong match, load full summary
-- `0.75 <= similarity < 0.85`: weak match, load minimal summary only
-- `similarity < 0.75`: treat as a new topic, load nothing
-
-## Memory Layers
-
-### Layer 1: Familiarity Index
-
-Fast retrieval metadata only:
-
-- `id`
-- `title`
-- `short_summary`
-- `tags`
-- `last_accessed_at`
-- `importance`
-- `embedding_vector`
-
-### Layer 2: Summary Layer
-
-Agent-readable summary context:
-
-- `description`
-- `context`
-- `architecture_or_intent`
-- `recent_updates`
-- `structured metadata`
-
-### Layer 3: Memory Chunks
-
-Detailed recall units:
-
-- `chunk_id`
-- `memory_id`
-- `type`
-- `content`
-- `created_at`
-- `updated_at`
-- `importance`
-- `embedding_vector`
-
-Supported chunk types:
-
-- `task`
-- `decision`
-- `note`
-- `issue`
-- `spec`
-- `prompt`
-- `conversation`
-- `roadmap`
+The public TypeScript exports remain intact for hosts that want semantic recall.
 
 ## Examples
 
-- `npm run example:basic`
-- `npm run example:agent-pm`
-- `npm run example:chat-memory`
-- `npm run example:task-assistant`
-
-## Agent Integration
-
-Deja Vu is a memory core, not a full memory operating system.
-
-Recommended host loop:
-
-1. Before each task or reply, call `recall()` with the current user intent or working query.
-2. Inject only `summaryIfLoaded` into prompt context by default.
-3. Load `chunksIfLoaded` only for strong matches and deeper follow-up work.
-4. After the task completes, write back only durable, high-value memory with `addMemory()` or `updateMemory()`.
-5. Keep memory project-local and avoid mixing scopes across repositories.
-
-Recommended references:
-
-- `docs/architecture.md`
-- `docs/agent-handshake.md`
-- `docs/project-rules-template.md`
-- `docs/bootstrap-instructions.md`
-- `src/types/plugins.ts`
-- `src/types/memory.ts`
+- Protocol-first example: [examples/protocol-project](./examples/protocol-project)
+- Engine example: `npm run example:basic`
+- Engine example: `npm run example:agent-pm`
+- Engine example: `npm run example:chat-memory`
+- Engine example: `npm run example:task-assistant`
 
 ## Repo Structure
 
 ```text
 deja-vu/
-  src/
-    core/
-    layers/
-    retrieval/
-    scoring/
-    memory/
-    plugins/
-    storage/
-    types/
-    utils/
+  docs/
+    protocol.md
+    workflow.md
+    storage-markdown.md
+    templates/
+    engine/
   examples/
+    protocol-project/
     basic/
     agent-pm/
     chat-memory/
     task-assistant/
-  docs/
+  src/
   tests/
-  CHANGELOG.md
-  README.md
-  package.json
 ```
-
-## Roadmap
-
-- OpenAI and HuggingFace embedding adapters
-- SQLite and JSON-file storage adapters
-- chunk-specific reranking
-- memory compaction and archival policies
-- multi-agent shared familiarity space
-- observability hooks and recall traces
 
 ## Development
 
@@ -266,4 +177,11 @@ npm run build
 npm run test:src
 ```
 
-The bundled mock embedding provider is intentionally optimized for stable local demos, not production-grade semantics. For real deployments, swap in persistent adapters and a real embedding model.
+## References
+
+- [docs/protocol.md](./docs/protocol.md)
+- [docs/workflow.md](./docs/workflow.md)
+- [docs/storage-markdown.md](./docs/storage-markdown.md)
+- [docs/bootstrap-instructions.md](./docs/bootstrap-instructions.md)
+- [docs/project-rules-template.md](./docs/project-rules-template.md)
+- [llms.txt](./llms.txt)

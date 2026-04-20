@@ -1,8 +1,28 @@
 # Architecture
 
-Deja Vu is built around a familiarity gate instead of an eager retrieval loop.
+This document describes the optional engine architecture inside the protocol-first Deja Vu repository.
 
-## Flow
+## Product layering
+
+Deja Vu now has two layers:
+
+1. the protocol layer
+2. the optional semantic engine layer
+
+The protocol layer defines:
+
+- rules
+- workflow
+- Markdown memory conventions
+
+The engine layer adds:
+
+- familiarity scoring
+- threshold-gated summary loading
+- chunk retrieval
+- plugin seams for embeddings, storage, and vector search
+
+## Engine flow
 
 1. `addMemory(input)` runs a write pipeline.
 2. The pipeline creates a short summary for the familiarity layer.
@@ -27,3 +47,14 @@ Deja Vu is built around a familiarity gate instead of an eager retrieval loop.
 - `ScoringStrategy`
 - `Chunker`
 - `SummaryGenerator`
+
+## Important boundary
+
+The engine architecture does not replace the Deja Vu protocol.
+
+The host still owns:
+
+- project scope discipline
+- pre-task recall behavior
+- post-task writeback judgment
+- compaction and supersession policy
