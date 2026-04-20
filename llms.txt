@@ -1,41 +1,49 @@
 # Deja Vu
 
-> A familiarity-first memory engine for AI agents.
+> A protocol-first memory system for AI agents.
 
-Deja Vu is a TypeScript memory core for agents that need long-term memory without always-on retrieval. It uses a three-layer design:
+Deja Vu helps agents preserve useful project memory through:
 
-- familiarity index
-- summary layer
-- chunk layer
+- explicit project rules
+- a repeatable recall and writeback workflow
+- Markdown memory files inside the repository
 
-The engine is intended to be embedded into a host agent runtime. The host is responsible for persistence, namespace policy, selective writeback, and prompt injection.
+The minimum adoption path does not require npm, embeddings, vector search, or a dedicated memory service.
 
 ## Best starting points
 
-- [README](./README.md): project overview, public API, integration model, and usage examples
-- [Architecture](./docs/architecture.md): engine flow and plugin seams
-- [Agent Handshake](./docs/agent-handshake.md): how an agent should integrate this repository as a memory core
-- [Plugin Types](./src/types/plugins.ts): embedding, storage, vector store, and scoring interfaces
-- [Memory Types](./src/types/memory.ts): memory records, recall result types, and chunk taxonomy
-- [Core Engine](./src/core/semantic-recall-engine.ts): reference implementation of add, recall, update, and delete flows
+- [README](./README.md): product overview and primary adoption path
+- [Protocol](./docs/protocol.md): normative protocol definition
+- [Workflow](./docs/workflow.md): recall, writeback, and compaction lifecycle
+- [Markdown Storage](./docs/storage-markdown.md): canonical memory layout
+- [Templates](./docs/templates): copyable rules and memory templates
+- [Protocol Example](./examples/protocol-project): repo-first example with no engine
+
+## Optional engine references
+
+- [Optional Engine Layer](./docs/engine/semantic-engine.md)
+- [Protocol-to-Engine Mapping](./docs/engine/protocol-to-engine.md)
+- [Plugin Types](./src/types/plugins.ts)
+- [Memory Types](./src/types/memory.ts)
+- [Core Engine](./src/core/semantic-recall-engine.ts)
 
 ## Concepts
 
-- familiarity-first recall
-- semantic recall
-- long-term memory for AI agents
-- project memory
-- selective context loading
-- threshold-gated retrieval
-- plugin-first memory architecture
+- protocol-first memory
+- project-scoped continuity
+- recall before substantial work
+- selective writeback
+- Markdown memory
+- compaction and supersession
+- optional semantic recall engine
 
 ## Intended use
 
 Use Deja Vu when you want:
 
-- single-project long-term memory
-- compact prompt context
-- a RAG alternative for agent continuity
-- a host-managed memory bridge with persistent storage
+- durable continuity across new conversations
+- explicit and inspectable project memory
+- a lightweight memory discipline that works in many agent environments
+- an optional path to semantic recall without changing the core workflow
 
-Do not treat this repository as a complete autonomous memory operating system. It is a memory core that expects a host integration layer.
+Do not treat this repository as a hosted memory platform or autonomous memory daemon.

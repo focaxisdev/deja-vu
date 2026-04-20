@@ -4,17 +4,30 @@
 | --- | --- | --- |
 | `encoding-status.md` | 編碼正常（新建，UTF-8） | Project-local registry created by agent. |
 | `.gitignore` | 編碼正常（新建，UTF-8） | New text file. |
-| `package.json` | 編碼正常（新建，UTF-8） | Updated in UTF-8; publish metadata prepared for scoped npm release as `@focaxisdev/deja-vu`. |
+| `package.json` | 編碼正常（已檢查） | Rewritten in UTF-8; version bumped to 0.2.0 and `test:src` now uses a Node 24-compatible ts-node registration path. |
+| `package-lock.json` | 編碼正常（已檢查） | Rewritten in UTF-8; package name/version metadata now matches the scoped 0.2.0 release. |
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
-| `README.md` | 編碼正常（已檢查） | Rewritten in UTF-8 after persisted mojibake was found in the architecture section; homepage now optimized for quick trial and scoped npm install. |
-| `CHANGELOG.md` | 編碼正常（新建，UTF-8） | New release changelog for public version tracking. |
-| `llms.txt` | 編碼正常（新建，UTF-8） | New AI-readable repository index for agent and documentation discovery. |
-| `docs/architecture.md` | 編碼正常（新建，UTF-8） | Updated in UTF-8; product name renamed to Deja Vu. |
-| `docs/agent-handshake.md` | 編碼正常（新建，UTF-8） | New agent-readable handshake contract for host integration. |
-| `docs/project-rules-template.md` | 編碼正常（新建，UTF-8） | New copyable project rules template for persistent Deja Vu integration. |
-| `docs/bootstrap-instructions.md` | 編碼正常（新建，UTF-8） | New agent bootstrap guide for single-project memory setup. |
-| `docs/release-v0.1.0.md` | 編碼正常（新建，UTF-8） | New GitHub release notes draft for the first public release with scoped npm install command. |
+| `README.md` | 編碼正常（已檢查） | Rewritten in UTF-8; repo entrypoint now centers the protocol-first adoption path and demotes the engine to an optional layer. |
+| `CHANGELOG.md` | 編碼正常（已檢查） | Rewritten in UTF-8; now includes the 0.2.0 protocol-first reboot release notes. |
+| `llms.txt` | 編碼正常（已檢查） | Rewritten in UTF-8; AI-readable index now points to protocol, workflow, templates, and optional engine references. |
+| `docs/architecture.md` | 編碼正常（已檢查） | Rewritten in UTF-8; architecture doc now describes the engine as the optional layer inside a protocol-first product. |
+| `docs/agent-handshake.md` | 編碼正常（已檢查） | Rewritten in UTF-8; handshake now starts from protocol-first adoption and treats the engine as optional. |
+| `docs/project-rules-template.md` | 編碼正常（已檢查） | Rewritten in UTF-8; points to canonical AGENTS and memory templates. |
+| `docs/bootstrap-instructions.md` | 編碼正常（已檢查） | Rewritten in UTF-8; bootstrap now installs rules and Markdown memory before any engine integration. |
+| `docs/release-v0.1.0.md` | 編碼正常（已檢查） | Rewritten in UTF-8; release framing now centers repo-first protocol adoption for the earlier release note. |
+| `docs/release-v0.2.0.md` | 編碼正常（新建，UTF-8） | New release note for the protocol-first reboot version. |
+| `docs/protocol.md` | 編碼正常（新建，UTF-8） | New normative Deja Vu protocol spec. |
+| `docs/workflow.md` | 編碼正常（新建，UTF-8） | New workflow spec for recall, writeback, and compaction. |
+| `docs/storage-markdown.md` | 編碼正常（新建，UTF-8） | New canonical Markdown storage contract. |
+| `docs/engine/semantic-engine.md` | 編碼正常（新建，UTF-8） | New optional engine overview. |
+| `docs/engine/protocol-to-engine.md` | 編碼正常（新建，UTF-8） | New mapping from protocol workflow to semantic engine usage. |
+| `docs/templates/AGENTS.template.md` | 編碼正常（新建，UTF-8） | New copyable protocol rules template. |
+| `docs/templates/memory/index.md` | 編碼正常（新建，UTF-8） | New memory index template. |
+| `docs/templates/memory/summary.md` | 編碼正常（新建，UTF-8） | New project summary template. |
+| `docs/templates/memory/context/project-context.md` | 編碼正常（新建，UTF-8） | New project context template. |
+| `docs/templates/memory/decisions/decision-template.md` | 編碼正常（新建，UTF-8） | New durable decision template. |
+| `docs/templates/memory/open-loops/open-loop-template.md` | 編碼正常（新建，UTF-8） | New open-loop template. |
 | `src/index.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/memory.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/types/plugins.ts` | 編碼正常（新建，UTF-8） | New text file. |
@@ -34,9 +47,15 @@
 | `src/layers/chunk-layer.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/retrieval/threshold-gate.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/core/semantic-recall-engine.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; similarity now blends vector signal with lexical overlap. |
-| `src/plugins/create-in-memory-engine.ts` | 編碼正常（新建，UTF-8） | New text file. |
-| `examples/basic/index.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; demo thresholds tuned for visible recall flow with mock provider. |
-| `examples/agent-pm/index.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; demo thresholds tuned for visible recall flow with mock provider. |
-| `examples/chat-memory/index.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; demo thresholds tuned for visible recall flow. |
-| `examples/task-assistant/index.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; demo thresholds tuned for visible recall flow. |
-| `tests/semantic-recall-engine.test.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; tests use deterministic thresholds with mock provider. |
+| `examples/basic/index.ts` | 編碼正常（已檢查） | Rewritten in UTF-8; basic engine example now aligns with protocol-first positioning and optional engine language. |
+| `examples/agent-pm/index.ts` | 編碼正常（已檢查） | Checked in UTF-8; engine demo still valid as an optional host-side semantic recall example. |
+| `examples/chat-memory/index.ts` | 編碼正常（已檢查） | Checked in UTF-8; engine demo still valid as an optional chat preference recall example. |
+| `examples/task-assistant/index.ts` | 編碼正常（已檢查） | Checked in UTF-8; engine demo still valid as an optional task recall example. |
+| `examples/protocol-project/AGENTS.md` | 編碼正常（新建，UTF-8） | New repo-first protocol adoption example. |
+| `examples/protocol-project/README.md` | 編碼正常（新建，UTF-8） | New protocol-first example overview. |
+| `examples/protocol-project/memory/index.md` | 編碼正常（新建，UTF-8） | New example memory index. |
+| `examples/protocol-project/memory/summary.md` | 編碼正常（新建，UTF-8） | New example project summary. |
+| `examples/protocol-project/memory/context/project-context.md` | 編碼正常（新建，UTF-8） | New example project context. |
+| `examples/protocol-project/memory/decisions/protocol-first-positioning.md` | 編碼正常（新建，UTF-8） | New example decision record. |
+| `examples/protocol-project/memory/open-loops/add-engine-later.md` | 編碼正常（新建，UTF-8） | New example open-loop record. |
+| `tests/semantic-recall-engine.test.ts` | 編碼正常（已檢查） | Checked in UTF-8; source tests now run through the updated Node 24-compatible test script. |
