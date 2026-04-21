@@ -22,6 +22,8 @@ The engine layer adds:
 - chunk retrieval
 - plugin seams for embeddings, storage, and vector search
 
+This is product layering, not a reduction of the memory model.
+
 ## Engine flow
 
 1. `addMemory(input)` runs a write pipeline.
@@ -34,9 +36,11 @@ The engine layer adds:
 
 ## Layer model
 
-- Familiarity Index: fast ANN-friendly metadata and short summaries only.
+- Impression/Familiarity Index: fast ANN-friendly metadata, short summaries, and compact keyword tokens.
 - Summary Layer: compact agent-readable understanding of the memory.
 - Memory Chunks: detailed recall units scoped to a single memory id.
+
+The protocol-first path mirrors this with `memory/impressions.jsonl`, `memory/summary.md`, and detailed Markdown records.
 
 ## Plugin seams
 

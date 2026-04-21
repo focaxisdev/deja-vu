@@ -37,6 +37,11 @@ export interface VectorSearchHit {
   similarity: number;
 }
 
+export interface ImpressionSearchHit {
+  record: FamiliarityRecord;
+  similarity: number;
+}
+
 export interface FamiliarityVectorStore {
   upsert(record: FamiliarityRecord): Promise<void>;
   remove(id: string): Promise<void>;
@@ -60,6 +65,7 @@ export interface MemoryStorage {
   getRawContent(id: string): Promise<string | null>;
   deleteMemory(id: string): Promise<void>;
   listFamiliarities(): Promise<FamiliarityRecord[]>;
+  searchImpressions(tokens: string[], topK: number): Promise<ImpressionSearchHit[]>;
   touchMemory(id: string, lastAccessedAt: string): Promise<void>;
 }
 

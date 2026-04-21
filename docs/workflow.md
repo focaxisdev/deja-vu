@@ -12,10 +12,11 @@ Use the smallest amount of memory that preserves continuity.
 
 Before substantial planning, coding, or answering:
 
-1. Read `memory/index.md`.
-2. Read `memory/summary.md`.
-3. Identify the few records most relevant to the task.
-4. Read only those detailed records.
+1. Run `node scripts/dejavu-scan-memory.mjs "<task>"` when the script exists.
+2. If the scan level is `none`, avoid detailed memory reads by default.
+3. If the scan level is `weak`, read `memory/summary.md` and at most the most relevant linked record.
+4. If the scan level is `strong`, read the linked detailed record before planning.
+5. If no script exists, fall back to `memory/index.md` and `memory/summary.md`.
 
 Default detailed reads:
 
@@ -34,9 +35,11 @@ Default detailed reads:
 After meaningful work completes:
 
 1. decide whether the outcome is durable
-2. create or update the relevant memory file
-3. update `memory/index.md`
-4. update `memory/summary.md` if project understanding changed
+2. add a short event ledger entry when the work should remain discoverable
+3. create or update the relevant durable memory file
+4. update `memory/impressions.jsonl`
+5. update `memory/index.md`
+6. update `memory/summary.md` if project understanding changed
 
 ## Decision Rules
 
@@ -86,16 +89,19 @@ Compaction steps:
 
 Read priority:
 
-1. `memory/summary.md`
-2. relevant lines in `memory/index.md`
-3. the minimum number of detailed records needed
+1. `memory/impressions.jsonl` through the scan script
+2. `memory/summary.md` for weak matches
+3. linked detailed records for strong matches
+4. the minimum number of additional records needed
 
 Write priority:
 
-1. open-loop status changes
-2. durable decisions
-3. project summary changes
-4. supporting context records
+1. event ledger entries
+2. impression index updates
+3. open-loop status changes
+4. durable decisions
+5. project summary changes
+6. supporting context records
 
 ## Expected Outcome
 

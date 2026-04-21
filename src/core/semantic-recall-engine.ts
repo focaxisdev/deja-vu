@@ -8,6 +8,7 @@ import { HybridScoringStrategy } from "../scoring/hybrid-scoring-strategy.js";
 import type {
   AddMemoryInput,
   FamiliarityRecord,
+  ImpressionScanResult,
   MemoryChunk,
   RecallInput,
   RecallResult,
@@ -16,7 +17,7 @@ import type {
 } from "../types/memory.js";
 import type { SemanticRecallEngineConfig } from "../types/plugins.js";
 import { createId } from "../utils/id.js";
-import { lexicalSimilarity } from "../utils/text.js";
+import { extractKeywords } from "../utils/text.js";
 import { isoNow } from "../utils/time.js";
 
 export class SemanticRecallEngine {
@@ -71,6 +72,7 @@ export class SemanticRecallEngine {
       title: input.title,
       shortSummary,
       tags: input.tags ?? [],
+      impressionTokens: extractKeywords([input.title, shortSummary, ...(input.tags ?? [])].join("\n")),
       lastAccessedAt: now,
       importance: input.importance ?? 0.5,
       embeddingVector: familiarityVector,
@@ -96,36 +98,10 @@ export class SemanticRecallEngine {
 
   async recall(query: RecallInput | string): Promise<RecallResult> {
     const normalized: RecallInput = typeof query === "string" ? { text: query } : query;
-    const topK = normalized.topK ?? 5;
     const chunkLimit = normalized.chunkLimit ?? 3;
-    const vector = await this.config.embeddingProvider.embed(normalized.text);
-    const hits = await this.familiarityLayer.search(vector, topK);
-
-    const candidates = this.scoringStrategy.rank(
-      (
-        await Promise.all(
-          hits.map(async (hit) => {
-            const record = await this.familiarityLayer.get(hit.id);
-            if (!record) {
-              return null;
-            }
-            const overlap = lexicalSimilarity(
-              normalized.text,
-              `${record.title}\n${record.shortSummary}\n${record.tags.join(" ")}`,
-            );
-            return {
-              record,
-              similarity: Math.max(hit.similarity, overlap),
-            };
-          }),
-        )
-      ).filter((item): item is { record: FamiliarityRecord; similarity: number } => item !== null),
-    );
-
-    const topMatch = candidates[0] ?? null;
-    const familiarityLevel = topMatch
-      ? resolveFamiliarityLevel(topMatch.semanticSimilarity, this.thresholds)
-      : "none";
+    const scan = await this.scanImpressions(normalized);
+    const topMatch = scan.topMatch;
+    const familiarityLevel = scan.familiarityLevel;
 
     let summaryIfLoaded: SummaryRecord | null = null;
     let chunksIfLoaded: MemoryChunk[] = [];
@@ -145,6 +121,7 @@ export class SemanticRecallEngine {
       }
 
       if (familiarityLevel === "strong" && normalized.loadChunks) {
+        const vector = await this.config.embeddingProvider.embed(normalized.text);
         const chunkHits = await this.chunkLayer.search(topMatch.id, vector, chunkLimit);
         const allChunks = await this.chunkLayer.get(topMatch.id);
         const chunkMap = new Map(allChunks.map((chunk) => [chunk.chunkId, chunk]));
@@ -158,12 +135,42 @@ export class SemanticRecallEngine {
 
     return {
       matched: familiarityLevel !== "none",
+      candidates: scan.candidates,
+      topMatch,
+      score: scan.score,
+      familiarityLevel,
+      summaryIfLoaded,
+      chunksIfLoaded,
+    };
+  }
+
+  async scanImpressions(query: RecallInput | string): Promise<ImpressionScanResult> {
+    const normalized: RecallInput = typeof query === "string" ? { text: query } : query;
+    const topK = normalized.topK ?? 5;
+    const queryTokens = extractKeywords(normalized.text, 200);
+    const hits = await this.config.storage.searchImpressions(queryTokens, topK);
+
+    const candidates = this.scoringStrategy.rank(
+      hits.map((hit) => ({
+        record: hit.record,
+        similarity: hit.similarity,
+      })),
+    ).map((candidate) => ({
+      ...candidate,
+      familiarityLevel: resolveFamiliarityLevel(candidate.semanticSimilarity, this.thresholds),
+    }));
+
+    const topMatch = candidates[0] ?? null;
+    const familiarityLevel = topMatch
+      ? resolveFamiliarityLevel(topMatch.semanticSimilarity, this.thresholds)
+      : "none";
+
+    return {
+      matched: familiarityLevel !== "none",
       candidates,
       topMatch,
       score: topMatch?.score ?? 0,
       familiarityLevel,
-      summaryIfLoaded,
-      chunksIfLoaded,
     };
   }
 

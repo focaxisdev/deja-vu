@@ -21,7 +21,7 @@ It answers:
 - how memory should be stored in ordinary project files
 - when memory should be updated, compacted, or retired
 
-The minimum viable setup uses Markdown files only. No npm package, embeddings, vector search, or database is required.
+The minimum viable setup uses project-local plain text files. No npm package, embeddings, vector search, or database is required.
 
 ## Start Here
 
@@ -29,14 +29,18 @@ If you want to adopt Deja Vu in a project without extra infrastructure:
 
 1. Read [docs/protocol.md](./docs/protocol.md).
 2. Read [docs/workflow.md](./docs/workflow.md).
-3. Copy the templates from [docs/templates](./docs/templates).
-4. Add the generated rules and memory files to your project.
+3. Read [docs/impression-layer.md](./docs/impression-layer.md).
+4. Read [docs/scripted-recall.md](./docs/scripted-recall.md).
+5. Copy the templates from [docs/templates](./docs/templates).
+6. Add the generated rules and memory files to your project.
 
 Recommended first files:
 
 - [docs/templates/AGENTS.template.md](./docs/templates/AGENTS.template.md)
 - [docs/templates/memory/index.md](./docs/templates/memory/index.md)
 - [docs/templates/memory/summary.md](./docs/templates/memory/summary.md)
+- [docs/templates/memory/impressions.jsonl](./docs/templates/memory/impressions.jsonl)
+- [docs/templates/memory/events/YYYY-MM.md](./docs/templates/memory/events/YYYY-MM.md)
 - [docs/templates/memory/decisions/decision-template.md](./docs/templates/memory/decisions/decision-template.md)
 - [docs/templates/memory/open-loops/open-loop-template.md](./docs/templates/memory/open-loops/open-loop-template.md)
 
@@ -44,10 +48,11 @@ Recommended first files:
 
 Deja Vu follows a simple lifecycle:
 
-1. Recall before substantial planning, coding, or answering.
-2. Work using only the smallest memory slice needed.
-3. Write back only durable, reusable outcomes.
-4. Compact or supersede memories when detail becomes repetitive or stale.
+1. Scan a tiny impression index before substantial planning, coding, or answering.
+2. Load summaries only when the scan finds weak familiarity.
+3. Load detailed records only when the scan finds strong familiarity or the task requires depth.
+4. Write back durable outcomes and a cheap event trace.
+5. Compact or supersede memories when detail becomes repetitive or stale.
 
 This keeps memory project-local, readable, and easy to maintain across new conversations.
 
@@ -57,6 +62,8 @@ This keeps memory project-local, readable, and easy to maintain across new conve
 memory/
   index.md
   summary.md
+  impressions.jsonl
+  events/
   context/
     project-context.md
   decisions/
@@ -71,7 +78,7 @@ The canonical layout and field rules are specified in [docs/storage-markdown.md]
 
 - Use a single-project scope only in MVP: `project:<project-id>`.
 - Recall before substantial work.
-- Prefer summary memory first; open detailed records only when needed.
+- Prefer scripted impression scans first; open summary or detailed records only when needed.
 - Write back only durable memory:
   - decisions
   - architecture intent
@@ -132,6 +139,7 @@ The npm package provides the optional TypeScript engine. It is not required for 
 const engine = new SemanticRecallEngine(config);
 
 await engine.addMemory(input);
+await engine.scanImpressions(query);
 await engine.recall(query);
 await engine.getSummary(id);
 await engine.getChunks(id);
@@ -140,6 +148,8 @@ await engine.deleteMemory(id);
 ```
 
 The public TypeScript exports remain intact for hosts that want semantic recall.
+
+`scanImpressions()` performs token-only familiarity scanning and does not load summaries or chunks.
 
 ## Examples
 
@@ -175,6 +185,7 @@ deja-vu/
 npm install
 npm run build
 npm run test:src
+npm run lint:memory
 ```
 
 ## References
@@ -182,6 +193,8 @@ npm run test:src
 - [docs/protocol.md](./docs/protocol.md)
 - [docs/workflow.md](./docs/workflow.md)
 - [docs/storage-markdown.md](./docs/storage-markdown.md)
+- [docs/impression-layer.md](./docs/impression-layer.md)
+- [docs/scripted-recall.md](./docs/scripted-recall.md)
 - [docs/bootstrap-instructions.md](./docs/bootstrap-instructions.md)
 - [docs/project-rules-template.md](./docs/project-rules-template.md)
 - [llms.txt](./llms.txt)

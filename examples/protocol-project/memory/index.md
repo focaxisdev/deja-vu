@@ -2,6 +2,8 @@
 
 - Scope: `project:example-protocol-project`
 - Active summary: [summary.md](./summary.md)
+- Impression index: [impressions.jsonl](./impressions.jsonl)
+- Event ledger: [events/](./events/)
 
 ## Active decisions
 

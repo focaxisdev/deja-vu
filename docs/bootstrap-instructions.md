@@ -33,7 +33,9 @@ Read:
 2. `docs/protocol.md`
 3. `docs/workflow.md`
 4. `docs/storage-markdown.md`
-5. `docs/templates/AGENTS.template.md`
+5. `docs/impression-layer.md`
+6. `docs/scripted-recall.md`
+7. `docs/templates/AGENTS.template.md`
 
 ### 3. Check whether memory already exists
 
@@ -52,18 +54,27 @@ Create or update:
 - `AGENTS.md`
 - `memory/index.md`
 - `memory/summary.md`
+- `memory/impressions.jsonl`
+- `memory/events/`
 - `memory/context/project-context.md`
 - `memory/decisions/`
 - `memory/open-loops/`
+- `scripts/dejavu-scan-memory.mjs`
 
 ### 5. Apply the workflow
 
 Ensure future work follows:
 
-1. pre-task recall from the memory files
-2. minimal detailed reads
-3. selective post-task writeback
+1. pre-task recall through the impression scan script
+2. minimal summary and detailed reads based on scan strength
+3. selective post-task writeback plus a cheap event trace
 4. compaction when records become repetitive or stale
+
+After bootstrap, run:
+
+```bash
+node scripts/dejavu-lint-memory.mjs
+```
 
 ### 6. Optional engine adoption
 

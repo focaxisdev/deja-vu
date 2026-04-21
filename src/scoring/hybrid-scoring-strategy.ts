@@ -49,6 +49,7 @@ export class HybridScoringStrategy implements ScoringStrategy {
           id: record.id,
           title: record.title,
           shortSummary: record.shortSummary,
+          impressionTokens: record.impressionTokens,
           ...breakdown,
           familiarityLevel:
             breakdown.semanticSimilarity >= 0.85

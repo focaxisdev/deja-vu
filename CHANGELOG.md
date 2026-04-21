@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2026-04-21
+
+- Made engine impression scans token-only so query embeddings are deferred until chunk retrieval is needed.
+- Added CLI `--memory-root` and `--file` options and aligned `matched` with weak/strong scan levels.
+- Added `deja-vu-scan-memory` and `deja-vu-lint-memory` package binaries.
+- Added memory linting for impression schema, duplicate ids, and linked record paths.
+- Updated adoption docs, handshake, templates, and example project to make impression-first recall the default path.
+- Updated protocol naming to v0.2 and clarified project-local plain text storage.
+
+## [0.2.1] - 2026-04-21
+
+- Added a protocol-level impression layer for compact keyword-first familiarity scans.
+- Added scripted recall documentation and a default `scripts/dejavu-scan-memory.mjs` scanner.
+- Added `memory/impressions.jsonl` and `memory/events/` templates for cheap long-term continuity.
+- Updated workflow, protocol, storage, bootstrap, and AGENTS templates around impression-first recall.
+- Extended the optional TypeScript engine with `impressionTokens` and `scanImpressions()`.
+- Added tests for scanning impressions without loading deeper memory.
+
 ## [0.2.0] - 2026-04-20
 
 - Repositioned Deja Vu as a protocol-first memory system for AI agents.
