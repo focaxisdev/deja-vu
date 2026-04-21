@@ -59,3 +59,13 @@
 | `examples/protocol-project/memory/decisions/protocol-first-positioning.md` | 編碼正常（新建，UTF-8） | New example decision record. |
 | `examples/protocol-project/memory/open-loops/add-engine-later.md` | 編碼正常（新建，UTF-8） | New example open-loop record. |
 | `tests/semantic-recall-engine.test.ts` | 編碼正常（已檢查） | Checked in UTF-8; source tests now run through the updated Node 24-compatible test script. |
+| `docs/impression-layer.md` | 編碼正常（新建，UTF-8） | New V0.2.1 protocol document for compact impression-first recall. |
+| `docs/scripted-recall.md` | 編碼正常（新建，UTF-8） | New V0.2.1 script contract for cheap memory scans. |
+| `docs/release-v0.2.1.md` | 編碼正常（新建，UTF-8） | New release note for scripted impression-first recall. |
+| `docs/templates/memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New impression index template. |
+| `docs/templates/memory/events/YYYY-MM.md` | 編碼正常（新建，UTF-8） | New event ledger template. |
+| `scripts/dejavu-scan-memory.mjs` | 編碼正常（新建，UTF-8） | New default memory impression scanner. |
+| `examples/protocol-project/memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New example impression index. |
+| `examples/protocol-project/memory/events/2026-04.md` | 編碼正常（新建，UTF-8） | New example event ledger. |
+| `scripts/dejavu-lint-memory.mjs` | 編碼正常（新建，UTF-8） | New memory impression index linter. |
+| `tests/memory-cli.test.ts` | 編碼正常（新建，UTF-8） | New CLI and package smoke tests. |

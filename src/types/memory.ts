@@ -38,6 +38,7 @@ export interface FamiliarityRecord {
   title: string;
   shortSummary: string;
   tags: string[];
+  impressionTokens: string[];
   lastAccessedAt: string;
   importance: number;
   embeddingVector: number[];
@@ -77,6 +78,7 @@ export interface ScoredCandidate {
   id: string;
   title: string;
   shortSummary: string;
+  impressionTokens: string[];
   semanticSimilarity: number;
   recencyWeight: number;
   importanceWeight: number;
@@ -85,6 +87,14 @@ export interface ScoredCandidate {
 }
 
 export type FamiliarityLevel = "strong" | "weak" | "none";
+
+export interface ImpressionScanResult {
+  matched: boolean;
+  candidates: ScoredCandidate[];
+  topMatch: ScoredCandidate | null;
+  score: number;
+  familiarityLevel: FamiliarityLevel;
+}
 
 export interface RecallInput {
   text: string;

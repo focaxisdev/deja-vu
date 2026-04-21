@@ -1,4 +1,4 @@
-# Deja Vu Protocol v0.1
+# Deja Vu Protocol v0.2
 
 Deja Vu is a protocol-first memory system for AI agents.
 
@@ -10,7 +10,7 @@ Enable any agent to maintain useful project memory using only:
 
 - project rules
 - a repeatable workflow
-- project-local Markdown files
+- project-local plain text memory files
 
 The protocol must work without a custom runtime, package install, embedding model, or vector database.
 
@@ -49,6 +49,8 @@ An implementation of Deja Vu MVP must provide these artifacts inside the project
 - `AGENTS.md` or equivalent rules file with Deja Vu rules
 - `memory/index.md`
 - `memory/summary.md`
+- `memory/impressions.jsonl`
+- `memory/events/`
 - `memory/context/project-context.md`
 - `memory/decisions/`
 - `memory/open-loops/`
@@ -62,9 +64,10 @@ These files are the canonical memory surface. Agents should treat them as the pr
 Before substantial planning, coding, or answering:
 
 1. Determine whether the task is substantial.
-2. If yes, read `memory/index.md` and `memory/summary.md`.
-3. Open only the detailed records needed for the current task.
-4. Prefer the smallest useful memory slice.
+2. If yes, run the project impression scan script when available.
+3. If the scan is weak, read `memory/summary.md` and the minimum linked records.
+4. If the scan is strong, open only the detailed records needed for the current task.
+5. If no script is available, fall back to `memory/index.md` and `memory/summary.md`.
 
 ### 2. Work
 
@@ -81,7 +84,9 @@ After meaningful work completes:
 1. Decide whether the outcome is durable.
 2. If it is durable, write or update the appropriate memory artifact.
 3. Update `memory/index.md` so future recall can find the new record quickly.
-4. Update `memory/summary.md` when the project-level understanding has changed.
+4. Update `memory/impressions.jsonl` with compact keywords for future cheap scans.
+5. Update `memory/events/` with a short trace when the work should remain discoverable.
+6. Update `memory/summary.md` when the project-level understanding has changed.
 
 ### 4. Compaction
 

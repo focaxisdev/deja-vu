@@ -8,6 +8,8 @@ This document defines the canonical Markdown storage layout for Deja Vu MVP.
 memory/
   index.md
   summary.md
+  impressions.jsonl
+  events/
   context/
     project-context.md
   decisions/
@@ -51,6 +53,32 @@ Required fields:
 - active priorities
 - linked decisions
 - linked open loops
+
+### `memory/impressions.jsonl`
+
+Purpose:
+
+- cheap familiarity scanning
+- keyword-to-record routing
+- avoiding unnecessary summary or detail reads
+
+Each line must be one JSON object with:
+
+- `id`
+- `scope`
+- `title`
+- `keywords`
+- `record_path`
+- `updated`
+
+### `memory/events/`
+
+Purpose:
+
+- cheap long-term trace of meaningful work
+- support "we did this before" discovery without promoting every event into durable memory
+
+Event entries should stay short. Promote only reusable decisions, context, preferences, and open loops into durable memory records.
 
 ### `memory/context/project-context.md`
 

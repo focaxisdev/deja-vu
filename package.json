@@ -1,6 +1,6 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Deja Vu: a protocol-first memory system for AI agents with an optional semantic recall engine.",
   "type": "module",
   "main": "./dist/src/index.js",
@@ -12,8 +12,14 @@
       "import": "./dist/src/index.js"
     }
   },
+  "bin": {
+    "deja-vu-scan-memory": "./scripts/dejavu-scan-memory.mjs",
+    "deja-vu-lint-memory": "./scripts/dejavu-lint-memory.mjs"
+  },
   "files": [
     "dist/src",
+    "docs",
+    "scripts",
     "README.md",
     "LICENSE"
   ],
@@ -24,6 +30,8 @@
     "prepublishOnly": "npm test",
     "test": "npm run clean && npm run build && node --test dist/tests/**/*.test.js",
     "test:src": "node --import \"data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));\" --test tests/**/*.test.ts",
+    "scan:memory": "node scripts/dejavu-scan-memory.mjs",
+    "lint:memory": "node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory",
     "example:basic": "node --loader ts-node/esm examples/basic/index.ts",
     "example:agent-pm": "node --loader ts-node/esm examples/agent-pm/index.ts",
     "example:chat-memory": "node --loader ts-node/esm examples/chat-memory/index.ts",

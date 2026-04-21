@@ -16,6 +16,8 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 - [Protocol](./docs/protocol.md): normative protocol definition
 - [Workflow](./docs/workflow.md): recall, writeback, and compaction lifecycle
 - [Markdown Storage](./docs/storage-markdown.md): canonical memory layout
+- [Impression Layer](./docs/impression-layer.md): compact keyword-first familiarity surface
+- [Scripted Recall](./docs/scripted-recall.md): host script contract for cheap pre-task scans
 - [Templates](./docs/templates): copyable rules and memory templates
 - [Protocol Example](./examples/protocol-project): repo-first example with no engine
 
@@ -32,7 +34,9 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 - protocol-first memory
 - project-scoped continuity
 - recall before substantial work
+- impression-first scripted recall
 - selective writeback
+- event ledger continuity
 - Markdown memory
 - compaction and supersession
 - optional semantic recall engine
