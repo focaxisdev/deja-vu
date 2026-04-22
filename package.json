@@ -1,7 +1,7 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.2.2",
-  "description": "Deja Vu: a protocol-first memory system for AI agents with an optional semantic recall engine.",
+  "version": "0.3.0",
+  "description": "Deja Vu: a cue-first memory protocol for AI agents with an optional semantic recall engine.",
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",

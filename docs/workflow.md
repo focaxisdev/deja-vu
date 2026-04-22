@@ -6,6 +6,8 @@ This document defines the exact workflow an agent should follow when using Deja 
 
 Use the smallest amount of memory that preserves continuity.
 
+Deja Vu should feel like recognition, not replay. A task cue earns more context only when it matches a reusable project memory route.
+
 ## Task Lifecycle
 
 ### Pre-task recall
@@ -14,9 +16,16 @@ Before substantial planning, coding, or answering:
 
 1. Run `node scripts/dejavu-scan-memory.mjs "<task>"` when the script exists.
 2. If the scan level is `none`, avoid detailed memory reads by default.
-3. If the scan level is `weak`, read `memory/summary.md` and at most the most relevant linked record.
+3. If the scan level is `weak`, read `memory/summary.md`.
 4. If the scan level is `strong`, read the linked detailed record before planning.
-5. If no script exists, fall back to `memory/index.md` and `memory/summary.md`.
+5. If no script exists, fall back to `memory/summary.md` and then `memory/index.md` when present.
+
+Recall budget:
+
+- impression scan: always allowed
+- summary: at most one file
+- detailed records: one to three records
+- full memory tree: forbidden unless the user explicitly asks
 
 Default detailed reads:
 
@@ -35,11 +44,11 @@ Default detailed reads:
 After meaningful work completes:
 
 1. decide whether the outcome is durable
-2. add a short event ledger entry when the work should remain discoverable
-3. create or update the relevant durable memory file
-4. update `memory/impressions.jsonl`
-5. update `memory/index.md`
-6. update `memory/summary.md` if project understanding changed
+2. create or update the relevant durable memory file
+3. update `memory/impressions.jsonl`
+4. update `memory/summary.md` if project understanding changed
+5. update `memory/index.md` if the project uses one
+6. add a short event ledger entry only when the work should remain discoverable without promotion into durable memory
 
 ## Decision Rules
 
@@ -96,12 +105,12 @@ Read priority:
 
 Write priority:
 
-1. event ledger entries
-2. impression index updates
-3. open-loop status changes
-4. durable decisions
-5. project summary changes
-6. supporting context records
+1. impression index updates
+2. open-loop status changes
+3. durable decisions
+4. project summary changes
+5. supporting context records
+6. event ledger entries
 
 ## Expected Outcome
 

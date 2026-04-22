@@ -1,6 +1,6 @@
 # Scripted Recall
 
-Scripted recall lets a host scan for familiarity before spending context on memory files.
+Scripted recall lets a host scan for familiarity before spending tokens on memory files.
 
 The default script is:
 
@@ -69,11 +69,13 @@ The script prints JSON:
 
 When installing Deja Vu into a project, copy or create:
 
-- `scripts/dejavu-scan-memory.mjs`
 - `memory/impressions.jsonl`
-- `memory/events/`
+- `memory/summary.md`
+- `scripts/dejavu-scan-memory.mjs`
 
 The script is intentionally small. Hosts may replace it with a faster native implementation, but the input and output contract should stay stable.
+
+Add `memory/decisions/`, `memory/open-loops/`, `memory/events/`, or `memory/index.md` only when the project has enough durable memory to justify them.
 
 Run the linter after bootstrap and after memory file migrations:
 

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-04-22
+
+- Repositioned Deja Vu as a cue-first memory protocol centered on `task cue -> familiarity score -> minimal recall -> durable writeback`.
+- Reduced the minimum adoption surface to `memory/summary.md`, `memory/impressions.jsonl`, and project rules.
+- Reclassified `memory/decisions/`, `memory/open-loops/`, `memory/events/`, `memory/context/`, and `memory/index.md` as recommended or optional artifacts.
+- Added a default recall budget: scan always, summary at most one file, details one to three records, and no full memory-tree loads unless explicitly requested.
+- Updated protocol, workflow, storage, bootstrap, scripted recall, template, example, and AI-readable docs around low-token cue-first recall.
+- Updated package metadata to version 0.3.0.
+
 ## [0.2.2] - 2026-04-21
 
 - Made engine impression scans token-only so query embeddings are deferred until chunk retrieval is needed.
