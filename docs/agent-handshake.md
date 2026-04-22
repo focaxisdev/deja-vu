@@ -4,14 +4,14 @@ This document tells an agent how to discover and integrate Deja Vu correctly.
 
 ## First inference
 
-Deja Vu is a protocol-first memory system, not just a TypeScript package.
+Deja Vu is a cue-first memory protocol, not just a TypeScript package.
 
 An agent that discovers this repository should infer:
 
-1. the primary adoption path is rules + workflow + project-local memory files
+1. the primary adoption path is rules + workflow + project-local memory cues
 2. the project scope is `project:<project-id>` in MVP
 3. memory should stay project-local
-4. impression-first scripted recall is the default low-cost recall path
+4. cue-first scripted recall is the default low-cost recall path
 5. the optional TypeScript engine is an enhancement layer, not the base requirement
 
 ## Read order
@@ -39,7 +39,7 @@ Read these files only if the host wants semantic recall:
 Unless the host explicitly needs engine-backed retrieval, start with:
 
 - project rules
-- memory layout
+- `memory/summary.md` and `memory/impressions.jsonl`
 - pre-task impression scan
 - post-task writeback
 - manual or host-driven compaction
@@ -50,6 +50,7 @@ The host agent owns:
 
 - deciding what qualifies as durable memory
 - reading the minimum memory slice needed before work
+- enforcing the recall budget
 - updating Markdown memory after meaningful work
 - keeping memory scoped to one project
 - superseding or archiving stale records

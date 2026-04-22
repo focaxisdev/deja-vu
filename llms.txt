@@ -1,12 +1,12 @@
 # Deja Vu
 
-> A protocol-first memory system for AI agents.
+> A cue-first memory protocol for AI agents.
 
 Deja Vu helps agents preserve useful project memory through:
 
 - explicit project rules
-- a repeatable recall and writeback workflow
-- Markdown memory files inside the repository
+- a repeatable cue-scan, minimal-recall, and writeback workflow
+- tiny Markdown and JSONL memory files inside the repository
 
 The minimum adoption path does not require npm, embeddings, vector search, or a dedicated memory service.
 
@@ -15,7 +15,7 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 - [README](./README.md): product overview and primary adoption path
 - [Protocol](./docs/protocol.md): normative protocol definition
 - [Workflow](./docs/workflow.md): recall, writeback, and compaction lifecycle
-- [Markdown Storage](./docs/storage-markdown.md): canonical memory layout
+- [Markdown Storage](./docs/storage-markdown.md): minimum and optional memory layout
 - [Impression Layer](./docs/impression-layer.md): compact keyword-first familiarity surface
 - [Scripted Recall](./docs/scripted-recall.md): host script contract for cheap pre-task scans
 - [Templates](./docs/templates): copyable rules and memory templates
@@ -32,9 +32,11 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 ## Concepts
 
 - protocol-first memory
+- cue-first recall
 - project-scoped continuity
 - recall before substantial work
 - impression-first scripted recall
+- recall budget
 - selective writeback
 - event ledger continuity
 - Markdown memory

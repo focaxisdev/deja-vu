@@ -6,17 +6,31 @@ This document defines the canonical Markdown storage layout for Deja Vu MVP.
 
 ```text
 memory/
-  index.md
   summary.md
   impressions.jsonl
-  events/
-  context/
-    project-context.md
+```
+
+These paths are the stable minimum. Agents may add more files when they improve recall without increasing default token cost.
+
+## Recommended Layout
+
+```text
+memory/
+  summary.md
+  impressions.jsonl
   decisions/
   open-loops/
 ```
 
-Agents may add more files, but these paths are the stable minimum.
+## Optional Layout
+
+```text
+memory/
+  index.md
+  events/
+  context/
+    project-context.md
+```
 
 ## File Roles
 
@@ -24,7 +38,7 @@ Agents may add more files, but these paths are the stable minimum.
 
 Purpose:
 
-- quick discovery
+- optional quick discovery
 - top-level recall entrypoint
 - map from topics to detailed records
 
@@ -75,7 +89,7 @@ Each line must be one JSON object with:
 
 Purpose:
 
-- cheap long-term trace of meaningful work
+- optional cheap long-term trace of meaningful work
 - support "we did this before" discovery without promoting every event into durable memory
 
 Event entries should stay short. Promote only reusable decisions, context, preferences, and open loops into durable memory records.
@@ -84,7 +98,7 @@ Event entries should stay short. Promote only reusable decisions, context, prefe
 
 Purpose:
 
-- stable facts that describe the project
+- optional stable facts that describe the project
 - background that changes slower than individual tasks
 
 Recommended fields:
@@ -146,7 +160,7 @@ Additional keys are allowed when they improve clarity.
 
 ## Linking Rules
 
-- `memory/index.md` must link to every active decision and open loop.
+- `memory/index.md`, when present, must link to every active decision and open loop.
 - `memory/summary.md` must link to the currently authoritative records.
 - Detailed records should link back to summary or sibling records when useful.
 

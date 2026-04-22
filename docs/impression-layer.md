@@ -1,10 +1,10 @@
 # Impression Layer
 
-The impression layer is the thinnest Deja Vu memory surface.
+The impression layer is the thinnest Deja Vu memory surface and the center of the protocol.
 
 Its job is not to explain a memory. Its job is to answer one cheap question:
 
-> Does this task feel familiar enough to justify opening deeper memory?
+> Does this task feel familiar enough to justify spending more tokens?
 
 ## Position in the Memory Stack
 
@@ -70,6 +70,13 @@ Keep impression keywords short and reusable:
 - unresolved follow-up names
 
 Do not store full summaries, transcripts, secrets, or long prose in the impression layer.
+
+Default keyword discipline:
+
+- keep `keywords` to 5-12 short terms
+- prefer nouns, feature names, decision names, and project-specific phrases
+- avoid full sentences
+- use `aliases` only for stable alternate names
 
 ## Retention Behavior
 

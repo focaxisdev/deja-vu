@@ -1,18 +1,24 @@
-# Deja Vu Protocol v0.2
+# Deja Vu Protocol v0.3
 
-Deja Vu is a protocol-first memory system for AI agents.
+Deja Vu is a cue-first memory protocol for AI agents.
 
 This document is the normative specification for the minimum viable Deja Vu protocol.
 
 ## Goal
 
-Enable any agent to maintain useful project memory using only:
+Enable any agent to maintain useful project memory with extremely low per-conversation token cost using only:
 
 - project rules
 - a repeatable workflow
-- project-local plain text memory files
+- project-local plain text memory cues
 
 The protocol must work without a custom runtime, package install, embedding model, or vector database.
+
+The core loop is:
+
+```text
+task cue -> familiarity score -> minimal recall -> durable writeback
+```
 
 ## Scope Model
 
@@ -44,30 +50,44 @@ Bad memory candidates:
 
 ## Protocol Artifacts
 
-An implementation of Deja Vu MVP must provide these artifacts inside the project:
+An implementation of Deja Vu MVP must provide these minimum artifacts inside the project:
 
 - `AGENTS.md` or equivalent rules file with Deja Vu rules
-- `memory/index.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
-- `memory/events/`
-- `memory/context/project-context.md`
+
+These files are the minimum canonical memory surface. Agents should treat them as the primary source of truth.
+
+Recommended artifacts:
+
 - `memory/decisions/`
 - `memory/open-loops/`
 
-These files are the canonical memory surface. Agents should treat them as the primary source of truth.
+Optional artifacts:
+
+- `memory/events/`
+- `memory/context/project-context.md`
+- `memory/index.md`
 
 ## Protocol Lifecycle
 
-### 1. Recall
+### 1. Cue Scan
 
 Before substantial planning, coding, or answering:
 
 1. Determine whether the task is substantial.
 2. If yes, run the project impression scan script when available.
-3. If the scan is weak, read `memory/summary.md` and the minimum linked records.
-4. If the scan is strong, open only the detailed records needed for the current task.
-5. If no script is available, fall back to `memory/index.md` and `memory/summary.md`.
+3. If the scan is `none`, do not load project memory by default.
+4. If the scan is `weak`, read `memory/summary.md`.
+5. If the scan is `strong`, open only the detailed records needed for the current task.
+6. If no script is available, fall back to `memory/summary.md` and only then to `memory/index.md` when present.
+
+Default recall budget:
+
+- impression scan: always allowed
+- summary: at most one file
+- detailed records: one to three records
+- full memory tree: forbidden unless the user explicitly asks
 
 ### 2. Work
 
@@ -83,10 +103,10 @@ After meaningful work completes:
 
 1. Decide whether the outcome is durable.
 2. If it is durable, write or update the appropriate memory artifact.
-3. Update `memory/index.md` so future recall can find the new record quickly.
-4. Update `memory/impressions.jsonl` with compact keywords for future cheap scans.
-5. Update `memory/events/` with a short trace when the work should remain discoverable.
-6. Update `memory/summary.md` when the project-level understanding has changed.
+3. Update `memory/impressions.jsonl` with compact keywords for future cheap scans.
+4. Update `memory/summary.md` when the project-level understanding has changed.
+5. Update `memory/index.md` when the project uses one.
+6. Update `memory/events/` only when the work should remain discoverable without becoming a durable record.
 
 ### 4. Compaction
 
@@ -137,7 +157,7 @@ When a record is replaced by a better one:
 
 - the newer record must link to the older one
 - the older record must be marked `superseded`
-- `memory/index.md` must point to the newer record
+- `memory/index.md`, when present, must point to the newer record
 
 ## Safety Rules
 
@@ -145,6 +165,7 @@ When a record is replaced by a better one:
 - Never dump detailed history into working context by default.
 - Never treat memory as broader than the current project scope.
 - Never let convenience override the durable-memory filter.
+- Never spend detailed-memory tokens before the cue scan justifies them.
 
 ## Optional Engine Compatibility
 

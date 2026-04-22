@@ -7,8 +7,8 @@ This document tells an agent how to bootstrap Deja Vu into a project using the p
 Give a project durable memory continuity using only:
 
 - project rules
-- a Markdown memory directory
-- the Deja Vu workflow
+- two minimum Markdown memory files
+- the cue-first Deja Vu workflow
 
 ## Trigger conditions
 
@@ -52,22 +52,25 @@ Reuse and align existing structures when possible instead of creating a competin
 Create or update:
 
 - `AGENTS.md`
-- `memory/index.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
-- `memory/events/`
-- `memory/context/project-context.md`
+- `scripts/dejavu-scan-memory.mjs`
+
+Add only when useful:
+
 - `memory/decisions/`
 - `memory/open-loops/`
-- `scripts/dejavu-scan-memory.mjs`
+- `memory/events/`
+- `memory/context/project-context.md`
+- `memory/index.md`
 
 ### 5. Apply the workflow
 
 Ensure future work follows:
 
 1. pre-task recall through the impression scan script
-2. minimal summary and detailed reads based on scan strength
-3. selective post-task writeback plus a cheap event trace
+2. no memory reads for `none`, one summary read for `weak`, and one to three detailed records for `strong`
+3. selective post-task writeback
 4. compaction when records become repetitive or stale
 
 After bootstrap, run:

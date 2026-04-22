@@ -1,13 +1,16 @@
-# Protocol-First Example
+# Cue-First Protocol Example
 
 This example shows how to adopt Deja Vu without npm or the optional TypeScript engine.
 
-## Files
+## Minimum Files
 
 - `AGENTS.md`
-- `memory/index.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
+
+## Optional Scale-Up Files
+
+- `memory/index.md`
 - `memory/events/`
 - `memory/context/project-context.md`
 - `memory/decisions/`
@@ -16,9 +19,9 @@ This example shows how to adopt Deja Vu without npm or the optional TypeScript e
 ## Flow
 
 1. Add the rules file to the project.
-2. Add the memory directory.
+2. Add the minimum memory files.
 3. Run the impression scan script before substantial work.
-4. Use `memory/summary.md` and detailed records only when the scan justifies it.
+4. Use `memory/summary.md` for weak matches and one to three detailed records for strong matches.
 5. Update detailed memory files only when new durable information appears.
 
 From this example directory, the repository script can be tested with:
