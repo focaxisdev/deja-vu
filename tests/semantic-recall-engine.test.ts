@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { createInMemorySemanticRecallEngine } from "../src/index.js";
+import { DefaultChunker } from "../src/memory/default-chunker.js";
+import { DefaultSummaryGenerator } from "../src/memory/default-summary-generator.js";
 import type { EmbeddingProvider } from "../src/index.js";
 
 class CountingEmbeddingProvider implements EmbeddingProvider {
@@ -106,4 +108,49 @@ test("impression scans do not call the embedding provider", async () => {
   assert.equal(scan.matched, true);
   assert.equal(recall.matched, true);
   assert.equal(embeddingProvider.calls, 0);
+});
+
+test("default summaries preserve gist cues instead of only truncating content", async () => {
+  const generator = new DefaultSummaryGenerator();
+
+  const summary = await generator.generateStructuredSummary({
+    title: "Cue-first recall",
+    content: `
+Decision: scan impressions before loading detailed records.
+Rationale: cheap cue scans protect the context budget.
+Trigger: use this when a task may depend on project memory.
+Implementation note: details can stay in separate records.
+    `.trim(),
+  });
+
+  assert.equal(summary.description, "Decision: scan impressions before loading detailed records.");
+  assert.equal(summary.context, "Rationale: cheap cue scans protect the context budget.");
+  assert.equal(summary.architectureOrIntent, "Trigger: use this when a task may depend on project memory.");
+});
+
+test("default chunker preserves markdown and paragraph boundaries first", () => {
+  const chunker = new DefaultChunker();
+
+  const chunks = chunker.chunk({
+    title: "Boundary chunking",
+    content: `
+# Decision
+Decision: keep recall cheap.
+
+# Rationale
+Rationale: boundary-aware chunks reduce later disambiguation.
+
+# Trigger
+Task: use when memory content has structured sections.
+    `.trim(),
+    chunkStrategy: {
+      maxCharacters: 90,
+      overlapCharacters: 10,
+    },
+  });
+
+  assert.equal(chunks.length, 3);
+  assert.ok(chunks[0].content.startsWith("# Decision"));
+  assert.ok(chunks[1].content.startsWith("# Rationale"));
+  assert.ok(chunks[2].content.startsWith("# Trigger"));
 });

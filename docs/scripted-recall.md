@@ -20,6 +20,13 @@ The companion linter checks whether the impression index is structurally usable:
 deja-vu-lint-memory
 ```
 
+The linter also warns about low-quality cue routes that make future recall more expensive:
+
+- too few or too many keywords
+- duplicate keywords inside one record
+- too many generic keywords
+- duplicate keyword sets across records
+
 ## Inputs
 
 The script reads:

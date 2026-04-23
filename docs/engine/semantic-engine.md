@@ -20,6 +20,8 @@ The engine provides:
 - threshold gating
 - scoring and ranking
 - in-memory demo adapters
+- gist-first default summaries
+- Markdown and paragraph boundary-aware default chunking
 
 ## What it does not do
 
