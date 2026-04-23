@@ -8,7 +8,7 @@
 | `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; package version metadata now matches the 0.3.1 release. |
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
-| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; overview now includes cue quality control, gist summaries, and boundary-aware chunks. |
+| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; GitHub-facing opening now emphasizes agent context loss, no database/vector dependency, and before/after value. |
 | `CHANGELOG.md` | 編碼正常（已檢查） | Updated in UTF-8; now includes the 0.3.1 recall-quality patch release notes. |
 | `llms.txt` | 編碼正常（已檢查） | Updated in UTF-8; AI-readable index now includes cue quality linting, gist summaries, and boundary-aware chunking. |
 | `docs/architecture.md` | 編碼正常（已檢查） | Rewritten in UTF-8; architecture doc now describes the engine as the optional layer inside a protocol-first product. |

@@ -1,22 +1,36 @@
 # Deja Vu
 
-**A cue-first memory protocol for AI agents**
+**Stop AI agents from forgetting project context without adding a database, vector store, or memory service.**
 
-Deja Vu is a lightweight memory protocol built around one loop:
+Deja Vu is an AI agent memory protocol for teams that want durable project context in ordinary repo files.
+
+Most agent memory tools start by storing more text. Deja Vu starts by asking a cheaper question: does this task feel familiar enough to justify loading memory at all?
+
+```text
+before: agent reads too much, forgets why decisions were made, or carries noisy transcript history
+after:  agent scans tiny cues, loads only relevant memory, and writes back durable project knowledge
+```
+
+The core loop is intentionally small:
 
 ```text
 task cue -> familiarity score -> minimal recall -> durable writeback
 ```
 
-The protocol is packaged as three project-local assets:
+It is packaged as three project-local assets:
 
 - rules
 - workflow
 - tiny memory files
 
-The goal is not to give every agent a heavy runtime. The goal is to give any agent a repeatable discipline for spending almost no tokens until the task proves that deeper memory is useful.
+No server. No hidden state. No required npm package. The base protocol works with Markdown and JSONL files that live beside the code.
 
-The current patch line also emphasizes memory quality control: compact cue linting, gist-first summaries, and boundary-aware chunks keep recall routes small instead of merely adding more stored text.
+Use Deja Vu when you want:
+
+- project memory that survives a new chat or agent session
+- low-token recall before planning, coding, or answering
+- durable decisions, preferences, open loops, and architecture intent in plain files
+- an optional TypeScript semantic engine only when the project outgrows the file-first protocol
 
 ## What Deja Vu Is
 
