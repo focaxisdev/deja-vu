@@ -16,6 +16,27 @@ const rootPath = resolve(process.cwd(), memoryRoot);
 const impressionsPath = resolve(rootPath, "impressions.jsonl");
 const diagnostics = [];
 const seenIds = new Set();
+const keywordSignatures = new Map();
+const genericKeywords = new Set([
+  "about",
+  "agent",
+  "change",
+  "context",
+  "data",
+  "detail",
+  "file",
+  "general",
+  "info",
+  "memory",
+  "note",
+  "project",
+  "record",
+  "summary",
+  "task",
+  "thing",
+  "update",
+  "work",
+]);
 
 function addDiagnostic(level, message, details = {}) {
   diagnostics.push({ level, message, ...details });
@@ -23,6 +44,10 @@ function addDiagnostic(level, message, details = {}) {
 
 function isStringArray(value) {
   return Array.isArray(value) && value.every((item) => typeof item === "string" && item.length > 0);
+}
+
+function normalizedKeywords(keywords) {
+  return keywords.map((keyword) => keyword.trim().toLowerCase()).filter(Boolean);
 }
 
 if (!existsSync(impressionsPath)) {
@@ -57,6 +82,60 @@ if (!existsSync(impressionsPath)) {
 
     if (!isStringArray(record.keywords)) {
       addDiagnostic("error", "keywords must be a non-empty string array", { path: impressionsPath, line: lineNumber });
+    } else {
+      const keywords = normalizedKeywords(record.keywords);
+      const uniqueKeywords = new Set(keywords);
+
+      if (keywords.length < 3) {
+        addDiagnostic("warning", "keywords should include at least 3 cue terms", {
+          path: impressionsPath,
+          line: lineNumber,
+          id: record.id,
+        });
+      }
+
+      if (keywords.length > 12) {
+        addDiagnostic("warning", "keywords should stay at or below 12 cue terms", {
+          path: impressionsPath,
+          line: lineNumber,
+          id: record.id,
+          count: keywords.length,
+        });
+      }
+
+      if (uniqueKeywords.size !== keywords.length) {
+        addDiagnostic("warning", "keywords contain duplicate cue terms", {
+          path: impressionsPath,
+          line: lineNumber,
+          id: record.id,
+        });
+      }
+
+      const genericMatches = keywords.filter((keyword) => genericKeywords.has(keyword));
+      if (genericMatches.length >= 3) {
+        addDiagnostic("warning", "keywords rely on too many generic cue terms", {
+          path: impressionsPath,
+          line: lineNumber,
+          id: record.id,
+          keywords: genericMatches,
+        });
+      }
+
+      const signature = [...uniqueKeywords].sort().join("|");
+      if (signature) {
+        const previous = keywordSignatures.get(signature);
+        if (previous) {
+          addDiagnostic("warning", "duplicate keyword set across impression records", {
+            path: impressionsPath,
+            line: lineNumber,
+            id: record.id,
+            duplicate_of: previous.id,
+            duplicate_line: previous.line,
+          });
+        } else {
+          keywordSignatures.set(signature, { id: record.id, line: lineNumber });
+        }
+      }
     }
 
     if (record.aliases !== undefined && !isStringArray(record.aliases)) {

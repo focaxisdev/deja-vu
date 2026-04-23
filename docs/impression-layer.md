@@ -77,6 +77,7 @@ Default keyword discipline:
 - prefer nouns, feature names, decision names, and project-specific phrases
 - avoid full sentences
 - use `aliases` only for stable alternate names
+- run the memory linter to catch sparse, oversized, generic, duplicate, or repeated cue sets
 
 ## Retention Behavior
 

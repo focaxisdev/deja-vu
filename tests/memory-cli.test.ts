@@ -71,6 +71,50 @@ test("lint CLI validates impression records and linked paths", () => {
   assert.equal(result.error_count, 0);
 });
 
+test("lint CLI warns about low-quality impression cues", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-lint-cues-"));
+  const memory = join(project, "memory");
+  mkdirSync(memory);
+  writeFileSync(join(memory, "summary.md"), "# Summary\n", "utf8");
+  writeFileSync(join(memory, "decision.md"), "# Decision\n", "utf8");
+  writeFileSync(
+    join(memory, "impressions.jsonl"),
+    [
+      JSON.stringify({
+        schema_version: 1,
+        id: "summary",
+        scope: "project:test",
+        title: "Summary",
+        keywords: ["project", "memory", "summary", "project"],
+        record_path: "memory/summary.md",
+        updated: "2026-04-21",
+        status: "active",
+      }),
+      JSON.stringify({
+        schema_version: 1,
+        id: "decision",
+        scope: "project:test",
+        title: "Decision",
+        keywords: ["summary", "memory", "project"],
+        record_path: "memory/decision.md",
+        updated: "2026-04-21",
+        status: "active",
+      }),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = runJson(lintScript, [], project);
+  const messages = result.diagnostics.map((item: { message: string }) => item.message);
+
+  assert.equal(result.ok, true);
+  assert.equal(result.error_count, 0);
+  assert.ok(messages.includes("keywords contain duplicate cue terms"));
+  assert.ok(messages.includes("keywords rely on too many generic cue terms"));
+  assert.ok(messages.includes("duplicate keyword set across impression records"));
+});
+
 test("package metadata exposes memory CLI binaries", () => {
   const result = JSON.parse(execSync("npm pack --dry-run --json", { cwd: root, encoding: "utf8" }));
   const files = new Set(result[0].files.map((file: { path: string }) => file.path));

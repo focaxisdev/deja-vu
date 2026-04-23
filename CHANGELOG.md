@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2026-04-23
+
+- Added impression cue quality warnings to `deja-vu-lint-memory` for sparse, oversized, duplicate, generic, and repeated keyword sets.
+- Updated the default summary generator to preserve decision, rationale, and trigger gist cues instead of only truncating source content.
+- Updated the default chunker to preserve Markdown heading and paragraph boundaries before falling back to hard splitting.
+- Added source tests for cue lint warnings, gist summaries, and boundary-aware chunking.
+- Updated package metadata for the 0.3.1 patch release.
+
 ## [0.3.0] - 2026-04-22
 
 - Repositioned Deja Vu as a cue-first memory protocol centered on `task cue -> familiarity score -> minimal recall -> durable writeback`.

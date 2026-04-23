@@ -16,6 +16,8 @@ The protocol is packaged as three project-local assets:
 
 The goal is not to give every agent a heavy runtime. The goal is to give any agent a repeatable discipline for spending almost no tokens until the task proves that deeper memory is useful.
 
+The current patch line also emphasizes memory quality control: compact cue linting, gist-first summaries, and boundary-aware chunks keep recall routes small instead of merely adding more stored text.
+
 ## What Deja Vu Is
 
 Deja Vu defines a shared memory behavior for agents working inside one project.
@@ -86,6 +88,7 @@ The canonical layout and field rules are specified in [docs/storage-markdown.md]
 - Use a single-project scope only in MVP: `project:<project-id>`.
 - Recall before substantial work, but follow a strict recall budget.
 - Prefer scripted impression scans first; open summary or detailed records only when needed.
+- Keep impression cues sparse, specific, and linted so the first recall step stays cheap.
 - Write back only durable memory:
   - decisions
   - architecture intent
@@ -163,6 +166,8 @@ The public TypeScript exports remain intact for hosts that want semantic recall.
 
 `scanImpressions()` performs token-only familiarity scanning and does not load summaries or chunks.
 
+The default engine helpers preserve low-token recall quality by generating decision/rationale/trigger summaries and by chunking Markdown or paragraph boundaries before falling back to character splits.
+
 ## Examples
 
 - Protocol-first example: [examples/protocol-project](./examples/protocol-project)
@@ -209,4 +214,5 @@ npm run lint:memory
 - [docs/scripted-recall.md](./docs/scripted-recall.md)
 - [docs/bootstrap-instructions.md](./docs/bootstrap-instructions.md)
 - [docs/project-rules-template.md](./docs/project-rules-template.md)
+- [docs/release-v0.3.1.md](./docs/release-v0.3.1.md)
 - [llms.txt](./llms.txt)

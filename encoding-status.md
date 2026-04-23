@@ -4,13 +4,13 @@
 | --- | --- | --- |
 | `encoding-status.md` | 編碼正常（新建，UTF-8） | Project-local registry created by agent. |
 | `.gitignore` | 編碼正常（新建，UTF-8） | New text file. |
-| `package.json` | 編碼正常（已檢查） | Rewritten in UTF-8; version bumped to 0.3.0 and package description now uses cue-first positioning. |
-| `package-lock.json` | 編碼正常（已檢查） | Rewritten in UTF-8; package version metadata now matches the 0.3.0 release. |
+| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; version bumped to 0.3.1 with cue-quality package description and keywords. |
+| `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; package version metadata now matches the 0.3.1 release. |
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
-| `README.md` | 編碼正常（已檢查） | Rewritten in UTF-8; repo entrypoint now centers cue-first recall, minimum memory files, and recall budget. |
-| `CHANGELOG.md` | 編碼正常（已檢查） | Rewritten in UTF-8; now includes the 0.3.0 cue-first protocol release notes. |
-| `llms.txt` | 編碼正常（已檢查） | Rewritten in UTF-8; AI-readable index now points to cue-first recall and recall budget concepts. |
+| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; overview now includes cue quality control, gist summaries, and boundary-aware chunks. |
+| `CHANGELOG.md` | 編碼正常（已檢查） | Updated in UTF-8; now includes the 0.3.1 recall-quality patch release notes. |
+| `llms.txt` | 編碼正常（已檢查） | Updated in UTF-8; AI-readable index now includes cue quality linting, gist summaries, and boundary-aware chunking. |
 | `docs/architecture.md` | 編碼正常（已檢查） | Rewritten in UTF-8; architecture doc now describes the engine as the optional layer inside a protocol-first product. |
 | `docs/agent-handshake.md` | 編碼正常（已檢查） | Rewritten in UTF-8; handshake now starts from cue-first adoption and recall-budget discipline. |
 | `docs/project-rules-template.md` | 編碼正常（已檢查） | Rewritten in UTF-8; points to canonical AGENTS and memory templates. |
@@ -20,7 +20,7 @@
 | `docs/protocol.md` | 編碼正常（已檢查） | Rewritten in UTF-8; protocol now defines cue-first v0.3, minimum artifacts, and recall budget. |
 | `docs/workflow.md` | 編碼正常（已檢查） | Rewritten in UTF-8; workflow now uses cue-first recall budget and lower-priority event writeback. |
 | `docs/storage-markdown.md` | 編碼正常（已檢查） | Rewritten in UTF-8; storage contract now separates required, recommended, and optional layouts. |
-| `docs/engine/semantic-engine.md` | 編碼正常（新建，UTF-8） | New optional engine overview. |
+| `docs/engine/semantic-engine.md` | 編碼正常（已檢查） | Updated in UTF-8; engine overview now mentions gist-first summaries and boundary-aware chunking. |
 | `docs/engine/protocol-to-engine.md` | 編碼正常（新建，UTF-8） | New mapping from protocol workflow to semantic engine usage. |
 | `docs/templates/AGENTS.template.md` | 編碼正常（已檢查） | Rewritten in UTF-8; template now uses protocol v0.3, recall budget, and optional index/events rules. |
 | `docs/templates/memory/index.md` | 編碼正常（新建，UTF-8） | New memory index template. |
@@ -35,8 +35,8 @@
 | `src/utils/id.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/utils/math.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/utils/text.ts` | 編碼正常（新建，UTF-8） | New text file. |
-| `src/memory/default-chunker.ts` | 編碼正常（新建，UTF-8） | New text file. |
-| `src/memory/default-summary-generator.ts` | 編碼正常（新建，UTF-8） | New text file. |
+| `src/memory/default-chunker.ts` | 編碼正常（已檢查） | Updated in UTF-8; default chunking now preserves Markdown and paragraph boundaries before hard splitting. |
+| `src/memory/default-summary-generator.ts` | 編碼正常（已檢查） | Updated in UTF-8; default summaries now preserve decision/rationale/trigger gist cues. |
 | `src/scoring/hybrid-scoring-strategy.ts` | 編碼正常（新建，UTF-8） | New text file. |
 | `src/plugins/mock-embedding-provider.ts` | 編碼正常（新建，UTF-8） | Updated in UTF-8; hybrid token and trigram demo embeddings. |
 | `src/plugins/create-in-memory-engine.ts` | 編碼正常（新建，UTF-8） | New text file. |
@@ -58,15 +58,16 @@
 | `examples/protocol-project/memory/context/project-context.md` | 編碼正常（新建，UTF-8） | New example project context. |
 | `examples/protocol-project/memory/decisions/protocol-first-positioning.md` | 編碼正常（新建，UTF-8） | New example decision record. |
 | `examples/protocol-project/memory/open-loops/add-engine-later.md` | 編碼正常（新建，UTF-8） | New example open-loop record. |
-| `tests/semantic-recall-engine.test.ts` | 編碼正常（已檢查） | Checked in UTF-8; source tests now run through the updated Node 24-compatible test script. |
-| `docs/impression-layer.md` | 編碼正常（已檢查） | Rewritten in UTF-8; impression layer now anchors cue-first token spending and keyword discipline. |
-| `docs/scripted-recall.md` | 編碼正常（已檢查） | Rewritten in UTF-8; script contract now requires only summary, impressions, and scanner for bootstrap. |
+| `tests/semantic-recall-engine.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; source tests now cover gist summaries and boundary-aware chunking. |
+| `docs/impression-layer.md` | 編碼正常（已檢查） | Updated in UTF-8; keyword discipline now points to linter checks for low-quality cue routes. |
+| `docs/scripted-recall.md` | 編碼正常（已檢查） | Updated in UTF-8; linter docs now describe low-quality cue warnings. |
 | `docs/release-v0.2.1.md` | 編碼正常（新建，UTF-8） | New release note for scripted impression-first recall. |
 | `docs/release-v0.3.0.md` | 編碼正常（新建，UTF-8） | New release note for cue-first protocol and recall budget release. |
+| `docs/release-v0.3.1.md` | 編碼正常（新建，UTF-8） | New release note for cue quality, gist summaries, and boundary-aware chunking. |
 | `docs/templates/memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New impression index template. |
 | `docs/templates/memory/events/YYYY-MM.md` | 編碼正常（新建，UTF-8） | New event ledger template. |
 | `scripts/dejavu-scan-memory.mjs` | 編碼正常（新建，UTF-8） | New default memory impression scanner. |
 | `examples/protocol-project/memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New example impression index. |
 | `examples/protocol-project/memory/events/2026-04.md` | 編碼正常（新建，UTF-8） | New example event ledger. |
-| `scripts/dejavu-lint-memory.mjs` | 編碼正常（新建，UTF-8） | New memory impression index linter. |
-| `tests/memory-cli.test.ts` | 編碼正常（新建，UTF-8） | New CLI and package smoke tests. |
+| `scripts/dejavu-lint-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; linter now warns on low-quality impression cues and duplicate keyword sets. |
+| `tests/memory-cli.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; CLI tests now cover low-quality cue warnings. |

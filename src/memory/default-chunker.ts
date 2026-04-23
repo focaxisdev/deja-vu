@@ -16,6 +16,66 @@ function guessChunkType(text: string, fallback: MemoryChunkType): MemoryChunkTyp
   return fallback;
 }
 
+function splitByBoundaries(text: string): string[] {
+  const blocks = text
+    .split(/(?=^#{1,6}\s)|\n\s*\n/gm)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  return blocks.length > 0 ? blocks : [text];
+}
+
+function splitHard(text: string, maxCharacters: number, overlapCharacters: number): string[] {
+  const chunks: string[] = [];
+  let cursor = 0;
+
+  while (cursor < text.length) {
+    const end = Math.min(text.length, cursor + maxCharacters);
+    const slice = text.slice(cursor, end).trim();
+    if (slice) {
+      chunks.push(slice);
+    }
+    if (end === text.length) {
+      break;
+    }
+    cursor = Math.max(end - overlapCharacters, cursor + 1);
+  }
+
+  return chunks;
+}
+
+function packBoundaryChunks(blocks: string[], maxCharacters: number, overlapCharacters: number): string[] {
+  const chunks: string[] = [];
+  let current = "";
+
+  for (const block of blocks) {
+    if (block.length > maxCharacters) {
+      if (current) {
+        chunks.push(current);
+        current = "";
+      }
+      chunks.push(...splitHard(block, maxCharacters, overlapCharacters));
+      continue;
+    }
+
+    const candidate = current ? `${current}\n\n${block}` : block;
+    if (candidate.length <= maxCharacters) {
+      current = candidate;
+    } else {
+      if (current) {
+        chunks.push(current);
+      }
+      current = block;
+    }
+  }
+
+  if (current) {
+    chunks.push(current);
+  }
+
+  return chunks;
+}
+
 export class DefaultChunker implements Chunker {
   chunk(input: AddMemoryInput): MemoryChunkSeed[] {
     const maxCharacters = input.chunkStrategy?.maxCharacters ?? DEFAULT_MAX;
@@ -27,27 +87,10 @@ export class DefaultChunker implements Chunker {
       return [];
     }
 
-    const chunks: MemoryChunkSeed[] = [];
-    let cursor = 0;
-    let index = 0;
-
-    while (cursor < text.length) {
-      const end = Math.min(text.length, cursor + maxCharacters);
-      const slice = text.slice(cursor, end).trim();
-      if (slice) {
-        chunks.push({
-          type: guessChunkType(slice, fallbackType),
-          content: slice,
-          importance: Math.max(0.1, (input.importance ?? 0.5) - index * 0.03),
-        });
-      }
-      if (end === text.length) {
-        break;
-      }
-      cursor = Math.max(end - overlapCharacters, cursor + 1);
-      index += 1;
-    }
-
-    return chunks;
+    return packBoundaryChunks(splitByBoundaries(text), maxCharacters, overlapCharacters).map((content, index) => ({
+      type: guessChunkType(content, fallbackType),
+      content,
+      importance: Math.max(0.1, (input.importance ?? 0.5) - index * 0.03),
+    }));
   }
 }

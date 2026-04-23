@@ -7,6 +7,7 @@ Deja Vu helps agents preserve useful project memory through:
 - explicit project rules
 - a repeatable cue-scan, minimal-recall, and writeback workflow
 - tiny Markdown and JSONL memory files inside the repository
+- cue quality checks that keep the first recall step sparse and specific
 
 The minimum adoption path does not require npm, embeddings, vector search, or a dedicated memory service.
 
@@ -36,6 +37,9 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 - project-scoped continuity
 - recall before substantial work
 - impression-first scripted recall
+- cue quality linting
+- gist-first summaries
+- boundary-aware chunking
 - recall budget
 - selective writeback
 - event ledger continuity
