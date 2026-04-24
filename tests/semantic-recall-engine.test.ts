@@ -43,6 +43,10 @@ Task: keep the API small and extensible.
   assert.equal(result.familiarityLevel, "strong");
   assert.ok(result.summaryIfLoaded);
   assert.ok(result.chunksIfLoaded.length > 0);
+  assert.equal(result.budget.impressionScan, 1);
+  assert.equal(result.budget.summariesLoaded, 1);
+  assert.equal(result.budget.detailRecordsLoaded, 1);
+  assert.ok(result.budget.whyLoaded.includes("strong familiarity loaded the full summary"));
 });
 
 test("does not load memory for low familiarity matches", async () => {
@@ -60,6 +64,8 @@ test("does not load memory for low familiarity matches", async () => {
   assert.equal(result.familiarityLevel, "none");
   assert.equal(result.matched, false);
   assert.equal(result.summaryIfLoaded, null);
+  assert.equal(result.budget.summariesLoaded, 0);
+  assert.deepEqual(result.budget.whyLoaded, ["cue scan found no match; no memory loaded"]);
 });
 
 test("scans impressions without loading deeper memory", async () => {
@@ -82,6 +88,8 @@ test("scans impressions without loading deeper memory", async () => {
   assert.ok(scan.topMatch);
   assert.equal(scan.topMatch.title, "Scripted impression recall");
   assert.ok(scan.topMatch.impressionTokens.includes("impression"));
+  assert.equal(scan.budget.impressionScan, 1);
+  assert.equal(scan.budget.summariesLoaded, 0);
 });
 
 test("impression scans do not call the embedding provider", async () => {

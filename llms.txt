@@ -1,6 +1,6 @@
 # Deja Vu
 
-> A cue-first memory protocol for AI agents.
+> Repo-local Markdown memory for AI coding agents.
 
 Deja Vu helps agents preserve useful project memory through:
 
@@ -8,6 +8,7 @@ Deja Vu helps agents preserve useful project memory through:
 - a repeatable cue-scan, minimal-recall, and writeback workflow
 - tiny Markdown and JSONL memory files inside the repository
 - cue quality checks that keep the first recall step sparse and specific
+- recall budget and outcome feedback that show whether memory helped, missed, or overloaded the task
 
 The minimum adoption path does not require npm, embeddings, vector search, or a dedicated memory service.
 
@@ -41,6 +42,7 @@ The minimum adoption path does not require npm, embeddings, vector search, or a 
 - gist-first summaries
 - boundary-aware chunking
 - recall budget
+- recall outcome feedback
 - selective writeback
 - event ledger continuity
 - Markdown memory

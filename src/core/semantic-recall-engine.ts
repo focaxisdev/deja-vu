@@ -8,6 +8,7 @@ import { HybridScoringStrategy } from "../scoring/hybrid-scoring-strategy.js";
 import type {
   AddMemoryInput,
   FamiliarityRecord,
+  RecallBudgetReport,
   ImpressionScanResult,
   MemoryChunk,
   RecallInput,
@@ -102,6 +103,10 @@ export class SemanticRecallEngine {
     const scan = await this.scanImpressions(normalized);
     const topMatch = scan.topMatch;
     const familiarityLevel = scan.familiarityLevel;
+    const budget: RecallBudgetReport = {
+      ...scan.budget,
+      whyLoaded: [...scan.budget.whyLoaded],
+    };
 
     let summaryIfLoaded: SummaryRecord | null = null;
     let chunksIfLoaded: MemoryChunk[] = [];
@@ -110,6 +115,10 @@ export class SemanticRecallEngine {
       const fullSummary = await this.summaryLayer.get(topMatch.id);
       if (familiarityLevel === "strong") {
         summaryIfLoaded = fullSummary;
+        if (fullSummary) {
+          budget.summariesLoaded = 1;
+          budget.whyLoaded.push("strong familiarity loaded the full summary");
+        }
       } else if (fullSummary) {
         summaryIfLoaded = {
           ...fullSummary,
@@ -118,6 +127,8 @@ export class SemanticRecallEngine {
           architectureOrIntent: fullSummary.architectureOrIntent.slice(0, 120),
           recentUpdates: fullSummary.recentUpdates.slice(0, 1),
         };
+        budget.summariesLoaded = 1;
+        budget.whyLoaded.push("weak familiarity loaded a clipped summary");
       }
 
       if (familiarityLevel === "strong" && normalized.loadChunks) {
@@ -128,6 +139,11 @@ export class SemanticRecallEngine {
         chunksIfLoaded = chunkHits
           .map((hit) => chunkMap.get(hit.id))
           .filter((chunk): chunk is MemoryChunk => chunk !== undefined);
+        budget.chunksLoaded = chunksIfLoaded.length;
+        budget.detailRecordsLoaded = chunksIfLoaded.length > 0 ? 1 : 0;
+        if (chunksIfLoaded.length > 0) {
+          budget.whyLoaded.push("loadChunks requested detail chunks for the strong match");
+        }
       }
 
       await this.config.storage.touchMemory(topMatch.id, isoNow());
@@ -141,6 +157,7 @@ export class SemanticRecallEngine {
       familiarityLevel,
       summaryIfLoaded,
       chunksIfLoaded,
+      budget,
     };
   }
 
@@ -171,6 +188,16 @@ export class SemanticRecallEngine {
       topMatch,
       score: topMatch?.score ?? 0,
       familiarityLevel,
+      budget: {
+        impressionScan: 1,
+        summariesLoaded: 0,
+        chunksLoaded: 0,
+        detailRecordsLoaded: 0,
+        whyLoaded:
+          familiarityLevel === "none"
+            ? ["cue scan found no match; no memory loaded"]
+            : [`cue scan found a ${familiarityLevel} familiarity match`],
+      },
     };
   }
 

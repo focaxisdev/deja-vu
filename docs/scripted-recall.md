@@ -26,6 +26,8 @@ The linter also warns about low-quality cue routes that make future recall more 
 - duplicate keywords inside one record
 - too many generic keywords
 - duplicate keyword sets across records
+- invalid recall feedback outcomes
+- invalid weight, status, scope, date, or unsafe record paths
 
 ## Inputs
 
@@ -60,6 +62,16 @@ The script prints JSON:
       "matched_keywords": ["protocol", "memory"]
     }
   ],
+  "budget": {
+    "impression_scan": 1,
+    "summaries_loaded": 0,
+    "detail_records_loaded": 0,
+    "why_loaded": ["cue scan found a weak familiarity match"]
+  },
+  "feedback_hint": {
+    "outcomes": ["helpful", "irrelevant", "missed", "overloaded"],
+    "write_to": "memory/recall-feedback.jsonl"
+  },
   "diagnostics": []
 }
 ```
@@ -70,7 +82,9 @@ The script prints JSON:
 2. Treat `none` as permission to avoid detailed memory reads.
 3. Treat `weak` as a reason to read `memory/summary.md` and maybe one linked record.
 4. Treat `strong` as a reason to open the linked record before planning.
-5. Continue to apply normal writeback and compaction rules after work completes.
+5. Watch `budget` before loading more memory.
+6. Record recall feedback only when the result should tune future cue quality.
+7. Continue to apply normal writeback and compaction rules after work completes.
 
 ## Bootstrap Rule
 
@@ -78,6 +92,7 @@ When installing Deja Vu into a project, copy or create:
 
 - `memory/impressions.jsonl`
 - `memory/summary.md`
+- `memory/recall-feedback.jsonl`
 - `scripts/dejavu-scan-memory.mjs`
 
 The script is intentionally small. Hosts may replace it with a faster native implementation, but the input and output contract should stay stable.
@@ -89,3 +104,22 @@ Run the linter after bootstrap and after memory file migrations:
 ```bash
 node scripts/dejavu-lint-memory.mjs
 ```
+
+## Recall Feedback
+
+Use `memory/recall-feedback.jsonl` as a small reward signal for the memory system.
+
+Each line is one JSON object:
+
+```json
+{"schema_version":1,"query":"release feedback memory","matched_id":"decision-protocol-first","outcome":"helpful","created":"2026-04-24T12:00:00Z","note":"The decision record prevented a duplicate engine-first proposal."}
+```
+
+Allowed outcomes:
+
+- `helpful`
+- `irrelevant`
+- `missed`
+- `overloaded`
+
+Do not log every scan. Add feedback only when it should change future keywords, weights, summaries, thresholds, or supersession.

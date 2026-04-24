@@ -1,4 +1,4 @@
-# Deja Vu Protocol v0.3
+# Deja Vu Protocol v0.4
 
 Deja Vu is a cue-first memory protocol for AI agents.
 
@@ -11,6 +11,7 @@ Enable any agent to maintain useful project memory with extremely low per-conver
 - project rules
 - a repeatable workflow
 - project-local plain text memory cues
+- recall feedback that tells the project what was useful, noisy, missed, or overloaded
 
 The protocol must work without a custom runtime, package install, embedding model, or vector database.
 
@@ -62,6 +63,7 @@ Recommended artifacts:
 
 - `memory/decisions/`
 - `memory/open-loops/`
+- `memory/recall-feedback.jsonl`
 
 Optional artifacts:
 
@@ -81,6 +83,7 @@ Before substantial planning, coding, or answering:
 4. If the scan is `weak`, read `memory/summary.md`.
 5. If the scan is `strong`, open only the detailed records needed for the current task.
 6. If no script is available, fall back to `memory/summary.md` and only then to `memory/index.md` when present.
+7. Track the recall budget used for the task: impression scan, summary count, detailed records, and why anything was loaded.
 
 Default recall budget:
 
@@ -108,7 +111,22 @@ After meaningful work completes:
 5. Update `memory/index.md` when the project uses one.
 6. Update `memory/events/` only when the work should remain discoverable without becoming a durable record.
 
-### 4. Compaction
+### 4. Recall Feedback
+
+When recall quality changes future behavior, append a compact feedback record to `memory/recall-feedback.jsonl`.
+
+Allowed outcomes:
+
+- `helpful`: the loaded memory improved the work
+- `irrelevant`: the loaded memory matched the cue but did not help
+- `missed`: useful memory existed but the scan did not surface it
+- `overloaded`: recall loaded too much detail for the task
+
+Feedback is the reward signal for future memory maintenance. Use it to tune keywords, weights, thresholds, summaries, open loops, or supersession.
+
+Do not log every task. Record feedback only when it should change future recall.
+
+### 5. Compaction
 
 When related memories become repetitive, stale, or too granular:
 

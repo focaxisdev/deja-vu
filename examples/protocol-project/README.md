@@ -8,6 +8,8 @@ This example shows how to adopt Deja Vu without npm or the optional TypeScript e
 - `memory/summary.md`
 - `memory/impressions.jsonl`
 
+- `memory/recall-feedback.jsonl`
+
 ## Optional Scale-Up Files
 
 - `memory/index.md`
@@ -23,6 +25,8 @@ This example shows how to adopt Deja Vu without npm or the optional TypeScript e
 3. Run the impression scan script before substantial work.
 4. Use `memory/summary.md` for weak matches and one to three detailed records for strong matches.
 5. Update detailed memory files only when new durable information appears.
+
+6. Add recall feedback only when a helpful, irrelevant, missed, or overloaded recall should tune future cues.
 
 From this example directory, the repository script can be tested with:
 

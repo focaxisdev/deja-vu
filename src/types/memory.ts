@@ -87,6 +87,15 @@ export interface ScoredCandidate {
 }
 
 export type FamiliarityLevel = "strong" | "weak" | "none";
+export type RecallOutcome = "helpful" | "irrelevant" | "missed" | "overloaded";
+
+export interface RecallBudgetReport {
+  impressionScan: 1;
+  summariesLoaded: number;
+  chunksLoaded: number;
+  detailRecordsLoaded: number;
+  whyLoaded: string[];
+}
 
 export interface ImpressionScanResult {
   matched: boolean;
@@ -94,6 +103,7 @@ export interface ImpressionScanResult {
   topMatch: ScoredCandidate | null;
   score: number;
   familiarityLevel: FamiliarityLevel;
+  budget: RecallBudgetReport;
 }
 
 export interface RecallInput {
@@ -111,4 +121,5 @@ export interface RecallResult {
   familiarityLevel: FamiliarityLevel;
   summaryIfLoaded: SummaryRecord | null;
   chunksIfLoaded: MemoryChunk[];
+  budget: RecallBudgetReport;
 }

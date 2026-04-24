@@ -13,6 +13,17 @@ function runJson(script: string, args: string[], cwd: string) {
   return JSON.parse(execFileSync(process.execPath, [script, ...args], { cwd, encoding: "utf8" }));
 }
 
+function runJsonAllowFailure(script: string, args: string[], cwd: string) {
+  try {
+    return runJson(script, args, cwd);
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "stdout" in error) {
+      return JSON.parse(String((error as { stdout: string }).stdout));
+    }
+    throw error;
+  }
+}
+
 test("scan CLI reports unmatched when overlap stays below threshold", () => {
   const project = mkdtempSync(join(tmpdir(), "dejavu-scan-"));
   const memory = join(project, "memory");
@@ -40,6 +51,9 @@ test("scan CLI reports unmatched when overlap stays below threshold", () => {
   assert.equal(result.level, "none");
   assert.equal(result.matched, false);
   assert.equal(result.matches.length, 1);
+  assert.equal(result.budget.impression_scan, 1);
+  assert.equal(result.budget.summaries_loaded, 0);
+  assert.deepEqual(result.feedback_hint.outcomes, ["helpful", "irrelevant", "missed", "overloaded"]);
 });
 
 test("lint CLI validates impression records and linked paths", () => {
@@ -113,6 +127,59 @@ test("lint CLI warns about low-quality impression cues", () => {
   assert.ok(messages.includes("keywords contain duplicate cue terms"));
   assert.ok(messages.includes("keywords rely on too many generic cue terms"));
   assert.ok(messages.includes("duplicate keyword set across impression records"));
+});
+
+test("lint CLI validates recall feedback records", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-feedback-"));
+  const memory = join(project, "memory");
+  mkdirSync(memory);
+  writeFileSync(join(memory, "summary.md"), "# Summary\n", "utf8");
+  writeFileSync(
+    join(memory, "impressions.jsonl"),
+    [
+      JSON.stringify({
+        schema_version: 1,
+        id: "summary",
+        scope: "project:test",
+        title: "Summary",
+        keywords: ["summary", "recall", "feedback"],
+        record_path: "memory/summary.md",
+        updated: "2026-04-21",
+        status: "active",
+        weight: 0.5,
+      }),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+  writeFileSync(
+    join(memory, "recall-feedback.jsonl"),
+    [
+      JSON.stringify({
+        schema_version: 1,
+        query: "summary recall",
+        matched_id: "summary",
+        outcome: "helpful",
+        created: "2026-04-24T12:00:00Z",
+      }),
+      JSON.stringify({
+        schema_version: 1,
+        query: "noisy recall",
+        outcome: "confusing",
+        created: "today",
+      }),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = runJsonAllowFailure(lintScript, [], project);
+  const messages = result.diagnostics.map((item: { message: string }) => item.message);
+
+  assert.equal(result.ok, false);
+  assert.equal(result.error_count, 1);
+  assert.ok(messages.includes("feedback outcome must be helpful, irrelevant, missed, or overloaded"));
+  assert.ok(messages.includes("feedback created should use YYYY-MM-DD or ISO timestamp"));
 });
 
 test("package metadata exposes memory CLI binaries", () => {

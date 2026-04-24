@@ -1,15 +1,30 @@
 # Deja Vu
 
-**Stop AI agents from forgetting project context without adding a database, vector store, or memory service.**
+**Persistent project memory for AI coding agents, stored in your repo as Markdown and JSONL.**
 
-Deja Vu is an AI agent memory protocol for teams that want durable project context in ordinary repo files.
+Deja Vu helps Codex, Claude Code, Cursor, Windsurf, and other coding agents remember project decisions, architecture context, open loops, and team preferences across new chats.
 
-Most agent memory tools start by storing more text. Deja Vu starts by asking a cheaper question: does this task feel familiar enough to justify loading memory at all?
+It does not require a database, vector store, embedding model, hosted memory service, or npm package.
 
 ```text
-before: agent reads too much, forgets why decisions were made, or carries noisy transcript history
-after:  agent scans tiny cues, loads only relevant memory, and writes back durable project knowledge
+problem: every new agent session forgets why the project works the way it does
+result:  the agent scans tiny repo-local cues, recalls only relevant memory, and writes back durable context
 ```
+
+Start with three files:
+
+- `AGENTS.md`
+- `memory/summary.md`
+- `memory/impressions.jsonl`
+
+Use Deja Vu if your team keeps repeating:
+
+- "We already decided this."
+- "The agent forgot the architecture again."
+- "Do not load the whole repo history into context."
+- "We want memory in git, not in a vendor service."
+
+Most agent memory tools start by storing more text. Deja Vu starts by asking a cheaper question: does this task feel familiar enough to justify loading memory at all?
 
 The core loop is intentionally small:
 
@@ -25,10 +40,13 @@ It is packaged as three project-local assets:
 
 No server. No hidden state. No required npm package. The base protocol works with Markdown and JSONL files that live beside the code.
 
+If you found this on npm: the package is only the optional TypeScript engine and CLI tooling. The main product is the repo-local memory protocol you can copy into any project.
+
 Use Deja Vu when you want:
 
 - project memory that survives a new chat or agent session
 - low-token recall before planning, coding, or answering
+- observable recall budget and recall outcome feedback
 - durable decisions, preferences, open loops, and architecture intent in plain files
 - an optional TypeScript semantic engine only when the project outgrows the file-first protocol
 
@@ -43,10 +61,12 @@ It answers:
 - how memory should be stored in ordinary project files
 - when memory should be updated, compacted, or retired
 
-The minimum viable setup uses two project-local plain text files:
+The minimum viable setup uses two project-local plain text files, with one optional feedback ledger when recall results should change future behavior:
 
 - `memory/summary.md`
 - `memory/impressions.jsonl`
+
+- `memory/recall-feedback.jsonl`
 
 No npm package, embeddings, vector search, or database is required.
 
@@ -78,7 +98,9 @@ Deja Vu follows a cue-first lifecycle:
 3. Load the project summary when the scan finds weak familiarity.
 4. Load one to three detailed records only when the scan finds strong familiarity or the task requires depth.
 5. Write back only durable outcomes that should change a future agent's behavior.
-6. Compact or supersede memories when detail becomes repetitive or stale.
+6. Record whether recall was helpful, irrelevant, missed, or overloaded when that feedback should tune future memory.
+
+7. Compact or supersede memories when detail becomes repetitive or stale.
 
 This keeps memory project-local, readable, and easy to maintain across new conversations.
 
@@ -88,6 +110,7 @@ This keeps memory project-local, readable, and easy to maintain across new conve
 memory/
   summary.md
   impressions.jsonl
+  recall-feedback.jsonl
   decisions/
   open-loops/
   events/
@@ -229,4 +252,5 @@ npm run lint:memory
 - [docs/bootstrap-instructions.md](./docs/bootstrap-instructions.md)
 - [docs/project-rules-template.md](./docs/project-rules-template.md)
 - [docs/release-v0.3.1.md](./docs/release-v0.3.1.md)
+- [docs/release-v0.4.0.md](./docs/release-v0.4.0.md)
 - [llms.txt](./llms.txt)

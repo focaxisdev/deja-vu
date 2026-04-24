@@ -95,6 +95,15 @@ for (const [index, line] of readFileSync(memoryPath, "utf8").split(/\r?\n/).entr
 matches.sort((a, b) => b.score - a.score);
 const topScore = matches[0]?.score ?? 0;
 const level = levelFor(topScore);
+const budget = {
+  impression_scan: 1,
+  summaries_loaded: 0,
+  detail_records_loaded: 0,
+  why_loaded:
+    level === "none"
+      ? ["cue scan found no match; no memory loaded"]
+      : [`cue scan found a ${level} familiarity match`],
+};
 
 console.log(
   JSON.stringify(
@@ -103,6 +112,11 @@ console.log(
       level,
       score: topScore,
       matches: matches.slice(0, 5),
+      budget,
+      feedback_hint: {
+        outcomes: ["helpful", "irrelevant", "missed", "overloaded"],
+        write_to: "memory/recall-feedback.jsonl",
+      },
       diagnostics,
     },
     null,

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-04-24
+
+- Reframed the README and package metadata around repo-local Markdown memory for AI coding agents.
+- Added observable recall budget reporting to scripted scans and the TypeScript engine.
+- Added recall feedback as a lightweight reward signal with `helpful`, `irrelevant`, `missed`, and `overloaded` outcomes.
+- Added `memory/recall-feedback.jsonl` templates and example feedback records.
+- Expanded memory linting for feedback records, status values, weights, date formats, scope naming, and unsafe record paths.
+- Updated protocol, workflow, scripted recall, storage, templates, and examples for Deja Vu Protocol v0.4.
+- Updated package metadata for the 0.4.0 release.
+
 ## [0.3.1] - 2026-04-23
 
 - Added impression cue quality warnings to `deja-vu-lint-memory` for sparse, oversized, duplicate, generic, and repeated keyword sets.

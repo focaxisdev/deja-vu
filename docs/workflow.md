@@ -19,6 +19,7 @@ Before substantial planning, coding, or answering:
 3. If the scan level is `weak`, read `memory/summary.md`.
 4. If the scan level is `strong`, read the linked detailed record before planning.
 5. If no script exists, fall back to `memory/summary.md` and then `memory/index.md` when present.
+6. Keep the scan output's budget fields visible while deciding whether to load more memory.
 
 Recall budget:
 
@@ -49,6 +50,7 @@ After meaningful work completes:
 4. update `memory/summary.md` if project understanding changed
 5. update `memory/index.md` if the project uses one
 6. add a short event ledger entry only when the work should remain discoverable without promotion into durable memory
+7. append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future recall
 
 ## Decision Rules
 
@@ -72,6 +74,7 @@ After meaningful work completes:
 - a new durable constraint was discovered
 - a previously open loop changed status
 - a project summary now needs to reflect new truth
+- recall feedback reveals that cue quality, thresholds, or memory weights should change
 
 ### When writeback is forbidden
 
@@ -106,11 +109,12 @@ Read priority:
 Write priority:
 
 1. impression index updates
-2. open-loop status changes
-3. durable decisions
-4. project summary changes
-5. supporting context records
-6. event ledger entries
+2. recall feedback that should change future cue quality
+3. open-loop status changes
+4. durable decisions
+5. project summary changes
+6. supporting context records
+7. event ledger entries
 
 ## Expected Outcome
 

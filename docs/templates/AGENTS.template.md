@@ -2,7 +2,7 @@
 
 ## Protocol identity
 
-- Protocol: Deja Vu Protocol v0.3
+- Protocol: Deja Vu Protocol v0.4
 - Scope: `project:<project-id>`
 - Memory root: `memory/`
 
@@ -17,6 +17,8 @@ Before substantial planning, coding, or answering:
 3. If the result is `weak`, read `memory/summary.md`.
 4. If the result is `strong`, open the linked detailed record.
 5. If the script is missing, fall back to `memory/summary.md` and then `memory/index.md` when present.
+
+6. Keep the scan output's budget fields visible before loading more memory.
 
 Recall budget:
 
@@ -35,6 +37,8 @@ After meaningful work completes:
 4. Update `memory/summary.md` when project understanding changes.
 5. Update `memory/index.md` if the project uses one.
 6. Add a short entry to `memory/events/` only when the work should remain discoverable without becoming durable memory.
+
+7. Append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future memory.
 
 Good writeback candidates:
 

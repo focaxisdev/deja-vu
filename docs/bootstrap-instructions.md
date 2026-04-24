@@ -7,7 +7,7 @@ This document tells an agent how to bootstrap Deja Vu into a project using the p
 Give a project durable memory continuity using only:
 
 - project rules
-- two minimum Markdown memory files
+- minimum Markdown and JSONL memory files
 - the cue-first Deja Vu workflow
 
 ## Trigger conditions
@@ -55,11 +55,13 @@ Create or update:
 - `memory/summary.md`
 - `memory/impressions.jsonl`
 - `scripts/dejavu-scan-memory.mjs`
+- `memory/recall-feedback.jsonl` when feedback should tune future recall
 
 Add only when useful:
 
 - `memory/decisions/`
 - `memory/open-loops/`
+- `memory/recall-feedback.jsonl`
 - `memory/events/`
 - `memory/context/project-context.md`
 - `memory/index.md`

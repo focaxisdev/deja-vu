@@ -18,6 +18,7 @@ These paths are the stable minimum. Agents may add more files when they improve 
 memory/
   summary.md
   impressions.jsonl
+  recall-feedback.jsonl
   decisions/
   open-loops/
 ```
@@ -84,6 +85,33 @@ Each line must be one JSON object with:
 - `keywords`
 - `record_path`
 - `updated`
+
+### `memory/recall-feedback.jsonl`
+
+Purpose:
+
+- record recall outcomes that should tune future memory behavior
+- capture reward signals without logging full transcripts
+- identify helpful, irrelevant, missed, or overloaded recall routes
+
+Each line must be one JSON object with:
+
+- `schema_version`
+- `query`
+- `outcome`
+- `created`
+
+Optional fields:
+
+- `matched_id`
+- `note`
+
+Allowed outcomes:
+
+- `helpful`
+- `irrelevant`
+- `missed`
+- `overloaded`
 
 ### `memory/events/`
 

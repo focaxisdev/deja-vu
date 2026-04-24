@@ -71,3 +71,6 @@
 | `examples/protocol-project/memory/events/2026-04.md` | 編碼正常（新建，UTF-8） | New example event ledger. |
 | `scripts/dejavu-lint-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; linter now warns on low-quality impression cues and duplicate keyword sets. |
 | `tests/memory-cli.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; CLI tests now cover low-quality cue warnings. |
+| `docs/release-v0.4.0.md` | 編碼正常（新建，UTF-8） | New release note for feedback-aware recall budgets and recall outcomes. |
+| `docs/templates/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New recall feedback template. |
+| `examples/protocol-project/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New example recall feedback ledger. |

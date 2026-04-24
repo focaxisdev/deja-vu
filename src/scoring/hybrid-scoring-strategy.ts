@@ -51,12 +51,7 @@ export class HybridScoringStrategy implements ScoringStrategy {
           shortSummary: record.shortSummary,
           impressionTokens: record.impressionTokens,
           ...breakdown,
-          familiarityLevel:
-            breakdown.semanticSimilarity >= 0.85
-              ? "strong"
-              : breakdown.semanticSimilarity >= 0.75
-                ? "weak"
-                : "none",
+          familiarityLevel: "none",
         } as ScoredCandidate;
       })
       .sort((a, b) => b.score - a.score);
