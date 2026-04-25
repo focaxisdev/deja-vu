@@ -13,8 +13,8 @@
     }
   },
   "bin": {
-    "deja-vu-scan-memory": "./scripts/dejavu-scan-memory.mjs",
-    "deja-vu-lint-memory": "./scripts/dejavu-lint-memory.mjs"
+    "deja-vu-scan-memory": "scripts/dejavu-scan-memory.mjs",
+    "deja-vu-lint-memory": "scripts/dejavu-lint-memory.mjs"
   },
   "files": [
     "dist/src",
