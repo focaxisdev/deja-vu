@@ -10,6 +10,8 @@ Give a project durable memory continuity using only:
 - minimum Markdown and JSONL memory files
 - the cue-first Deja Vu workflow
 
+Keep the bootstrap ultra-light. The base product is the protocol, not a required package, service, daemon, vector store, or engine.
+
 ## Trigger conditions
 
 Bootstrap when at least one of these is true:
@@ -49,19 +51,18 @@ Reuse and align existing structures when possible instead of creating a competin
 
 ### 4. Install the minimum protocol artifacts
 
-Create or update:
+Create or update only the minimum first:
 
 - `AGENTS.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
+
+Then add helper artifacts only when they reduce repeated explanation or improve recall quality:
+
 - `scripts/dejavu-scan-memory.mjs`
-- `memory/recall-feedback.jsonl` when feedback should tune future recall
-
-Add only when useful:
-
+- `memory/recall-feedback.jsonl`
 - `memory/decisions/`
 - `memory/open-loops/`
-- `memory/recall-feedback.jsonl`
 - `memory/events/`
 - `memory/context/project-context.md`
 - `memory/index.md`

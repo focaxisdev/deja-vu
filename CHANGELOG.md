@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2026-04-25
+
+- Reaffirmed Deja Vu as an ultra-light protocol-first memory system rather than a required package, service, daemon, vector database, or engine.
+- Updated the README opening around the concrete adoption promise: stop re-explaining the repo to every new coding-agent chat.
+- Added a 2-minute start path centered on `AGENTS.md`, `memory/summary.md`, and `memory/impressions.jsonl`.
+- Clarified that scripts, recall feedback, detailed records, and the TypeScript engine are optional scale-up layers.
+- Added release notes for the 0.4.1 protocol-first activation patch.
+
 ## [0.4.0] - 2026-04-24
 
 - Reframed the README and package metadata around repo-local Markdown memory for AI coding agents.

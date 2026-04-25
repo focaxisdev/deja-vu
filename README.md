@@ -1,21 +1,31 @@
 # Deja Vu
 
-**Persistent project memory for AI coding agents, stored in your repo as Markdown and JSONL.**
+**Stop re-explaining your repo to every new coding-agent chat.**
 
-Deja Vu helps Codex, Claude Code, Cursor, Windsurf, and other coding agents remember project decisions, architecture context, open loops, and team preferences across new chats.
+Deja Vu is an ultra-light, protocol-first memory system for Codex, Claude Code, Cursor, Windsurf, and other coding agents. Add three repo-local files so a new agent session can scan tiny cues, recall only relevant project memory, and write back durable context.
 
-It does not require a database, vector store, embedding model, hosted memory service, or npm package.
+It does not require a database, vector store, embedding model, hosted memory service, daemon, or npm package.
 
 ```text
 problem: every new agent session forgets why the project works the way it does
 result:  the agent scans tiny repo-local cues, recalls only relevant memory, and writes back durable context
 ```
 
-Start with three files:
+## 2-Minute Start
+
+Start by copying or creating only three files:
 
 - `AGENTS.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
+
+Then tell the next coding-agent chat:
+
+```text
+Follow the Deja Vu rules in AGENTS.md. Before substantial work, scan memory/impressions.jsonl, load memory/summary.md only for weak matches, and load at most one to three detailed records for strong matches.
+```
+
+That is the base product. Add scripts, feedback, decisions, open loops, or the optional TypeScript engine only when the project grows enough to justify them.
 
 Use Deja Vu if your team keeps repeating:
 
@@ -38,7 +48,7 @@ It is packaged as three project-local assets:
 - workflow
 - tiny memory files
 
-No server. No hidden state. No required npm package. The base protocol works with Markdown and JSONL files that live beside the code.
+No server. No hidden state. No required npm package. No memory platform. The base protocol works with Markdown and JSONL files that live beside the code.
 
 If you found this on npm: the package is only the optional TypeScript engine and CLI tooling. The main product is the repo-local memory protocol you can copy into any project.
 
@@ -48,7 +58,7 @@ Use Deja Vu when you want:
 - low-token recall before planning, coding, or answering
 - observable recall budget and recall outcome feedback
 - durable decisions, preferences, open loops, and architecture intent in plain files
-- an optional TypeScript semantic engine only when the project outgrows the file-first protocol
+- optional CLI or TypeScript helpers only when the project outgrows the file-first protocol
 
 ## What Deja Vu Is
 
@@ -74,12 +84,12 @@ No npm package, embeddings, vector search, or database is required.
 
 If you want to adopt Deja Vu in a project without extra infrastructure:
 
-1. Read [docs/protocol.md](./docs/protocol.md).
-2. Read [docs/workflow.md](./docs/workflow.md).
-3. Read [docs/impression-layer.md](./docs/impression-layer.md).
-4. Read [docs/scripted-recall.md](./docs/scripted-recall.md).
-5. Copy the minimum templates from [docs/templates](./docs/templates).
-6. Add optional decision, open-loop, event, and context records only when the project needs them.
+1. Copy [docs/templates/AGENTS.template.md](./docs/templates/AGENTS.template.md) into your project rules file.
+2. Copy [docs/templates/memory/summary.md](./docs/templates/memory/summary.md).
+3. Copy [docs/templates/memory/impressions.jsonl](./docs/templates/memory/impressions.jsonl).
+4. Ask the next agent session to follow the rules before substantial work.
+5. Read [docs/protocol.md](./docs/protocol.md) only when you need the full normative behavior.
+6. Add optional decision, open-loop, feedback, event, and context records only when the project needs them.
 
 Recommended first files:
 
@@ -253,4 +263,5 @@ npm run lint:memory
 - [docs/project-rules-template.md](./docs/project-rules-template.md)
 - [docs/release-v0.3.1.md](./docs/release-v0.3.1.md)
 - [docs/release-v0.4.0.md](./docs/release-v0.4.0.md)
+- [docs/release-v0.4.1.md](./docs/release-v0.4.1.md)
 - [llms.txt](./llms.txt)

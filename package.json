@@ -1,7 +1,7 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.4.0",
-  "description": "Repo-local Markdown memory for AI coding agents: persistent project context without a database, vector store, or hosted memory service.",
+  "version": "0.4.1",
+  "description": "Ultra-light repo-local memory protocol for AI coding agents: stop re-explaining your repo to every new chat.",
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
