@@ -8,6 +8,8 @@ updated: 2026-04-20
 
 # Decision Title
 
+Use this record only for an accepted decision that should guide future work. Do not paste exploratory chat logs here.
+
 ## Date
 
 2026-04-20

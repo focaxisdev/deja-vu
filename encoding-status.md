@@ -75,3 +75,14 @@
 | `docs/release-v0.4.1.md` | 編碼正常（新建，UTF-8） | New release note for protocol-first activation and the ultra-light three-file adoption path. |
 | `docs/templates/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New recall feedback template. |
 | `examples/protocol-project/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New example recall feedback ledger. |
+| `scripts/dejavu-feedback-report.mjs` | 編碼正常（新建，UTF-8） | New feedback aggregation CLI for recall maintenance suggestions. |
+| `docs/release-v0.5.0.md` | 編碼正常（新建，UTF-8） | New release note for remember/writeback lifecycle improvements. |
+| `scripts/dejavu-scan-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; scan output now includes post-task writeback hints. |
+| `scripts/dejavu-lint-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; linter now checks Markdown memory lifecycle records. |
+| `tests/memory-cli.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; CLI tests now cover writeback hints, feedback reports, and Markdown lifecycle linting. |
+| `docs/protocol.md` | 編碼正常（已檢查） | Updated in UTF-8; protocol now defines the writeback gate and artifact routing. |
+| `docs/workflow.md` | 編碼正常（已檢查） | Updated in UTF-8; workflow now includes post-task writeback routing. |
+| `docs/templates/AGENTS.template.md` | 編碼正常（已檢查） | Updated in UTF-8; project rules template now includes the writeback gate. |
+| `docs/templates/memory/summary.md` | 編碼正常（已檢查） | Updated in UTF-8; summary template now warns against turn-by-turn history. |
+| `docs/templates/memory/decisions/decision-template.md` | 編碼正常（已檢查） | Updated in UTF-8; decision template now clarifies durable decision scope. |
+| `docs/templates/memory/open-loops/open-loop-template.md` | 編碼正常（已檢查） | Updated in UTF-8; open-loop template now clarifies unresolved follow-up scope. |

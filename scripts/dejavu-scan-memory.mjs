@@ -117,6 +117,15 @@ console.log(
         outcomes: ["helpful", "irrelevant", "missed", "overloaded"],
         write_to: "memory/recall-feedback.jsonl",
       },
+      writeback_hint: {
+        after_work: [
+          "durable decision -> memory/decisions/ + memory/impressions.jsonl",
+          "unresolved follow-up -> memory/open-loops/ + memory/impressions.jsonl",
+          "project-level truth changed -> memory/summary.md + memory/impressions.jsonl",
+          "low-value one-off trace -> memory/events/ or skip",
+          "recall was wrong, missed, noisy, or overloaded -> memory/recall-feedback.jsonl",
+        ],
+      },
       diagnostics,
     },
     null,

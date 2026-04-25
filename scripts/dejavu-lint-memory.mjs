@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 const args = process.argv.slice(2);
@@ -15,6 +15,7 @@ for (let index = 0; index < args.length; index += 1) {
 const rootPath = resolve(process.cwd(), memoryRoot);
 const impressionsPath = resolve(rootPath, "impressions.jsonl");
 const feedbackPath = resolve(rootPath, "recall-feedback.jsonl");
+const summaryPath = resolve(rootPath, "summary.md");
 const diagnostics = [];
 const seenIds = new Set();
 const keywordSignatures = new Map();
@@ -61,6 +62,92 @@ function staysInsideRoot(path) {
   const resolved = resolve(dirname(rootPath), path);
   const projectRoot = dirname(rootPath);
   return resolved === projectRoot || resolved.startsWith(`${projectRoot}\\`) || resolved.startsWith(`${projectRoot}/`);
+}
+
+function parseFrontmatter(text) {
+  if (!text.startsWith("---\n") && !text.startsWith("---\r\n")) {
+    return null;
+  }
+  const endMatch = text.match(/\r?\n---\r?\n/);
+  if (!endMatch || endMatch.index === undefined) {
+    return null;
+  }
+  const raw = text.slice(text.indexOf("\n") + 1, endMatch.index);
+  const data = {};
+  for (const line of raw.split(/\r?\n/)) {
+    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!match) continue;
+    data[match[1]] = match[2].trim().replace(/^["']|["']$/g, "");
+  }
+  return data;
+}
+
+function listMarkdownFiles(dir) {
+  if (!existsSync(dir)) return [];
+  const files = [];
+  for (const entry of readdirSync(dir)) {
+    const fullPath = resolve(dir, entry);
+    const stat = statSync(fullPath);
+    if (stat.isDirectory()) {
+      files.push(...listMarkdownFiles(fullPath));
+    } else if (entry.endsWith(".md")) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+function lintMarkdownRecord(filePath, kind) {
+  const text = readFileSync(filePath, "utf8");
+  const frontmatter = parseFrontmatter(text);
+  if (!frontmatter) {
+    addDiagnostic("warning", "Markdown memory record should include YAML frontmatter", { path: filePath });
+    return;
+  }
+
+  for (const field of ["id", "title", "status", "scope", "updated"]) {
+    if (typeof frontmatter[field] !== "string" || frontmatter[field].length === 0) {
+      addDiagnostic("warning", `Markdown memory record missing ${field} frontmatter`, { path: filePath });
+    }
+  }
+
+  if (frontmatter.scope && !frontmatter.scope.startsWith("project:")) {
+    addDiagnostic("warning", "Markdown memory scope should use project:<project-id>", { path: filePath });
+  }
+
+  if (frontmatter.status && !validStatuses.has(frontmatter.status)) {
+    addDiagnostic("error", "Markdown memory status must be active, superseded, or archived", { path: filePath });
+  }
+
+  if (frontmatter.updated && !isIsoDate(frontmatter.updated)) {
+    addDiagnostic("warning", "Markdown memory updated should use YYYY-MM-DD or ISO timestamp", { path: filePath });
+  }
+
+  if (frontmatter.status === "superseded" && !frontmatter.superseded_by) {
+    addDiagnostic("warning", "superseded records should include superseded_by", { path: filePath });
+  }
+
+  if (kind === "decision") {
+    for (const heading of ["## Decision", "## Rationale", "## Consequences"]) {
+      if (!text.includes(heading)) {
+        addDiagnostic("warning", `decision record missing ${heading}`, { path: filePath });
+      }
+    }
+  }
+
+  if (kind === "open-loop") {
+    for (const heading of ["## Owner", "## Opened", "## Next trigger", "## Why it matters"]) {
+      if (!text.includes(heading)) {
+        addDiagnostic("warning", `open-loop record missing ${heading}`, { path: filePath });
+      }
+    }
+  }
+
+  if (/^(user|assistant|system):/im.test(text) || text.includes("<subagent_notification>")) {
+    addDiagnostic("warning", "Markdown memory record looks like a transcript; durable memory should be summarized", {
+      path: filePath,
+    });
+  }
 }
 
 if (!existsSync(impressionsPath)) {
@@ -254,6 +341,20 @@ if (existsSync(feedbackPath)) {
       });
     }
   }
+}
+
+if (!existsSync(summaryPath)) {
+  addDiagnostic("warning", "Missing memory/summary.md", { path: summaryPath });
+} else {
+  lintMarkdownRecord(summaryPath, "summary");
+}
+
+for (const filePath of listMarkdownFiles(resolve(rootPath, "decisions"))) {
+  lintMarkdownRecord(filePath, "decision");
+}
+
+for (const filePath of listMarkdownFiles(resolve(rootPath, "open-loops"))) {
+  lintMarkdownRecord(filePath, "open-loop");
 }
 
 const errorCount = diagnostics.filter((item) => item.level === "error").length;

@@ -45,12 +45,24 @@ Default detailed reads:
 After meaningful work completes:
 
 1. decide whether the outcome is durable
-2. create or update the relevant durable memory file
-3. update `memory/impressions.jsonl`
-4. update `memory/summary.md` if project understanding changed
-5. update `memory/index.md` if the project uses one
-6. add a short event ledger entry only when the work should remain discoverable without promotion into durable memory
-7. append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future recall
+2. route the outcome through the writeback gate
+3. create or update the relevant durable memory file
+4. update `memory/impressions.jsonl`
+5. update `memory/summary.md` if project understanding changed
+6. update `memory/index.md` if the project uses one
+7. add a short event ledger entry only when the work should remain discoverable without promotion into durable memory
+8. append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future recall
+
+Writeback gate:
+
+| Signal | Route |
+| --- | --- |
+| accepted decision | `memory/decisions/` plus `memory/impressions.jsonl` |
+| unresolved follow-up | `memory/open-loops/` plus `memory/impressions.jsonl` |
+| project-level truth changed | `memory/summary.md` plus `memory/impressions.jsonl` |
+| low-value one-off trace | `memory/events/` or skip |
+| recall quality changed future behavior | `memory/recall-feedback.jsonl` |
+| older record replaced | supersede old record and point indexes at the new one |
 
 ## Decision Rules
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2026-04-25
+
+- Made remember/writeback a first-class companion to recall with a post-task writeback routing table in the README, protocol, workflow, and AGENTS template.
+- Added `writeback_hint` guidance to scripted memory scans so recall naturally leads into durable memory maintenance.
+- Added `deja-vu-feedback-report` to aggregate recall feedback into maintenance suggestions for aliases, weights, compaction, and route cleanup.
+- Expanded memory linting beyond JSONL into Markdown lifecycle checks for summaries, decisions, open loops, frontmatter, supersession, and transcript-like records.
+- Added tests for writeback hints, feedback reporting, Markdown memory linting, and package binary inclusion.
+
 ## [0.4.1] - 2026-04-25
 
 - Reaffirmed Deja Vu as an ultra-light protocol-first memory system rather than a required package, service, daemon, vector database, or engine.

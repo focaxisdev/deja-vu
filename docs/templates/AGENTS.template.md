@@ -32,13 +32,21 @@ Recall budget:
 After meaningful work completes:
 
 1. Write back only durable, reusable memory.
-2. Update the relevant memory file.
-3. Update `memory/impressions.jsonl`.
-4. Update `memory/summary.md` when project understanding changes.
-5. Update `memory/index.md` if the project uses one.
-6. Add a short entry to `memory/events/` only when the work should remain discoverable without becoming durable memory.
+2. Route the outcome through the writeback gate.
+3. Update the relevant memory file.
+4. Update `memory/impressions.jsonl`.
+5. Update `memory/summary.md` when project understanding changes.
+6. Update `memory/index.md` if the project uses one.
+7. Add a short entry to `memory/events/` only when the work should remain discoverable without becoming durable memory.
+8. Append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future memory.
 
-7. Append `memory/recall-feedback.jsonl` only when recall was helpful, irrelevant, missed, or overloaded in a way that should tune future memory.
+Writeback gate:
+
+- accepted decision -> `memory/decisions/` plus `memory/impressions.jsonl`
+- unresolved follow-up -> `memory/open-loops/` plus `memory/impressions.jsonl`
+- project-level truth changed -> `memory/summary.md` plus `memory/impressions.jsonl`
+- low-value one-off trace -> `memory/events/` or skip
+- recall quality signal -> `memory/recall-feedback.jsonl`
 
 Good writeback candidates:
 

@@ -9,6 +9,7 @@ Deja Vu helps agents stop re-explaining the same repository context across new c
 - tiny Markdown and JSONL memory files inside the repository
 - cue quality checks that keep the first recall step sparse and specific
 - recall budget and outcome feedback that show whether memory helped, missed, or overloaded the task
+- writeback routing and feedback reports that keep remembered project context durable and maintainable
 
 The minimum adoption path is three files: `AGENTS.md`, `memory/summary.md`, and `memory/impressions.jsonl`. It does not require npm, embeddings, vector search, a daemon, or a dedicated memory service.
 
@@ -20,6 +21,7 @@ The minimum adoption path is three files: `AGENTS.md`, `memory/summary.md`, and 
 - [Markdown Storage](./docs/storage-markdown.md): minimum and optional memory layout
 - [Impression Layer](./docs/impression-layer.md): compact keyword-first familiarity surface
 - [Scripted Recall](./docs/scripted-recall.md): host script contract for cheap pre-task scans
+- [v0.5.0 Release](./docs/release-v0.5.0.md): remember/writeback lifecycle improvements
 - [Templates](./docs/templates): copyable rules and memory templates
 - [Protocol Example](./examples/protocol-project): repo-first example with no engine
 

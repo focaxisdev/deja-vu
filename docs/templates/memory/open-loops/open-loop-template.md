@@ -8,6 +8,8 @@ updated: 2026-04-20
 
 # Open Loop Title
 
+Use this record only for unresolved follow-up work that should survive a new chat. Close or supersede it when the loop is no longer active.
+
 ## Owner
 
 agent-or-person
