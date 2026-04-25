@@ -4,17 +4,17 @@
 | --- | --- | --- |
 | `encoding-status.md` | 編碼正常（新建，UTF-8） | Project-local registry created by agent. |
 | `.gitignore` | 編碼正常（新建，UTF-8） | New text file. |
-| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; version bumped to 0.3.1 with cue-quality package description and keywords. |
-| `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; package version metadata now matches the 0.3.1 release. |
+| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; version bumped to 0.4.1 with ultra-light protocol-first package description. |
+| `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; package version metadata now matches the 0.4.1 release. |
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
-| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; GitHub-facing opening now emphasizes agent context loss, no database/vector dependency, and before/after value. |
-| `CHANGELOG.md` | 編碼正常（已檢查） | Updated in UTF-8; now includes the 0.3.1 recall-quality patch release notes. |
-| `llms.txt` | 編碼正常（已檢查） | Updated in UTF-8; AI-readable index now includes cue quality linting, gist summaries, and boundary-aware chunking. |
+| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; opening now emphasizes ultra-light protocol-first activation and the 2-minute three-file start. |
+| `CHANGELOG.md` | 編碼正常（已檢查） | Updated in UTF-8; now includes the 0.4.1 protocol-first activation patch release notes. |
+| `llms.txt` | 編碼正常（已檢查） | Updated in UTF-8; AI-readable index now emphasizes the three-file ultra-light adoption path. |
 | `docs/architecture.md` | 編碼正常（已檢查） | Rewritten in UTF-8; architecture doc now describes the engine as the optional layer inside a protocol-first product. |
 | `docs/agent-handshake.md` | 編碼正常（已檢查） | Rewritten in UTF-8; handshake now starts from cue-first adoption and recall-budget discipline. |
 | `docs/project-rules-template.md` | 編碼正常（已檢查） | Rewritten in UTF-8; points to canonical AGENTS and memory templates. |
-| `docs/bootstrap-instructions.md` | 編碼正常（已檢查） | Rewritten in UTF-8; bootstrap now installs only minimum cue-first memory artifacts before optional scale-up. |
+| `docs/bootstrap-instructions.md` | 編碼正常（已檢查） | Updated in UTF-8; bootstrap now reinforces the ultra-light protocol-first minimum before optional helper artifacts. |
 | `docs/release-v0.1.0.md` | 編碼正常（已檢查） | Rewritten in UTF-8; release framing now centers repo-first protocol adoption for the earlier release note. |
 | `docs/release-v0.2.0.md` | 編碼正常（新建，UTF-8） | New release note for the protocol-first reboot version. |
 | `docs/protocol.md` | 編碼正常（已檢查） | Rewritten in UTF-8; protocol now defines cue-first v0.3, minimum artifacts, and recall budget. |
@@ -72,5 +72,6 @@
 | `scripts/dejavu-lint-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; linter now warns on low-quality impression cues and duplicate keyword sets. |
 | `tests/memory-cli.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; CLI tests now cover low-quality cue warnings. |
 | `docs/release-v0.4.0.md` | 編碼正常（新建，UTF-8） | New release note for feedback-aware recall budgets and recall outcomes. |
+| `docs/release-v0.4.1.md` | 編碼正常（新建，UTF-8） | New release note for protocol-first activation and the ultra-light three-file adoption path. |
 | `docs/templates/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New recall feedback template. |
 | `examples/protocol-project/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New example recall feedback ledger. |
