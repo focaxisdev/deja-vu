@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | `encoding-status.md` | 編碼正常（新建，UTF-8） | Project-local registry created by agent. |
 | `.gitignore` | 編碼正常（新建，UTF-8） | New text file. |
-| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; version bumped to 0.4.1 with ultra-light protocol-first package description. |
+| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; version bumped to 0.4.1 with ultra-light protocol-first package description and npm-normalized CLI bin paths. |
 | `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; package version metadata now matches the 0.4.1 release. |
 | `tsconfig.json` | 編碼正常（新建，UTF-8） | New text file. |
 | `LICENSE` | 編碼正常（新建，UTF-8） | New text file. |
