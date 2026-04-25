@@ -8,6 +8,7 @@ import { join } from "node:path";
 const root = process.cwd();
 const scanScript = join(root, "scripts", "dejavu-scan-memory.mjs");
 const lintScript = join(root, "scripts", "dejavu-lint-memory.mjs");
+const feedbackReportScript = join(root, "scripts", "dejavu-feedback-report.mjs");
 
 function runJson(script: string, args: string[], cwd: string) {
   return JSON.parse(execFileSync(process.execPath, [script, ...args], { cwd, encoding: "utf8" }));
@@ -54,6 +55,7 @@ test("scan CLI reports unmatched when overlap stays below threshold", () => {
   assert.equal(result.budget.impression_scan, 1);
   assert.equal(result.budget.summaries_loaded, 0);
   assert.deepEqual(result.feedback_hint.outcomes, ["helpful", "irrelevant", "missed", "overloaded"]);
+  assert.ok(result.writeback_hint.after_work.includes("durable decision -> memory/decisions/ + memory/impressions.jsonl"));
 });
 
 test("lint CLI validates impression records and linked paths", () => {
@@ -182,6 +184,132 @@ test("lint CLI validates recall feedback records", () => {
   assert.ok(messages.includes("feedback created should use YYYY-MM-DD or ISO timestamp"));
 });
 
+test("lint CLI checks Markdown memory lifecycle records", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-lint-markdown-"));
+  const memory = join(project, "memory");
+  mkdirSync(memory);
+  mkdirSync(join(memory, "decisions"));
+  mkdirSync(join(memory, "open-loops"));
+  writeFileSync(
+    join(memory, "summary.md"),
+    [
+      "---",
+      "id: summary",
+      "title: Summary",
+      "status: active",
+      "scope: project:test",
+      "updated: 2026-04-21",
+      "---",
+      "",
+      "# Summary",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+  writeFileSync(
+    join(memory, "decisions", "bad.md"),
+    [
+      "---",
+      "id: bad-decision",
+      "title: Bad Decision",
+      "status: active",
+      "scope: project:test",
+      "updated: 2026-04-21",
+      "---",
+      "",
+      "# Bad Decision",
+      "## Decision",
+      "Do this.",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+  writeFileSync(
+    join(memory, "open-loops", "bad.md"),
+    [
+      "---",
+      "id: bad-loop",
+      "title: Bad Loop",
+      "status: active",
+      "scope: project:test",
+      "updated: 2026-04-21",
+      "---",
+      "",
+      "# Bad Loop",
+      "## Owner",
+      "agent",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+  writeFileSync(
+    join(memory, "impressions.jsonl"),
+    [
+      JSON.stringify({
+        schema_version: 1,
+        id: "summary",
+        scope: "project:test",
+        title: "Summary",
+        keywords: ["summary", "recall", "feedback"],
+        record_path: "memory/summary.md",
+        updated: "2026-04-21",
+        status: "active",
+      }),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = runJson(lintScript, [], project);
+  const messages = result.diagnostics.map((item: { message: string }) => item.message);
+
+  assert.equal(result.ok, true);
+  assert.ok(messages.includes("decision record missing ## Rationale"));
+  assert.ok(messages.includes("decision record missing ## Consequences"));
+  assert.ok(messages.includes("open-loop record missing ## Next trigger"));
+  assert.ok(messages.includes("open-loop record missing ## Why it matters"));
+});
+
+test("feedback report summarizes recall outcomes into maintenance suggestions", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-feedback-report-"));
+  const memory = join(project, "memory");
+  mkdirSync(memory);
+  writeFileSync(
+    join(memory, "recall-feedback.jsonl"),
+    [
+      JSON.stringify({
+        schema_version: 1,
+        query: "architecture decision",
+        matched_id: "decision-architecture",
+        outcome: "helpful",
+        created: "2026-04-24T12:00:00Z",
+      }),
+      JSON.stringify({
+        schema_version: 1,
+        query: "missed preference",
+        outcome: "missed",
+        created: "2026-04-24T12:00:00Z",
+      }),
+      JSON.stringify({
+        schema_version: 1,
+        query: "noisy engine",
+        matched_id: "decision-architecture",
+        outcome: "irrelevant",
+        created: "2026-04-24T12:00:00Z",
+      }),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = runJson(feedbackReportScript, [], project);
+
+  assert.equal(result.feedback_file_found, true);
+  assert.equal(result.totals.helpful, 1);
+  assert.equal(result.totals.missed, 1);
+  assert.ok(result.routes.some((route: { matched_id: string; suggestions: string[] }) => route.matched_id === "unmatched" && route.suggestions.includes("add aliases, keywords, or a new impression route")));
+});
+
 test("package metadata exposes memory CLI binaries", () => {
   const result = JSON.parse(execSync("npm pack --dry-run --json", { cwd: root, encoding: "utf8" }));
   const files = new Set(result[0].files.map((file: { path: string }) => file.path));
@@ -189,4 +317,5 @@ test("package metadata exposes memory CLI binaries", () => {
   assert.equal(result[0].name, "@focaxisdev/deja-vu");
   assert.ok(files.has("scripts/dejavu-scan-memory.mjs"));
   assert.ok(files.has("scripts/dejavu-lint-memory.mjs"));
+  assert.ok(files.has("scripts/dejavu-feedback-report.mjs"));
 });

@@ -104,12 +104,28 @@ During the task:
 
 After meaningful work completes:
 
-1. Decide whether the outcome is durable.
-2. If it is durable, write or update the appropriate memory artifact.
-3. Update `memory/impressions.jsonl` with compact keywords for future cheap scans.
-4. Update `memory/summary.md` when the project-level understanding has changed.
-5. Update `memory/index.md` when the project uses one.
-6. Update `memory/events/` only when the work should remain discoverable without becoming a durable record.
+1. Decide whether the outcome is durable enough to help a future agent.
+2. Route the outcome through the writeback gate.
+3. If it is durable, write or update the appropriate memory artifact.
+4. Update `memory/impressions.jsonl` with compact keywords for future cheap scans.
+5. Update `memory/summary.md` when the project-level understanding has changed.
+6. Update `memory/index.md` when the project uses one.
+7. Update `memory/events/` only when the work should remain discoverable without becoming a durable record.
+
+Writeback gate:
+
+| Outcome | Action |
+| --- | --- |
+| no durable future value | `skip` |
+| happened once but may be useful to discover later | `event_only` |
+| changes an existing durable record | `update_existing` |
+| records an accepted decision | `new_decision` |
+| leaves unresolved follow-up work | `new_open_loop` |
+| changes project-level truth | `update_summary` |
+| replaces an older durable record | `supersede_old_record` |
+| recall quality should tune future behavior | `append_feedback` |
+
+Every durable writeback must leave a future recall route. In practice, update `memory/impressions.jsonl` whenever a decision, open loop, context record, or project summary becomes the authoritative place to remember something.
 
 ### 4. Recall Feedback
 
@@ -161,6 +177,15 @@ Write back when the work produces:
 - a resolved or newly opened follow-up item
 - a stable working preference
 - a milestone-level summary worth reusing later
+
+Route writeback by artifact:
+
+- decision -> `memory/decisions/` plus `memory/impressions.jsonl`
+- unresolved follow-up -> `memory/open-loops/` plus `memory/impressions.jsonl`
+- project-level truth -> `memory/summary.md` plus `memory/impressions.jsonl`
+- low-cost trace -> `memory/events/` or skip
+- recall quality signal -> `memory/recall-feedback.jsonl`
+- replacement -> newer record plus supersession links
 
 Do not write back:
 

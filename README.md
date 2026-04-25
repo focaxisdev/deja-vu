@@ -27,6 +27,18 @@ Follow the Deja Vu rules in AGENTS.md. Before substantial work, scan memory/impr
 
 That is the base product. Add scripts, feedback, decisions, open loops, or the optional TypeScript engine only when the project grows enough to justify them.
 
+Post-task writeback should stay just as small:
+
+```text
+Decision made -> memory/decisions/ + memory/impressions.jsonl
+Unresolved follow-up -> memory/open-loops/ + memory/impressions.jsonl
+Project-level truth changed -> memory/summary.md + memory/impressions.jsonl
+One-off low-value trace -> memory/events/ or skip
+Recall was missed, irrelevant, helpful, or overloaded -> memory/recall-feedback.jsonl
+```
+
+If the outcome is not durable enough to help a future agent, do not write it into memory.
+
 Use Deja Vu if your team keeps repeating:
 
 - "We already decided this."
@@ -71,10 +83,13 @@ It answers:
 - how memory should be stored in ordinary project files
 - when memory should be updated, compacted, or retired
 
-The minimum viable setup uses two project-local plain text files, with one optional feedback ledger when recall results should change future behavior:
+The minimum viable setup uses three project-local plain text files:
 
+- `AGENTS.md`
 - `memory/summary.md`
 - `memory/impressions.jsonl`
+
+Add one optional feedback ledger when recall results should change future behavior:
 
 - `memory/recall-feedback.jsonl`
 
@@ -109,7 +124,6 @@ Deja Vu follows a cue-first lifecycle:
 4. Load one to three detailed records only when the scan finds strong familiarity or the task requires depth.
 5. Write back only durable outcomes that should change a future agent's behavior.
 6. Record whether recall was helpful, irrelevant, missed, or overloaded when that feedback should tune future memory.
-
 7. Compact or supersede memories when detail becomes repetitive or stale.
 
 This keeps memory project-local, readable, and easy to maintain across new conversations.
@@ -142,6 +156,12 @@ The canonical layout and field rules are specified in [docs/storage-markdown.md]
   - stable preferences
   - unresolved follow-up items
   - milestone summaries
+- Route writeback by artifact:
+  - decisions -> `memory/decisions/` plus `memory/impressions.jsonl`
+  - follow-ups -> `memory/open-loops/` plus `memory/impressions.jsonl`
+  - project-level truth -> `memory/summary.md` plus `memory/impressions.jsonl`
+  - cheap trace -> `memory/events/` or skip
+  - recall quality -> `memory/recall-feedback.jsonl`
 - Default recall budget:
   - impression scan: always allowed
   - summary: at most one file
@@ -250,6 +270,7 @@ npm install
 npm run build
 npm run test:src
 npm run lint:memory
+npm run report:feedback
 ```
 
 ## References
@@ -264,4 +285,5 @@ npm run lint:memory
 - [docs/release-v0.3.1.md](./docs/release-v0.3.1.md)
 - [docs/release-v0.4.0.md](./docs/release-v0.4.0.md)
 - [docs/release-v0.4.1.md](./docs/release-v0.4.1.md)
+- [docs/release-v0.5.0.md](./docs/release-v0.5.0.md)
 - [llms.txt](./llms.txt)
