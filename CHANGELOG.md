@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Reworked the README first screen around the "3-file memory system" positioning.
+- Added a copy-first `starter-kit/` with minimal `AGENTS.md`, memory files, and per-agent prompts.
+- Added comparison, compatibility, flow diagram, demo walkthrough, launch copy, and v0.6.0 release checklist docs.
+- Added the optional unified `deja-vu init`, `deja-vu doctor`, and `deja-vu explain` CLI.
+- Split read-only source tests from npm pack verification with `test:src:readonly` and `test:pack`.
+- Updated scripted recall to distinguish missing setup as `not_initialized`.
+
 ## [0.5.0] - 2026-04-25
 
 - Made remember/writeback a first-class companion to recall with a post-task writeback routing table in the README, protocol, workflow, and AGENTS template.

@@ -8,10 +8,9 @@ This example shows how to adopt Deja Vu without npm or the optional TypeScript e
 - `memory/summary.md`
 - `memory/impressions.jsonl`
 
-- `memory/recall-feedback.jsonl`
-
 ## Optional Scale-Up Files
 
+- `memory/recall-feedback.jsonl`
 - `memory/index.md`
 - `memory/events/`
 - `memory/context/project-context.md`

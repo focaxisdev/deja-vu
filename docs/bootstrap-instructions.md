@@ -27,17 +27,21 @@ Bootstrap when at least one of these is true:
 - confirm the active project path
 - choose a stable `project:<project-id>` scope
 
-### 2. Read the protocol files
+### 2. Use the starter kit first
 
-Read:
+Start from:
 
-1. `README.md`
-2. `docs/protocol.md`
-3. `docs/workflow.md`
-4. `docs/storage-markdown.md`
-5. `docs/impression-layer.md`
-6. `docs/scripted-recall.md`
-7. `docs/templates/AGENTS.template.md`
+1. `starter-kit/AGENTS.md`
+2. `starter-kit/memory/summary.md`
+3. `starter-kit/memory/impressions.jsonl`
+
+Read the full protocol docs only when the project needs customization:
+
+- `docs/protocol.md`
+- `docs/workflow.md`
+- `docs/storage-markdown.md`
+- `docs/impression-layer.md`
+- `docs/scripted-recall.md`
 
 ### 3. Check whether memory already exists
 
@@ -79,8 +83,10 @@ Ensure future work follows:
 After bootstrap, run:
 
 ```bash
-node scripts/dejavu-lint-memory.mjs
+deja-vu doctor
 ```
+
+If the optional CLI is not installed, run `node scripts/dejavu-lint-memory.mjs` when the script is available.
 
 ### 6. Optional engine adoption
 

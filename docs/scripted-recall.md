@@ -14,6 +14,14 @@ After npm installation, the same scanner can be exposed as:
 deja-vu-scan-memory "current task or user request"
 ```
 
+The unified optional CLI also provides setup and health checks:
+
+```bash
+deja-vu init --dry-run
+deja-vu doctor
+deja-vu explain
+```
+
 The companion linter checks whether the impression index is structurally usable:
 
 ```bash
@@ -76,26 +84,34 @@ The script prints JSON:
 }
 ```
 
+If `memory/impressions.jsonl` is missing, the script returns `level: "not_initialized"` with a bootstrap hint instead of pretending the task had no familiarity match.
+
 ## Host Workflow
 
 1. Run the script before substantial planning, coding, or answering.
 2. Treat `none` as permission to avoid detailed memory reads.
-3. Treat `weak` as a reason to read `memory/summary.md` and maybe one linked record.
-4. Treat `strong` as a reason to open the linked record before planning.
-5. Watch `budget` before loading more memory.
-6. Record recall feedback only when the result should tune future cue quality.
-7. Continue to apply normal writeback and compaction rules after work completes.
+3. Treat `not_initialized` as a setup problem and create the three required files.
+4. Treat `weak` as a reason to read `memory/summary.md`.
+5. Treat `strong` as a reason to open one to three linked records before planning.
+6. Watch `budget` before loading more memory.
+7. Record recall feedback only when the result should tune future cue quality.
+8. Continue to apply normal writeback and compaction rules after work completes.
 
 ## Bootstrap Rule
 
-When installing Deja Vu into a project, copy or create:
+When installing Deja Vu into a project, copy or create the three required files:
 
+- `AGENTS.md`
 - `memory/impressions.jsonl`
 - `memory/summary.md`
-- `memory/recall-feedback.jsonl`
-- `scripts/dejavu-scan-memory.mjs`
 
-The script is intentionally small. Hosts may replace it with a faster native implementation, but the input and output contract should stay stable.
+Optional scale-up files:
+
+- `memory/recall-feedback.jsonl`
+- `memory/decisions/`
+- `memory/open-loops/`
+
+The script is intentionally small and optional. Hosts may replace it with a faster native implementation, but the input and output contract should stay stable.
 
 Add `memory/decisions/`, `memory/open-loops/`, `memory/events/`, or `memory/index.md` only when the project has enough durable memory to justify them.
 

@@ -4,6 +4,8 @@ Deja Vu is a cue-first memory protocol for AI agents.
 
 This document is the normative specification for the minimum viable Deja Vu protocol.
 
+Protocol version and package version are separate. Package releases may ship docs, templates, or CLI helpers without changing the protocol version.
+
 ## Goal
 
 Enable any agent to maintain useful project memory with extremely low per-conversation token cost using only:
@@ -20,6 +22,23 @@ The core loop is:
 ```text
 task cue -> familiarity score -> minimal recall -> durable writeback
 ```
+
+## Agent Contract
+
+An agent following Deja Vu must:
+
+1. Read the project rules before substantial project work.
+2. Scan `memory/impressions.jsonl` before spending tokens on larger memory files.
+3. Treat missing required files as `not_initialized`, not as a valid no-match.
+4. Load no memory when familiarity is `none`.
+5. Load only `memory/summary.md` when familiarity is `weak`.
+6. Load at most one to three linked detailed records when familiarity is `strong`.
+7. Never load the whole memory tree unless the user explicitly asks.
+8. Write back only durable project memory.
+9. Leave a future cue route in `memory/impressions.jsonl` for every durable record.
+10. Avoid secrets, PII, full transcripts, raw logs, and low-signal chatter.
+
+The three-file model is the minimum bootstrap surface. Detailed recall becomes useful when the project later adds decision, open-loop, or context records.
 
 ## Scope Model
 
