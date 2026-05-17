@@ -6,6 +6,8 @@
 - Scope: `project:deja-vu`
 - Memory root: `memory/`
 
+For the full protocol details, see docs/protocol.md.
+
 ## Recall Before Substantial Work
 
 Before substantial planning, coding, release preparation, or documentation changes:

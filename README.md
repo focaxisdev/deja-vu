@@ -29,13 +29,13 @@ Deja Vu is trying to recall less, better.
 
 ## 2-Minute Start
 
-Copy the starter kit into any repo:
+Option A: copy from this repo after cloning:
 
 ```bash
 cp -R starter-kit/. .
 ```
 
-Or use the optional CLI:
+Option B: use the optional CLI:
 
 ```bash
 npx @focaxisdev/deja-vu init --agents all

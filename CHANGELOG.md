@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [0.6.0] - 2026-05-17
 
 - Reworked the README first screen around the "3-file memory system" positioning.
 - Added a copy-first `starter-kit/` with minimal `AGENTS.md`, memory files, and per-agent prompts.
