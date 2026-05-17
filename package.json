@@ -1,6 +1,6 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Ultra-light repo-local memory protocol for AI coding agents: stop re-explaining your repo to every new chat.",
   "type": "module",
   "main": "./dist/src/index.js",
@@ -13,6 +13,7 @@
     }
   },
   "bin": {
+    "deja-vu": "scripts/deja-vu.mjs",
     "deja-vu-scan-memory": "scripts/dejavu-scan-memory.mjs",
     "deja-vu-lint-memory": "scripts/dejavu-lint-memory.mjs",
     "deja-vu-feedback-report": "scripts/dejavu-feedback-report.mjs"
@@ -20,17 +21,20 @@
   "files": [
     "dist/src",
     "docs",
+    "starter-kit",
     "scripts",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "clean": "if exist dist rmdir /s /q dist",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "prepack": "npm run clean && npm run build",
     "prepublishOnly": "npm test",
-    "test": "npm run clean && npm run build && node --test dist/tests/**/*.test.js",
-    "test:src": "node --import \"data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));\" --test tests/**/*.test.ts",
+    "test": "npm run test:src:readonly && npm run build && node --test dist/tests/semantic-recall-engine.test.js dist/tests/memory-cli.test.js && npm run test:pack",
+    "test:src": "npm run test:src:readonly",
+    "test:src:readonly": "node --import \"data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));\" --test tests/semantic-recall-engine.test.ts tests/memory-cli.test.ts",
+    "test:pack": "node --import \"data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));\" --test tests/package-pack.test.ts",
     "scan:memory": "node scripts/dejavu-scan-memory.mjs",
     "lint:memory": "node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory",
     "report:feedback": "node scripts/dejavu-feedback-report.mjs --memory-root examples/protocol-project/memory",

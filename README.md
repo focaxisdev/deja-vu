@@ -1,192 +1,216 @@
 # Deja Vu
 
-**Stop re-explaining your repo to every new coding-agent chat.**
+**A 3-file memory system for any capable AI coding agent.**
 
-Deja Vu is an ultra-light, protocol-first memory system for Codex, Claude Code, Cursor, Windsurf, and other coding agents. Add three repo-local files so a new agent session can scan tiny cues, recall only relevant project memory, and write back durable context.
+Stop re-explaining your repo every time you start a new Codex, Claude Code, Cursor, Windsurf, ChatGPT, or Gemini CLI session.
 
-It does not require a database, vector store, embedding model, hosted memory service, daemon, or npm package.
+Deja Vu gives your project a tiny, repo-local memory layer:
+
+- `AGENTS.md` tells agents how to recall and write memory.
+- `memory/summary.md` keeps durable project context.
+- `memory/impressions.jsonl` stores tiny recall cues.
+
+No database. No vector store. No embeddings. No SaaS. No daemon. No required npm install.
+
+Just copy three files into your repo.
 
 ```text
-problem: every new agent session forgets why the project works the way it does
-result:  the agent scans tiny repo-local cues, recalls only relevant memory, and writes back durable context
+Task
+  -> scan tiny cues
+  -> no familiarity: load nothing
+  -> weak familiarity: load summary
+  -> strong familiarity: load 1-3 linked records
+  -> work
+  -> write back durable memory only
 ```
+
+Deja Vu is not trying to store more.
+Deja Vu is trying to recall less, better.
 
 ## 2-Minute Start
 
-Start by copying or creating only three files:
+Option A: copy from this repo after cloning:
 
-- `AGENTS.md`
-- `memory/summary.md`
-- `memory/impressions.jsonl`
-
-Then tell the next coding-agent chat:
-
-```text
-Follow the Deja Vu rules in AGENTS.md. Before substantial work, scan memory/impressions.jsonl, load memory/summary.md only for weak matches, and load at most one to three detailed records for strong matches.
+```bash
+cp -R starter-kit/. .
 ```
 
-That is the base product. Add scripts, feedback, decisions, open loops, or the optional TypeScript engine only when the project grows enough to justify them.
+Option B: use the optional CLI:
 
-Post-task writeback should stay just as small:
-
-```text
-Decision made -> memory/decisions/ + memory/impressions.jsonl
-Unresolved follow-up -> memory/open-loops/ + memory/impressions.jsonl
-Project-level truth changed -> memory/summary.md + memory/impressions.jsonl
-One-off low-value trace -> memory/events/ or skip
-Recall was missed, irrelevant, helpful, or overloaded -> memory/recall-feedback.jsonl
+```bash
+npx @focaxisdev/deja-vu init --agents all
 ```
 
-If the outcome is not durable enough to help a future agent, do not write it into memory.
-
-Use Deja Vu if your team keeps repeating:
-
-- "We already decided this."
-- "The agent forgot the architecture again."
-- "Do not load the whole repo history into context."
-- "We want memory in git, not in a vendor service."
-
-Most agent memory tools start by storing more text. Deja Vu starts by asking a cheaper question: does this task feel familiar enough to justify loading memory at all?
-
-The core loop is intentionally small:
+Then paste this into your next agent session:
 
 ```text
-task cue -> familiarity score -> minimal recall -> durable writeback
+Follow AGENTS.md. Before substantial planning or code changes, scan memory/impressions.jsonl for familiar cues. If familiarity is weak, read memory/summary.md. If familiarity is strong, read only the 1-3 linked detailed records needed for this task. Do not load the whole memory tree unless I ask. After the task, write back only durable decisions, architecture intent, stable preferences, unresolved follow-ups, or milestone summaries. Never store secrets, full transcripts, low-signal chatter, or disposable exploration noise.
 ```
 
-It is packaged as three project-local assets:
+That is the base product. Scripts, feedback, decision records, open loops, and the TypeScript engine are optional scale-up paths.
 
-- rules
-- workflow
-- tiny memory files
+## Before / After
 
-No server. No hidden state. No required npm package. No memory platform. The base protocol works with Markdown and JSONL files that live beside the code.
+Before Deja Vu:
 
-If you found this on npm: the package is only the optional TypeScript engine and CLI tooling. The main product is the repo-local memory protocol you can copy into any project.
+- "Remember, we already decided not to use X because Y..."
+- "Here is the architecture again..."
+- "Please do not break the IME workaround we fixed last week..."
+- "The agent forgot the open issue from the previous session..."
 
-Use Deja Vu when you want:
+After Deja Vu:
 
-- project memory that survives a new chat or agent session
-- low-token recall before planning, coding, or answering
-- observable recall budget and recall outcome feedback
-- durable decisions, preferences, open loops, and architecture intent in plain files
-- optional CLI or TypeScript helpers only when the project outgrows the file-first protocol
+- "Follow AGENTS.md and scan memory/impressions.jsonl before planning."
+- The agent loads only relevant project memory.
+- Durable decisions survive across new chats.
+- Low-value chat noise is not stored.
 
-## What Deja Vu Is
+## What It Is
 
-Deja Vu defines a shared memory behavior for agents working inside one project.
+Deja Vu is a repo-level memory convention:
 
-It answers:
+| It is | It is not |
+| --- | --- |
+| three repo-local files first | a vector database |
+| Markdown and JSONL | a hosted memory service |
+| agent-readable project rules | an agent runtime |
+| git-friendly durable memory | a required npm package |
+| low-token recall discipline | a full chat transcript archive |
 
-- what should count as durable memory
-- when an agent should recall existing memory
-- how memory should be stored in ordinary project files
-- when memory should be updated, compacted, or retired
+The memory lives in the repo, not inside one vendor.
 
-The minimum viable setup uses three project-local plain text files:
+Any capable coding agent can follow the protocol when it can read project files, follow instructions, respect a memory budget, and update files. For chat-only agents, paste the prompt and provide the relevant memory files manually.
 
-- `AGENTS.md`
-- `memory/summary.md`
-- `memory/impressions.jsonl`
+## The Three Files
 
-Add one optional feedback ledger when recall results should change future behavior:
+### `AGENTS.md`
 
-- `memory/recall-feedback.jsonl`
+Tells agents how to use Deja Vu:
 
-No npm package, embeddings, vector search, or database is required.
+- read project instructions first
+- scan cues before substantial work
+- load summary only when needed
+- load 1-3 detailed records for strong matches
+- write back only durable memory
+- never store sensitive or noisy content
 
-## Start Here
+### `memory/summary.md`
 
-If you want to adopt Deja Vu in a project without extra infrastructure:
+Keeps compact project truth:
 
-1. Copy [docs/templates/AGENTS.template.md](./docs/templates/AGENTS.template.md) into your project rules file.
-2. Copy [docs/templates/memory/summary.md](./docs/templates/memory/summary.md).
-3. Copy [docs/templates/memory/impressions.jsonl](./docs/templates/memory/impressions.jsonl).
-4. Ask the next agent session to follow the rules before substantial work.
-5. Read [docs/protocol.md](./docs/protocol.md) only when you need the full normative behavior.
-6. Add optional decision, open-loop, feedback, event, and context records only when the project needs them.
+- current objective
+- durable constraints
+- active priorities
+- linked decisions
+- unresolved follow-ups
 
-Recommended first files:
+It is not a chat log.
 
-- [docs/templates/AGENTS.template.md](./docs/templates/AGENTS.template.md)
-- [docs/templates/memory/summary.md](./docs/templates/memory/summary.md)
-- [docs/templates/memory/impressions.jsonl](./docs/templates/memory/impressions.jsonl)
-- [docs/templates/memory/decisions/decision-template.md](./docs/templates/memory/decisions/decision-template.md)
-- [docs/templates/memory/open-loops/open-loop-template.md](./docs/templates/memory/open-loops/open-loop-template.md)
+### `memory/impressions.jsonl`
 
-## The Protocol in One Page
+Keeps tiny cue routes:
 
-Deja Vu follows a cue-first lifecycle:
-
-1. Scan a tiny impression index before substantial planning, coding, or answering.
-2. Load no memory when the scan finds no familiarity.
-3. Load the project summary when the scan finds weak familiarity.
-4. Load one to three detailed records only when the scan finds strong familiarity or the task requires depth.
-5. Write back only durable outcomes that should change a future agent's behavior.
-6. Record whether recall was helpful, irrelevant, missed, or overloaded when that feedback should tune future memory.
-7. Compact or supersede memories when detail becomes repetitive or stale.
-
-This keeps memory project-local, readable, and easy to maintain across new conversations.
-
-## Canonical Project Layout
-
-```text
-memory/
-  summary.md
-  impressions.jsonl
-  recall-feedback.jsonl
-  decisions/
-  open-loops/
-  events/
-  context/
-  index.md
+```json
+{"schema_version":1,"id":"summary","scope":"project:your-repo","title":"Project summary","keywords":["architecture","constraints","priorities"],"record_path":"memory/summary.md","updated":"2026-05-16","weight":0.7,"status":"active"}
 ```
 
-The canonical layout and field rules are specified in [docs/storage-markdown.md](./docs/storage-markdown.md).
+Agents scan these cues before spending tokens on bigger memory files.
 
-## Core Rules
+## Agent Prompts
 
-- Use a single-project scope only in MVP: `project:<project-id>`.
-- Recall before substantial work, but follow a strict recall budget.
-- Prefer scripted impression scans first; open summary or detailed records only when needed.
-- Keep impression cues sparse, specific, and linted so the first recall step stays cheap.
-- Write back only durable memory:
-  - decisions
-  - architecture intent
-  - stable preferences
-  - unresolved follow-up items
-  - milestone summaries
-- Route writeback by artifact:
-  - decisions -> `memory/decisions/` plus `memory/impressions.jsonl`
-  - follow-ups -> `memory/open-loops/` plus `memory/impressions.jsonl`
-  - project-level truth -> `memory/summary.md` plus `memory/impressions.jsonl`
-  - cheap trace -> `memory/events/` or skip
-  - recall quality -> `memory/recall-feedback.jsonl`
-- Default recall budget:
-  - impression scan: always allowed
-  - summary: at most one file
-  - detail: one to three records
-  - full memory tree: forbidden unless explicitly requested
-- Never store:
-  - raw secrets or credentials
-  - full turn-by-turn transcripts
-  - low-signal chatter
-  - disposable exploration noise
+Copy a short prompt for the tool you use:
 
-## Why This Exists
+- [Codex](./starter-kit/prompts/codex.md)
+- [Claude Code](./starter-kit/prompts/claude-code.md)
+- [Cursor](./starter-kit/prompts/cursor.md)
+- [Windsurf](./starter-kit/prompts/windsurf.md)
+- [ChatGPT](./starter-kit/prompts/chatgpt.md)
+- [Gemini CLI](./starter-kit/prompts/gemini-cli.md)
 
-Most agent memory systems fail in one of two ways:
+The prompts all enforce the same budget:
 
-- they remember too little because nothing is written down in a reusable shape
-- they remember too much because every conversation turn is treated like durable knowledge
+- scan `memory/impressions.jsonl` first
+- read `memory/summary.md` only for weak familiarity
+- read at most 1-3 detailed records for strong familiarity
+- never load the whole memory tree by default
+- write back only durable memory
 
-Deja Vu stays closer to first principles:
+## Optional CLI
 
-- memory should be explicit
-- memory should be scoped
-- memory should be cheap to inspect
-- memory should be easy to revise
-- memory behavior should survive a new conversation window
+The CLI exists to support the three-file protocol. It is not required.
+
+```bash
+npx @focaxisdev/deja-vu init --dry-run
+npx @focaxisdev/deja-vu init --agents codex,claude-code
+npx @focaxisdev/deja-vu doctor --json
+npx @focaxisdev/deja-vu explain
+```
+
+`init` creates missing files only. It does not overwrite existing files unless you pass `--force`.
+
+`doctor` checks whether a repo has a usable Deja Vu setup, validates JSONL, warns about memory bloat and transcript-like content, and flags obvious secrets.
+
+For public repos, remember that tracked memory files are public project files. `doctor` can catch obvious risks, but it is not a complete secret or PII scanner.
+
+Existing focused tools still work:
+
+```bash
+deja-vu-scan-memory "current task"
+deja-vu-lint-memory --memory-root memory
+deja-vu-feedback-report --memory-root memory
+```
+
+## Protocol
+
+The Deja Vu lifecycle is:
+
+1. Scan tiny cues.
+2. Classify familiarity: none, weak, or strong.
+3. Load the smallest useful memory.
+4. Work normally.
+5. Write back durable memory only.
+6. Compact or retire stale memory when recall gets noisy.
+
+Default recall budget:
+
+- impression scan: always allowed
+- summary: at most one file
+- detailed records: one to three files
+- full memory tree: forbidden unless explicitly requested
+
+Write back only:
+
+- accepted decisions
+- architecture intent
+- stable preferences
+- unresolved follow-ups
+- milestone summaries
+- recall feedback that should tune future cues
+
+Never write back:
+
+- secrets, tokens, credentials, or private keys
+- full turn-by-turn transcripts
+- customer/user PII
+- low-signal chatter
+- disposable exploration noise
+
+Read the full spec in [docs/protocol.md](./docs/protocol.md).
+
+## Docs
+
+- [Starter kit](./starter-kit/README.md)
+- [Comparison](./docs/comparison.md)
+- [Agent compatibility](./docs/agent-compatibility.md)
+- [Flow diagram](./docs/diagrams/deja-vu-flow.md)
+- [Demo walkthrough](./docs/demo-walkthrough.md)
+- [Protocol](./docs/protocol.md)
+- [Workflow](./docs/workflow.md)
+- [Markdown storage contract](./docs/storage-markdown.md)
+- [Impression layer](./docs/impression-layer.md)
+- [Scripted recall](./docs/scripted-recall.md)
+- [Launch copy](./docs/launch-copy.md)
+- [llms.txt](./llms.txt)
 
 ## Optional Engine Layer
 
@@ -199,23 +223,11 @@ Use it when you want:
 - embedding and vector ranking
 - an engine-backed implementation of the Deja Vu protocol
 
-Do not treat the engine as the product center. It is an optional acceleration layer.
-
-Start here if you want that path:
-
-- [docs/engine/semantic-engine.md](./docs/engine/semantic-engine.md)
-- [docs/engine/protocol-to-engine.md](./docs/engine/protocol-to-engine.md)
-- [docs/agent-handshake.md](./docs/agent-handshake.md)
-
-## Optional npm Install
+Do not treat the engine as the product center. It is an optional acceleration layer after the repo-local memory protocol is already useful.
 
 ```bash
 npm install @focaxisdev/deja-vu
 ```
-
-The npm package provides the optional TypeScript engine. It is not required for base protocol adoption.
-
-## Engine API
 
 ```ts
 const engine = new SemanticRecallEngine(config);
@@ -229,12 +241,6 @@ await engine.updateMemory(id, input);
 await engine.deleteMemory(id);
 ```
 
-The public TypeScript exports remain intact for hosts that want semantic recall.
-
-`scanImpressions()` performs token-only familiarity scanning and does not load summaries or chunks.
-
-The default engine helpers preserve low-token recall quality by generating decision/rationale/trigger summaries and by chunking Markdown or paragraph boundaries before falling back to character splits.
-
 ## Examples
 
 - Protocol-first example: [examples/protocol-project](./examples/protocol-project)
@@ -243,47 +249,14 @@ The default engine helpers preserve low-token recall quality by generating decis
 - Engine example: `npm run example:chat-memory`
 - Engine example: `npm run example:task-assistant`
 
-## Repo Structure
-
-```text
-deja-vu/
-  docs/
-    protocol.md
-    workflow.md
-    storage-markdown.md
-    templates/
-    engine/
-  examples/
-    protocol-project/
-    basic/
-    agent-pm/
-    chat-memory/
-    task-assistant/
-  src/
-  tests/
-```
-
 ## Development
 
 ```bash
 npm install
 npm run build
-npm run test:src
+npm run test:src:readonly
 npm run lint:memory
 npm run report:feedback
 ```
 
-## References
-
-- [docs/protocol.md](./docs/protocol.md)
-- [docs/workflow.md](./docs/workflow.md)
-- [docs/storage-markdown.md](./docs/storage-markdown.md)
-- [docs/impression-layer.md](./docs/impression-layer.md)
-- [docs/scripted-recall.md](./docs/scripted-recall.md)
-- [docs/bootstrap-instructions.md](./docs/bootstrap-instructions.md)
-- [docs/project-rules-template.md](./docs/project-rules-template.md)
-- [docs/release-v0.3.1.md](./docs/release-v0.3.1.md)
-- [docs/release-v0.4.0.md](./docs/release-v0.4.0.md)
-- [docs/release-v0.4.1.md](./docs/release-v0.4.1.md)
-- [docs/release-v0.5.0.md](./docs/release-v0.5.0.md)
-- [llms.txt](./llms.txt)
+`npm run test` rebuilds `dist`. Use `test:src:readonly` when you want source tests without build output side effects.

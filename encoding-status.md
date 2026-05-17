@@ -86,3 +86,47 @@
 | `docs/templates/memory/summary.md` | 編碼正常（已檢查） | Updated in UTF-8; summary template now warns against turn-by-turn history. |
 | `docs/templates/memory/decisions/decision-template.md` | 編碼正常（已檢查） | Updated in UTF-8; decision template now clarifies durable decision scope. |
 | `docs/templates/memory/open-loops/open-loop-template.md` | 編碼正常（已檢查） | Updated in UTF-8; open-loop template now clarifies unresolved follow-up scope. |
+| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; first screen now positions Deja Vu as a 3-file memory system with copy-first starter and optional CLI. |
+| `CHANGELOG.md` | 編碼正常（已檢查） | Updated in UTF-8; Unreleased notes now describe the v0.6.0 candidate adoption work. |
+| `llms.txt` | 編碼正常（已檢查） | Updated in UTF-8; AI-readable index now points to starter kit, compatibility, comparison, diagram, demo, and v0.6.0 checklist. |
+| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; added unified CLI bin, starter-kit package files, and split readonly source tests from pack tests. |
+| `package-lock.json` | 編碼正常（已檢查） | Updated in UTF-8; root package bin metadata now matches package.json. |
+| `docs/bootstrap-instructions.md` | 編碼正常（已檢查） | Updated in UTF-8; bootstrap now starts from starter-kit and uses doctor when the optional CLI is available. |
+| `docs/protocol.md` | 編碼正常（已檢查） | Updated in UTF-8; added protocol/package version note and compact agent contract. |
+| `docs/scripted-recall.md` | 編碼正常（已檢查） | Updated in UTF-8; scripted recall now documents not_initialized and keeps recall feedback optional. |
+| `docs/storage-markdown.md` | 編碼正常（已檢查） | Updated in UTF-8; added feedback sanitization and public repo safety guidance. |
+| `docs/templates/AGENTS.template.md` | 編碼正常（已檢查） | Updated in UTF-8; template now handles not_initialized and expanded safety boundaries. |
+| `docs/workflow.md` | 編碼正常（已檢查） | Updated in UTF-8; workflow now distinguishes missing setup from none and clarifies script-optional recall. |
+| `examples/protocol-project/AGENTS.md` | 編碼正常（已檢查） | Updated in UTF-8; example rules now include not_initialized and PII guidance. |
+| `examples/protocol-project/README.md` | 編碼正常（已檢查） | Updated in UTF-8; recall feedback moved out of the minimum files list. |
+| `examples/protocol-project/memory/impressions.jsonl` | 編碼正常（已檢查） | Updated in UTF-8; example cues now match protocol-first vs engine-first demo query. |
+| `examples/protocol-project/memory/recall-feedback.jsonl` | 編碼正常（已檢查） | Updated in UTF-8; feedback matched_id now resolves to the active impression id. |
+| `scripts/dejavu-scan-memory.mjs` | 編碼正常（已檢查） | Updated in UTF-8; missing impression file now returns not_initialized with bootstrap hint. |
+| `scripts/deja-vu.mjs` | 編碼正常（新建，UTF-8） | New unified optional CLI for init, doctor, and explain. |
+| `tests/memory-cli.test.ts` | 編碼正常（已檢查） | Updated in UTF-8; tests now cover not_initialized, unified CLI init/doctor/explain, and readonly source test split. |
+| `tests/package-pack.test.ts` | 編碼正常（新建，UTF-8） | New pack metadata test for unified CLI bins and starter-kit package inclusion. |
+| `docs/comparison.md` | 編碼正常（新建，UTF-8） | New comparison doc contrasting Deja Vu with vector DB memory, hosted memory, runtimes, notes, and transcript archives. |
+| `docs/agent-compatibility.md` | 編碼正常（新建，UTF-8） | New compatibility doc for file-aware and chat-only agents. |
+| `docs/diagrams/deja-vu-flow.md` | 編碼正常（新建，UTF-8） | New Mermaid and ASCII recall flow diagram. |
+| `docs/launch-copy.md` | 編碼正常（新建，UTF-8） | New launch copy doc with social posts, release intro, HN titles, and taglines. |
+| `docs/demo-walkthrough.md` | 編碼正常（新建，UTF-8） | New before/after demo walkthrough and dogfooding guidance. |
+| `docs/release-v0.6.0.md` | 編碼正常（新建，UTF-8） | New v0.6.0 candidate checklist. |
+| `starter-kit/README.md` | 編碼正常（新建，UTF-8） | New copy-first starter kit README. |
+| `starter-kit/AGENTS.md` | 編碼正常（新建，UTF-8） | New minimal Deja Vu project memory rules file. |
+| `starter-kit/memory/summary.md` | 編碼正常（新建，UTF-8） | New starter project summary template. |
+| `starter-kit/memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New starter impression cue route. |
+| `starter-kit/memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New optional empty recall feedback ledger. |
+| `starter-kit/prompts/codex.md` | 編碼正常（新建，UTF-8） | New Codex startup prompt. |
+| `starter-kit/prompts/claude-code.md` | 編碼正常（新建，UTF-8） | New Claude Code startup prompt. |
+| `starter-kit/prompts/cursor.md` | 編碼正常（新建，UTF-8） | New Cursor startup prompt. |
+| `starter-kit/prompts/windsurf.md` | 編碼正常（新建，UTF-8） | New Windsurf startup prompt. |
+| `starter-kit/prompts/chatgpt.md` | 編碼正常（新建，UTF-8） | New ChatGPT manual-memory startup prompt. |
+| `starter-kit/prompts/gemini-cli.md` | 編碼正常（新建，UTF-8） | New Gemini CLI startup prompt. |
+| `package.json` | 編碼正常（已檢查） | Updated in UTF-8; clean script is now cross-platform for CI and pack verification. |
+| `.github/workflows/ci.yml` | 編碼正常（新建，UTF-8） | New GitHub Actions workflow for source tests, memory checks, build, and pack verification. |
+| `AGENTS.md` | 編碼正常（新建，UTF-8） | New repo-root dogfood Deja Vu project memory rules. |
+| `memory/summary.md` | 編碼正常（新建，UTF-8） | New repo-root dogfood project summary with stable v0.6.0 positioning and boundaries. |
+| `memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New repo-root dogfood impression cues for positioning, starter kit, protocol/engine boundary, CLI scope, safety, and release readiness. |
+| `memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New empty repo-root dogfood recall feedback ledger. |
+| `README.md` | 編碼正常（已檢查） | Updated in UTF-8; added public repo and doctor limitation safety note. |
+| `starter-kit/README.md` | 編碼正常（已檢查） | Updated in UTF-8; added public repo and doctor limitation safety note. |

@@ -56,7 +56,36 @@ if (!query) {
 }
 
 if (!existsSync(memoryPath)) {
-  console.log(JSON.stringify({ matched: false, level: "none", score: 0, matches: [] }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        matched: false,
+        level: "not_initialized",
+        score: 0,
+        matches: [],
+        budget: {
+          impression_scan: 0,
+          summaries_loaded: 0,
+          detail_records_loaded: 0,
+          why_loaded: ["memory/impressions.jsonl was not found"],
+        },
+        diagnostics: [
+          {
+            id: "missing-impressions",
+            level: "error",
+            message: "Deja Vu memory is not initialized",
+            path: memoryPath,
+          },
+        ],
+        bootstrap_hint: {
+          required_files: ["AGENTS.md", "memory/summary.md", "memory/impressions.jsonl"],
+          next_step: "copy starter-kit/. into the repo or run deja-vu init",
+        },
+      },
+      null,
+      2,
+    ),
+  );
   process.exit(0);
 }
 

@@ -8,17 +8,20 @@
 
 After copying this template, replace every `<project-id>` and placeholder memory field before using it in a real project.
 
+Protocol version and package version are separate. Keep this line on the protocol version this project follows.
+
 ## Required recall behavior
 
 Before substantial planning, coding, or answering:
 
 1. Run `node scripts/dejavu-scan-memory.mjs "<current task>"` when available.
-2. If the result is `none`, avoid memory reads by default.
-3. If the result is `weak`, read `memory/summary.md`.
-4. If the result is `strong`, open the linked detailed record.
-5. If the script is missing, fall back to `memory/summary.md` and then `memory/index.md` when present.
+2. If the result is `not_initialized`, create or ask for the three required files.
+3. If the result is `none`, avoid memory reads by default.
+4. If the result is `weak`, read `memory/summary.md`.
+5. If the result is `strong`, open one to three linked detailed records.
+6. If the script is missing, inspect `memory/impressions.jsonl` directly and apply the same budget.
 
-6. Keep the scan output's budget fields visible before loading more memory.
+7. Keep the scan output's budget fields visible before loading more memory.
 
 Recall budget:
 
@@ -60,8 +63,10 @@ Do not store:
 
 - secrets, tokens, credentials, or private keys
 - full conversation transcripts
+- customer or user PII
 - low-signal chatter
 - temporary exploration noise
+- raw debug logs or build output
 
 ## Compaction behavior
 

@@ -94,6 +94,8 @@ Purpose:
 - capture reward signals without logging full transcripts
 - identify helpful, irrelevant, missed, or overloaded recall routes
 
+Feedback queries should be sanitized cues, not raw user prompts. Do not include secrets, PII, or long task text.
+
 Each line must be one JSON object with:
 
 - `schema_version`
@@ -211,3 +213,19 @@ Markdown is the primary storage contract because it is:
 - easy to diff and review
 
 Do not require JSON as a parallel source of truth in MVP.
+
+## Public Repo Safety
+
+Track only memory that is safe to share with everyone who can read the repo.
+
+Recommended private/local ignore patterns when needed:
+
+```gitignore
+memory/private/
+memory/local/
+memory/raw/
+memory/transcripts/
+memory/**/*.secret.*
+```
+
+Do not ignore all of `memory/` by default. The protocol works because sanitized durable memory travels with the repo.

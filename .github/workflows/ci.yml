@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Source tests
+        run: npm run test:src:readonly
+
+      - name: Memory lint
+        run: npm run lint:memory
+
+      - name: Feedback report
+        run: npm run report:feedback
+
+      - name: Build
+        run: npm run build
+
+      - name: Pack verification
+        run: npm run test:pack

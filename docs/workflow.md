@@ -8,6 +8,8 @@ Use the smallest amount of memory that preserves continuity.
 
 Deja Vu should feel like recognition, not replay. A task cue earns more context only when it matches a reusable project memory route.
 
+Scripts are optional. If the scanner is missing, an agent can inspect `memory/impressions.jsonl` directly and apply the same budget.
+
 ## Task Lifecycle
 
 ### Pre-task recall
@@ -15,11 +17,12 @@ Deja Vu should feel like recognition, not replay. A task cue earns more context 
 Before substantial planning, coding, or answering:
 
 1. Run `node scripts/dejavu-scan-memory.mjs "<task>"` when the script exists.
-2. If the scan level is `none`, avoid detailed memory reads by default.
-3. If the scan level is `weak`, read `memory/summary.md`.
-4. If the scan level is `strong`, read the linked detailed record before planning.
-5. If no script exists, fall back to `memory/summary.md` and then `memory/index.md` when present.
-6. Keep the scan output's budget fields visible while deciding whether to load more memory.
+2. If the scan level is `not_initialized`, create or ask for the three required files.
+3. If the scan level is `none`, avoid detailed memory reads by default.
+4. If the scan level is `weak`, read `memory/summary.md`.
+5. If the scan level is `strong`, read one to three linked detailed records before planning.
+6. If no script exists, inspect `memory/impressions.jsonl` directly and apply the same budget.
+7. Keep the scan output's budget fields visible while deciding whether to load more memory.
 
 Recall budget:
 
