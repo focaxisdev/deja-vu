@@ -124,6 +124,9 @@
 | `starter-kit/prompts/gemini-cli.md` | 編碼正常（新建，UTF-8） | New Gemini CLI startup prompt. |
 | `package.json` | 編碼正常（已檢查） | Updated in UTF-8; clean script is now cross-platform for CI and pack verification. |
 | `.github/workflows/ci.yml` | 編碼正常（新建，UTF-8） | New GitHub Actions workflow for source tests, memory checks, build, and pack verification. |
+| `AGENTS.md` | 編碼正常（新建，UTF-8） | New repo-root dogfood Deja Vu project memory rules. |
+| `memory/summary.md` | 編碼正常（新建，UTF-8） | New repo-root dogfood project summary with stable v0.6.0 positioning and boundaries. |
+| `memory/impressions.jsonl` | 編碼正常（新建，UTF-8） | New repo-root dogfood impression cues for positioning, starter kit, protocol/engine boundary, CLI scope, safety, and release readiness. |
+| `memory/recall-feedback.jsonl` | 編碼正常（新建，UTF-8） | New empty repo-root dogfood recall feedback ledger. |
 | `README.md` | 編碼正常（已檢查） | Updated in UTF-8; added public repo and doctor limitation safety note. |
 | `starter-kit/README.md` | 編碼正常（已檢查） | Updated in UTF-8; added public repo and doctor limitation safety note. |
-
