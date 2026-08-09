@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.7.0] - Unreleased
+## [0.7.0] - 2026-08-09
 
 - Rebuilt the README around a one-command start, concrete before/after proof, agent compatibility, safety boundaries, and a shareable product visual.
 - Added `deja-vu init --merge-agents` to append an idempotent rules block without replacing an existing `AGENTS.md`.
