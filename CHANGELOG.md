@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2026-08-09
+
+- Rebuilt the README around a one-command start, concrete before/after proof, agent compatibility, safety boundaries, and a shareable product visual.
+- Added `deja-vu init --merge-agents` to append an idempotent rules block without replacing an existing `AGENTS.md`.
+- Made `init` report incomplete setup and made `doctor` reject an `AGENTS.md` that lacks Deja Vu recall rules.
+- Added cross-platform starter-kit instructions and a contributor guide.
+- Added repository-wide local Markdown link validation and fixed broken memory-index template links.
+- Hardened package verification to use an isolated npm cache and prepared the package metadata for the first CLI-capable npm release.
+
 ## [0.6.0] - 2026-05-17
 
 - Reworked the README first screen around the "3-file memory system" positioning.

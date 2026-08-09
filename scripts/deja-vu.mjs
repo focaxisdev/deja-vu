@@ -13,6 +13,8 @@ import { fileURLToPath } from "node:url";
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const starterRoot = resolve(packageRoot, "starter-kit");
 const knownAgents = new Set(["codex", "claude-code", "cursor", "windsurf", "chatgpt", "gemini-cli"]);
+const rulesStart = "<!-- deja-vu:rules:start -->";
+const rulesEnd = "<!-- deja-vu:rules:end -->";
 
 const args = process.argv.slice(2);
 const command = args[0] ?? "help";
@@ -70,6 +72,34 @@ function materializeTemplate(text, projectId) {
   return text.replaceAll("project:your-project", projectId).replaceAll("2026-05-16", today());
 }
 
+function materializeRulesTemplate(projectId) {
+  return materializeTemplate(readStarter("AGENTS.md"), projectId).replace(
+    /^Replace `project:[^`]+` with a stable repo-local project id\.\r?\n\r?\n/m,
+    "",
+  );
+}
+
+function hasDejaVuRules(text) {
+  return text.includes("memory/impressions.jsonl") && text.includes("memory/summary.md");
+}
+
+function readUtf8ForMerge(path) {
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(readFileSync(path));
+  } catch {
+    throw new Error(`Cannot merge Deja Vu rules into ${path}: the file is not valid UTF-8.`);
+  }
+}
+
+function rulesBlock(projectId, eol = "\n") {
+  const rules = materializeRulesTemplate(projectId)
+    .replace(/\r\n/g, "\n")
+    .replace(/^## /gm, "### ")
+    .replace(/^# Deja Vu Project Memory Rules/m, "## Deja Vu Project Memory Rules")
+    .trim();
+  return [rulesStart, rules, rulesEnd, ""].join(eol);
+}
+
 function getAgents(value) {
   if (!value) return [];
   const names = String(value)
@@ -105,20 +135,60 @@ function writePlannedFile(plan, targetPath, content, { force, dryRun }) {
   writeFileSync(targetPath, content, "utf8");
 }
 
+function writeAgentsFile(plan, targetPath, content, { force, dryRun, mergeAgents, projectId }) {
+  if (!existsSync(targetPath)) {
+    plan.push({ operation: "create", path: targetPath });
+    if (!dryRun) writeFileSync(targetPath, content, "utf8");
+    return true;
+  }
+
+  if (force) {
+    plan.push({ operation: "overwrite", path: targetPath });
+    if (!dryRun) writeFileSync(targetPath, content, "utf8");
+    return true;
+  }
+
+  const existing = readUtf8ForMerge(targetPath);
+  if (hasDejaVuRules(existing)) {
+    plan.push({ operation: "skip", path: targetPath, reason: "Deja Vu rules already present" });
+    return true;
+  }
+
+  if (!mergeAgents) {
+    plan.push({ operation: "manual_merge", path: targetPath, reason: "existing AGENTS.md has no Deja Vu rules" });
+    return false;
+  }
+
+  plan.push({ operation: "append", path: targetPath });
+  if (!dryRun) {
+    const eol = existing.includes("\r\n") ? "\r\n" : "\n";
+    const separator = existing.endsWith(`${eol}${eol}`) ? "" : existing.endsWith(eol) ? eol : `${eol}${eol}`;
+    writeFileSync(targetPath, `${existing}${separator}${rulesBlock(projectId, eol)}`, "utf8");
+  }
+  return true;
+}
+
 function initCommand(values) {
   const { options } = parseOptions(values);
   const cwd = resolve(process.cwd(), String(options.cwd ?? "."));
   const dryRun = asBoolean(options.dryRun);
   const force = asBoolean(options.force);
+  const mergeAgents = asBoolean(options.mergeAgents);
   const json = asBoolean(options.json);
   const projectId = slugifyProjectId(String(options.projectId ?? options.scope ?? basename(cwd)));
   const agents = getAgents(options.agents ?? options.agent);
   const plan = [];
 
-  writePlannedFile(plan, resolve(cwd, "AGENTS.md"), materializeTemplate(readStarter("AGENTS.md"), projectId), {
-    dryRun,
-    force,
-  });
+  if (force && mergeAgents) {
+    throw new Error("Choose either --force or --merge-agents, not both.");
+  }
+
+  const rulesReady = writeAgentsFile(
+    plan,
+    resolve(cwd, "AGENTS.md"),
+    materializeRulesTemplate(projectId),
+    { dryRun, force, mergeAgents, projectId },
+  );
   writePlannedFile(
     plan,
     resolve(cwd, "memory", "summary.md"),
@@ -151,17 +221,35 @@ function initCommand(values) {
   ].join(" ");
 
   if (json) {
-    print({ ok: true, dry_run: dryRun, project_id: projectId, agents, operations: plan, next_prompt: prompt }, true);
+    print(
+      {
+        ok: true,
+        ready: rulesReady,
+        dry_run: dryRun,
+        project_id: projectId,
+        agents,
+        operations: plan,
+        required_action: rulesReady ? null : "Run init again with --merge-agents or merge the starter rules manually.",
+        next_prompt: prompt,
+      },
+      true,
+    );
     return;
   }
 
   const lines = [
     dryRun ? "Deja Vu init dry run:" : "Deja Vu init complete:",
     ...plan.map((item) => `- ${item.operation}: ${relative(cwd, item.path)}`),
-    "",
-    "Next agent prompt:",
-    prompt,
   ];
+  if (!rulesReady) {
+    lines.push(
+      "",
+      "Action required:",
+      "- AGENTS.md already exists but does not include Deja Vu rules.",
+      "- Run `deja-vu init --merge-agents` to append a marked, idempotent rules block, or merge the starter rules manually.",
+    );
+  }
+  lines.push("", "Next agent prompt:", prompt);
   print(lines.join("\n"), false);
 }
 
@@ -248,6 +336,8 @@ function doctorCommand(values) {
 
   if (!existsSync(agentsPath)) {
     addDiagnostic(diagnostics, "error", "Missing AGENTS.md", { path: agentsPath });
+  } else if (!hasDejaVuRules(readFileSync(agentsPath, "utf8"))) {
+    addDiagnostic(diagnostics, "error", "AGENTS.md does not include Deja Vu recall rules", { path: agentsPath });
   }
   if (!existsSync(summaryPath)) {
     addDiagnostic(diagnostics, "error", "Missing memory/summary.md", { path: summaryPath });
@@ -358,6 +448,7 @@ function help() {
       "",
       "Examples:",
       "  deja-vu init --dry-run",
+      "  deja-vu init --merge-agents",
       "  deja-vu init --agents codex,claude-code",
       "  deja-vu doctor --json",
       "  deja-vu explain",

@@ -1,10 +1,38 @@
 # Deja Vu Starter Kit
 
-Copy this folder into any repo root to add Deja Vu project memory.
+Add this starter kit to any repo root to give coding agents durable project memory.
+
+## Fastest Setup
+
+The optional CLI creates the starter files without replacing existing files:
 
 ```bash
-cp -R starter-kit/. .
+npx @focaxisdev/deja-vu init
 ```
+
+If the repo already has `AGENTS.md`, preserve it and append a marked, idempotent Deja Vu rules block:
+
+```bash
+npx @focaxisdev/deja-vu init --merge-agents
+```
+
+## Copy Without npm
+
+After cloning Deja Vu, copy this directory into the target repo root.
+
+macOS or Linux:
+
+```bash
+cp -R starter-kit/. /path/to/your-repo/
+```
+
+PowerShell:
+
+```powershell
+Copy-Item -Path .\starter-kit\* -Destination C:\path\to\your-repo -Recurse -Force
+```
+
+If the target already has `AGENTS.md`, merge the Deja Vu sections manually instead of replacing its current project rules.
 
 The minimum useful setup is three files:
 
