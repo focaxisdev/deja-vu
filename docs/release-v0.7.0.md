@@ -1,10 +1,10 @@
-# Deja Vu v0.7.0 Release Candidate
+# Deja Vu v0.7.0 Release
 
-v0.7.0 is the first release candidate whose public npm package includes the three-file starter kit and unified CLI.
+v0.7.0 is the first public npm release that includes the three-file starter kit and unified CLI.
 
 ## Why this release matters
 
-The repository reached v0.6.0, but npm `latest` remained at v0.1.0. That published package does not expose the `deja-vu` CLI, so the README's `npx @focaxisdev/deja-vu init` path cannot work until a new package is published.
+Before v0.7.0, the repository had reached v0.6.0 while npm `latest` remained at v0.1.0. That published package did not expose the `deja-vu` CLI, so the README's `npx @focaxisdev/deja-vu init` path could not work.
 
 v0.7.0 closes that adoption gap and hardens the first-run experience for repos with existing project rules.
 
@@ -43,15 +43,14 @@ Verify the packed file list contains:
 - `starter-kit/memory/impressions.jsonl`
 - all declared package binaries
 
-## Publish sequence
+## Published result
 
-1. Merge the reviewed v0.7.0 changes.
-2. Confirm npm authentication with `npm whoami`.
-3. Publish with `npm publish --access public`.
-4. Verify `npm view @focaxisdev/deja-vu version bin --json` reports v0.7.0 and all four binaries.
-5. Test `npx @focaxisdev/deja-vu init --dry-run` from an empty temporary directory.
-6. Create the v0.7.0 GitHub release from the verified commit.
-7. Update the GitHub description, topics, and social preview.
-8. Use the prepared launch copy only after the public quick start succeeds.
+Completed on 2026-08-09:
 
-Do not publish, tag, or announce from an unverified working tree.
+- PR #9 was squash-merged to `main` as commit `32ce3c5`.
+- [`@focaxisdev/deja-vu@0.7.0`](https://www.npmjs.com/package/@focaxisdev/deja-vu/v/0.7.0) was published publicly and assigned npm `latest`.
+- Registry metadata reports all four package binaries.
+- A fresh public-registry `npx @focaxisdev/deja-vu@0.7.0 init --dry-run --json` run returned `ok: true` and `ready: true`.
+- [GitHub Release v0.7.0](https://github.com/focaxisdev/deja-vu/releases/tag/v0.7.0) was published from the verified merge commit.
+
+Prepared promotion copy remains in `docs/launch-copy.md` for a separate launch step.

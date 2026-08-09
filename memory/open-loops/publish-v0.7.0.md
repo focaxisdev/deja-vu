@@ -1,16 +1,17 @@
 ---
 id: publish-v0.7.0
 title: Publish and verify Deja Vu v0.7.0
-status: active
+status: archived
 scope: project:deja-vu
 updated: 2026-08-09
+closed: 2026-08-09
 ---
 
 # Publish and Verify Deja Vu v0.7.0
 
 ## Why it matters
 
-npm `latest` is v0.1.0 and does not include the unified `deja-vu` CLI. The public quick start remains broken until a package containing the current starter kit and binaries is published.
+npm `latest` was v0.1.0 and did not include the unified `deja-vu` CLI, leaving the public quick start unusable.
 
 ## Owner
 
@@ -20,14 +21,18 @@ Repository maintainer.
 
 2026-08-09.
 
+## Resolution
+
+Resolved on 2026-08-09:
+
+- PR #9 was squash-merged to `main` as commit `32ce3c5`.
+- `@focaxisdev/deja-vu@0.7.0` was published publicly with npm `latest` pointing to v0.7.0.
+- Registry metadata exposes `deja-vu`, `deja-vu-scan-memory`, `deja-vu-lint-memory`, and `deja-vu-feedback-report`.
+- A fresh public-registry `npx ... init --dry-run --json` returned `ok: true` and `ready: true`.
+- GitHub Release `v0.7.0` was published from the verified merge commit.
+
+The prepared launch copy remains available for a separately authorized promotion step.
+
 ## Next trigger
 
-After the v0.7.0 pull request is reviewed and merged:
-
-1. run the clean release verification in `docs/release-v0.7.0.md`
-2. publish v0.7.0 to npm with public access
-3. verify package version, bin metadata, and a fresh `npx ... init --dry-run`
-4. create the matching GitHub release
-5. update repository metadata and begin the prepared launch sequence
-
-Do not announce the quick start before the public package smoke test passes.
+None. Keep this record archived; track any future release or promotion work in a new open-loop record.

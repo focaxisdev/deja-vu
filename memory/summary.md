@@ -34,11 +34,11 @@ v0.7.0 closes the gap between the repository story and the installable product:
 - Package verification installs the built tarball and runs its CLI.
 - Local Markdown links are validated in CI.
 
-As of 2026-08-09, npm `latest` is still v0.1.0 and does not expose the unified CLI. Do not launch the `npx @focaxisdev/deja-vu init` path until v0.7.0 is published and verified.
+Released on 2026-08-09, npm `latest` now resolves to v0.7.0 and exposes the unified CLI plus all four declared binaries. A fresh public-registry `npx @focaxisdev/deja-vu@0.7.0 init --dry-run --json` run returned `ok: true` and `ready: true`. The matching GitHub release points to verified merge commit `32ce3c5`.
 
 ## Open loops
 
-- [Publish and verify v0.7.0](./open-loops/publish-v0.7.0.md)
+- No v0.7.0 release blockers remain.
 
 ## Boundaries
 
