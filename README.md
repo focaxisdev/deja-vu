@@ -42,6 +42,8 @@ npx @focaxisdev/deja-vu init --dry-run
 npx @focaxisdev/deja-vu doctor
 ```
 
+![Deja Vu initializes and verifies the three-file memory setup](./docs/assets/deja-vu-terminal-demo.gif)
+
 Then start the next agent session with:
 
 > Follow AGENTS.md. Scan memory/impressions.jsonl before substantial work, load only the matching memory, and write back durable project context only.

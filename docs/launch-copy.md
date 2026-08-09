@@ -4,6 +4,11 @@ Use this copy only after the public npm quick start has been verified. Keep the 
 
 Project URL: <https://github.com/focaxisdev/deja-vu>
 
+Launch assets:
+
+- social preview: [`docs/assets/deja-vu-social-preview.png`](./assets/deja-vu-social-preview.png)
+- terminal demo: [`docs/assets/deja-vu-terminal-demo.gif`](./assets/deja-vu-terminal-demo.gif)
+
 ## Short post
 
 I got tired of re-explaining the same repo to every new AI coding-agent session.
@@ -36,19 +41,17 @@ Quick start: `npx @focaxisdev/deja-vu init`
 
 <https://github.com/focaxisdev/deja-vu>
 
-## Show HN
+## Show HN — human-written only
 
-Title:
+Hacker News asks users not to post generated or AI-edited text. Do not paste launch copy from this file into an HN submission or comment. The maintainer should write the title and first comment from scratch, in their own words.
 
-> Show HN: Deja Vu – three-file project memory for AI coding agents
+Useful facts to verify while writing:
 
-First comment:
-
-> I built Deja Vu because coding agents kept losing the reasoning that lives between commits: rejected approaches, architecture intent, fragile workarounds, and unresolved follow-ups.
->
-> The minimum setup is `AGENTS.md`, `memory/summary.md`, and `memory/impressions.jsonl`. The impressions file is a tiny cue router: no match loads nothing, a weak match loads one summary, and a strong match loads one to three linked records. The agent writes back only durable context after the task.
->
-> It is intentionally a file convention first. The CLI only creates and checks those files; npm, embeddings, and the optional TypeScript engine are not required. I would especially value feedback on the three-file boundary, the recall budget, and whether the existing-AGENTS merge behavior feels safe.
+- the problem personally observed
+- why the minimum setup is three files
+- what `init` and `doctor` actually do
+- why the protocol avoids transcript archives, embeddings, and hosted storage
+- what specific design feedback would be useful
 
 ## GitHub release intro
 
@@ -56,11 +59,11 @@ Deja Vu v0.7.0 makes the public quick start real: the npm package now includes t
 
 This release adds safe merging for existing `AGENTS.md` files, stricter setup diagnostics, cross-platform onboarding, link validation, isolated package verification, and a clearer before/after product story.
 
-## Alternate titles
+## Non-HN launch angles
 
-- Show HN: Stop re-explaining your repo to every new coding-agent session
-- Show HN: Repo-local memory for Codex, Claude Code, Cursor, and Windsurf
 - Deja Vu: project memory that fits in a pull request
+- Stop re-explaining your repo to every new coding-agent session
+- Repo-local memory for Codex, Claude Code, Cursor, and Windsurf
 - Store less, recall better: a file-first memory protocol for coding agents
 
 ## Taglines
