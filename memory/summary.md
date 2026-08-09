@@ -39,6 +39,7 @@ Released on 2026-08-09, npm `latest` now resolves to v0.7.0 and exposes the unif
 ## Open loops
 
 - No v0.7.0 release blockers remain.
+- Run a focused distribution cycle and collect onboarding feedback from real external setups; see `memory/open-loops/distribute-v0.7.0.md`.
 
 ## Boundaries
 
