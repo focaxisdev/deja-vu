@@ -336,6 +336,7 @@ test("unified CLI init dry-run does not create files", () => {
   const result = runCliJson(["init", "--dry-run", "--project-id", "project:dry-run", "--agents", "codex"], project);
 
   assert.equal(result.ok, true);
+  assert.equal(result.ready, true);
   assert.equal(result.dry_run, true);
   assert.equal(result.project_id, "project:dry-run");
   assert.ok(result.operations.some((item: { operation: string; path: string }) => item.operation === "create" && item.path.endsWith("AGENTS.md")));
@@ -344,18 +345,43 @@ test("unified CLI init dry-run does not create files", () => {
   assert.equal(existsSync(join(project, "prompts", "codex.md")), false);
 });
 
-test("unified CLI init creates missing files without overwriting existing files", () => {
+test("unified CLI init creates memory files and flags existing AGENTS.md for a safe merge", () => {
   const project = mkdtempSync(join(tmpdir(), "dejavu-init-"));
   writeFileSync(join(project, "AGENTS.md"), "# Existing rules\n", "utf8");
 
   const result = runCliJson(["init", "--project-id", "project:sample", "--agents", "codex"], project);
 
   assert.equal(result.ok, true);
-  assert.ok(result.operations.some((item: { operation: string; path: string }) => item.operation === "skip" && item.path.endsWith("AGENTS.md")));
+  assert.equal(result.ready, false);
+  assert.ok(result.required_action.includes("--merge-agents"));
+  assert.ok(result.operations.some((item: { operation: string; path: string }) => item.operation === "manual_merge" && item.path.endsWith("AGENTS.md")));
   assert.equal(readFileSync(join(project, "AGENTS.md"), "utf8"), "# Existing rules\n");
   assert.ok(readFileSync(join(project, "memory", "summary.md"), "utf8").includes("scope: project:sample"));
   assert.ok(readFileSync(join(project, "memory", "impressions.jsonl"), "utf8").includes('"scope":"project:sample"'));
   assert.equal(existsSync(join(project, "prompts", "codex.md")), true);
+});
+
+test("unified CLI init can append an idempotent rules block to existing AGENTS.md", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-init-merge-"));
+  const agentsPath = join(project, "AGENTS.md");
+  writeFileSync(agentsPath, "# Existing rules\n\nKeep this line.\n", "utf8");
+
+  const first = runCliJson(["init", "--project-id", "project:sample", "--merge-agents"], project);
+  const afterFirst = readFileSync(agentsPath, "utf8");
+  const second = runCliJson(["init", "--project-id", "project:sample", "--merge-agents"], project);
+  const afterSecond = readFileSync(agentsPath, "utf8");
+
+  assert.equal(first.ready, true);
+  assert.ok(first.operations.some((item: { operation: string; path: string }) => item.operation === "append" && item.path.endsWith("AGENTS.md")));
+  assert.ok(afterFirst.startsWith("# Existing rules\n\nKeep this line.\n"));
+  assert.ok(afterFirst.includes("<!-- deja-vu:rules:start -->"));
+  assert.ok(afterFirst.includes("Scope: `project:sample`"));
+  assert.ok(afterFirst.includes("### Memory Identity"));
+  assert.ok(!afterFirst.includes("Replace `project:sample`"));
+  assert.equal(afterFirst.match(/<!-- deja-vu:rules:start -->/g)?.length, 1);
+  assert.equal(second.ready, true);
+  assert.ok(second.operations.some((item: { operation: string; path: string }) => item.operation === "skip" && item.path.endsWith("AGENTS.md")));
+  assert.equal(afterSecond, afterFirst);
 });
 
 test("unified CLI doctor reports missing required files", () => {
@@ -368,6 +394,33 @@ test("unified CLI doctor reports missing required files", () => {
   assert.ok(result.diagnostics.some((item: { message: string }) => item.message === "Missing AGENTS.md"));
   assert.ok(result.diagnostics.some((item: { message: string }) => item.message === "Missing memory/summary.md"));
   assert.ok(result.diagnostics.some((item: { message: string }) => item.message === "Missing memory/impressions.jsonl"));
+});
+
+test("unified CLI doctor rejects an AGENTS.md without Deja Vu recall rules", () => {
+  const project = mkdtempSync(join(tmpdir(), "dejavu-doctor-rules-"));
+  const memory = join(project, "memory");
+  mkdirSync(memory);
+  writeFileSync(join(project, "AGENTS.md"), "# Existing rules\n", "utf8");
+  writeFileSync(join(memory, "summary.md"), "# Summary\n", "utf8");
+  writeFileSync(
+    join(memory, "impressions.jsonl"),
+    `${JSON.stringify({
+      schema_version: 1,
+      id: "summary",
+      scope: "project:test",
+      title: "Summary",
+      keywords: ["summary", "project", "constraints"],
+      record_path: "memory/summary.md",
+      updated: "2026-05-16",
+      status: "active",
+    })}\n`,
+    "utf8",
+  );
+
+  const result = runCliJsonAllowFailure(["doctor"], project);
+
+  assert.equal(result.ok, false);
+  assert.ok(result.diagnostics.some((item: { message: string }) => item.message === "AGENTS.md does not include Deja Vu recall rules"));
 });
 
 test("unified CLI doctor catches unresolved feedback and obvious secrets", () => {

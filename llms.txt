@@ -11,6 +11,7 @@ Deja Vu helps agents stop re-explaining the same repository context across new c
 - recall budget and outcome feedback that show whether memory helped, missed, or overloaded the task
 - writeback routing and feedback reports that keep remembered project context durable and maintainable
 - optional `deja-vu init`, `deja-vu doctor`, and `deja-vu explain` CLI support
+- safe installation into repos that already have `AGENTS.md` through `deja-vu init --merge-agents`
 
 The minimum adoption path is three files: `AGENTS.md`, `memory/summary.md`, and `memory/impressions.jsonl`. It does not require npm, embeddings, vector search, a daemon, or a dedicated memory service.
 
@@ -18,6 +19,7 @@ The minimum adoption path is three files: `AGENTS.md`, `memory/summary.md`, and 
 
 - [README](./README.md): product overview and primary adoption path
 - [Starter Kit](./starter-kit/README.md): copy-first three-file setup and per-agent prompts
+- [Contributing](./CONTRIBUTING.md): project boundaries and verification commands
 - [Comparison](./docs/comparison.md): how Deja Vu differs from vector DBs, hosted memory, runtimes, notes, and transcripts
 - [Agent Compatibility](./docs/agent-compatibility.md): which agents can follow the protocol and how chat-only agents can use it manually
 - [Flow Diagram](./docs/diagrams/deja-vu-flow.md): cue scan, minimal recall, durable writeback
@@ -27,7 +29,7 @@ The minimum adoption path is three files: `AGENTS.md`, `memory/summary.md`, and 
 - [Markdown Storage](./docs/storage-markdown.md): minimum and optional memory layout
 - [Impression Layer](./docs/impression-layer.md): compact keyword-first familiarity surface
 - [Scripted Recall](./docs/scripted-recall.md): host script contract for cheap pre-task scans
-- [v0.6.0 Candidate](./docs/release-v0.6.0.md): adoption release checklist
+- [v0.7.0 Candidate](./docs/release-v0.7.0.md): npm, GitHub, and launch readiness checklist
 - [Templates](./docs/templates): copyable rules and memory templates
 - [Protocol Example](./examples/protocol-project): repo-first example with no engine
 
