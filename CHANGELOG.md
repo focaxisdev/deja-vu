@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Use the same validated rules block for readiness and scope checks; reject ambiguous scopes and omit raw JSONL parse messages from diagnostics.
+
 - Prepare engine writes before mutation; compensate failed writes, expose recovery errors, preserve update metadata, reject duplicate IDs, and serialize mutations.
 - Preflight initialization, back up overwritten/appended files, stage replacements, and report rollback failures as JSON.
 - Share schema and route diagnostics across CLI tools; reject invalid input, inactive routes, missing successors, cycles, and scope mismatches.

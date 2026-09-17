@@ -21,8 +21,9 @@ export function parseJsonl(filePath, diagnostics, kind = "memory") {
       const record = JSON.parse(line);
       if (!record || typeof record !== "object" || Array.isArray(record)) throw new Error("Record must be a non-null object");
       entries.push({ record, line: index + 1 });
-    } catch (error) {
-      diagnostics.push({ level: "error", message: `Invalid ${kind} record`, path: filePath, line: index + 1, error: error.message });
+    } catch {
+      // JSON.parse messages can quote raw memory. Keep diagnostics content-free.
+      diagnostics.push({ level: "error", message: `Invalid ${kind} record`, path: filePath, line: index + 1, code: "invalid_jsonl_record" });
     }
   }
   return entries;
@@ -150,21 +151,27 @@ export function validateRoutes(entries, projectRoot, diagnostics, extraPaths = [
   }
 }
 
-export function rulesStatus(text) {
+export function parseRules(text) {
   const start = "<!-- deja-vu:rules:start -->";
   const end = "<!-- deja-vu:rules:end -->";
   if (text.includes(start) || text.includes(end)) {
-    if (text.split(start).length !== 2 || text.split(end).length !== 2 || text.indexOf(end) < text.indexOf(start)) return false;
+    if (text.split(start).length !== 2 || text.split(end).length !== 2 || text.indexOf(end) < text.indexOf(start)) return null;
     text = text.slice(text.indexOf(start) + start.length, text.indexOf(end));
   }
   const versions = [...text.matchAll(/<!-- deja-vu:rules:version=(.*?) -->/g)];
-  if (versions.length > 1 || (versions.length === 1 && versions[0][1] !== "1")) return false;
+  if (versions.length > 1 || (versions.length === 1 && versions[0][1] !== "1")) return null;
+  const scopes = [...text.matchAll(/Scope: `([^`]+)`/g)];
+  if (scopes.length !== 1 || !/^project:[^\s:]+$/.test(scopes[0][1])) return null;
   // Recognize the shipped legacy contract, not mere mentions of its filenames.
-  return /Protocol: Deja Vu Protocol v0\.4/.test(text)
-    && /Scope: `project:[^\s`]+`/.test(text)
+  const valid = /Protocol: Deja Vu Protocol v0\.4/.test(text)
     && /^\d+\. Inspect `memory\/impressions\.jsonl` for familiar cues\.$/m.test(text.replace(/\r/g, ""))
     && /^\d+\. If there is no familiarity, do not load memory by default\.$/m.test(text.replace(/\r/g, ""))
     && /^\d+\. If familiarity is weak, read `memory\/summary\.md`\.$/m.test(text.replace(/\r/g, ""))
     && /^\d+\. If familiarity is strong, read only the 1-3 linked (?:detailed )?records needed for the task\.$/m.test(text.replace(/\r/g, ""))
     && /Durable Writeback Only/.test(text);
+  return valid ? { scope: scopes[0][1] } : null;
+}
+
+export function rulesStatus(text) {
+  return parseRules(text) !== null;
 }

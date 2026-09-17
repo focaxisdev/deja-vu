@@ -8,7 +8,7 @@ import {
 } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseJsonl as readJsonl, parseFrontmatter, rulesStatus } from "./lib/memory-validation.mjs";
+import { parseJsonl as readJsonl, parseFrontmatter, parseRules } from "./lib/memory-validation.mjs";
 import { executePlan, plannedFile } from "./lib/init-files.mjs";
 import { lintMemory } from "./dejavu-lint-memory.mjs";
 
@@ -81,10 +81,6 @@ function materializeRulesTemplate(projectId) {
   );
 }
 
-function hasDejaVuRules(text) {
-  return rulesStatus(text);
-}
-
 function readUtf8ForMerge(path) {
   try {
     return new TextDecoder("utf-8", { fatal: true }).decode(readFileSync(path));
@@ -139,9 +135,9 @@ function writeAgentsFile(plan, targetPath, content, { force, mergeAgents, projec
     return true;
   }
   const existing = readUtf8ForMerge(targetPath);
-  if (hasDejaVuRules(existing)) {
-    const scope = existing.match(/Scope: `(project:[^\s`]+)`/)?.[1];
-    const ready = scope === projectId;
+  const rules = parseRules(existing);
+  if (rules) {
+    const ready = rules.scope === projectId;
     plannedFile(plan, ready ? "skip" : "manual_merge", targetPath, null,
       ready ? "Deja Vu rules already present" : "Existing rules use a different project scope");
     return ready;
@@ -330,14 +326,15 @@ function doctorCommand(values) {
   const impressionsPath = resolve(memoryRoot, "impressions.jsonl");
   const feedbackPath = resolve(memoryRoot, "recall-feedback.jsonl");
 
+  const rules = existsSync(agentsPath) ? parseRules(readFileSync(agentsPath, "utf8")) : null;
   if (!existsSync(agentsPath)) {
     addDiagnostic(diagnostics, "error", "Missing AGENTS.md", { path: agentsPath });
-  } else if (!hasDejaVuRules(readFileSync(agentsPath, "utf8"))) {
+  } else if (!rules) {
     addDiagnostic(diagnostics, "error", "AGENTS.md does not include Deja Vu recall rules", { path: agentsPath });
   }
   const impressionEntries = parseJsonl(impressionsPath, [], "impression");
   const impressionIds = new Set(impressionEntries.filter(({record}) => !record.status || record.status === "active").map(({record}) => record.id));
-  const ruleScope = existsSync(agentsPath) ? readFileSync(agentsPath, "utf8").match(/Scope: `(project:[^\s`]+)`/)?.[1] : null;
+  const ruleScope = rules?.scope;
   if (ruleScope && impressionEntries.some(({record}) => record.scope !== ruleScope)) {
     addDiagnostic(diagnostics, "error", "Rules and impressions use different project scopes", { path: agentsPath });
   }

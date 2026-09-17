@@ -22,6 +22,11 @@ Mentions of memory filenames alone are not proof of readiness. Partial blocks,
 unknown versions, differing scopes, and conflicting existing rules require
 manual review. Recognition is not natural-language contradiction detection.
 
+Readiness and scope checks use the same validated block. Scope mentions outside
+a marked block do not override its identity; duplicate scopes inside it require
+manual review. JSONL parse failures report a fixed code, path and line number,
+without echoing the malformed record in the diagnostic.
+
 ## Recovering interrupted initialization
 
 Caught write failures return `ok: false`, the backup directory when available,

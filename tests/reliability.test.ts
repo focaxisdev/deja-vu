@@ -273,6 +273,54 @@ test("init refuses scope mismatch and unknown block versions without overwriting
   assert.equal(cli("deja-vu.mjs", ["init", "--merge-agents", "--json"], path).data.ready, false);
 });
 
+test("readiness uses only the validated rules block scope", () => {
+  for (const blockMatches of [false, true]) {
+    const path = project();
+    const agentsPath = join(path, "AGENTS.md");
+    const generated = fs.readFileSync(agentsPath, "utf8");
+    const block = blockMatches ? generated : generated.replace("Scope: `project:test`", "Scope: `project:wrong`");
+    const outside = blockMatches ? "project:unrelated" : "project:test";
+    const text = `# Unrelated rules\n\n- Scope: \`${outside}\`\n\n${block}`;
+    fs.writeFileSync(agentsPath, text);
+    const doctor = cli("deja-vu.mjs", ["doctor", "--json"], path);
+    const init = cli("deja-vu.mjs", ["init", "--json"], path);
+    assert.equal(doctor.data.ok, blockMatches);
+    assert.equal(doctor.status, blockMatches ? 0 : 1);
+    assert.equal(init.data.ready, blockMatches);
+    assert.equal(fs.readFileSync(agentsPath, "utf8"), text);
+  }
+});
+
+test("duplicate scopes inside a rules block require manual review", () => {
+  const path = project();
+  const agentsPath = join(path, "AGENTS.md");
+  const generated = fs.readFileSync(agentsPath, "utf8");
+  fs.writeFileSync(agentsPath, generated.replace("Scope: `project:test`", "Scope: `project:test`\n- Scope: `project:wrong`"));
+  assert.equal(cli("deja-vu.mjs", ["doctor", "--json"], path).data.ok, false);
+  assert.equal(cli("deja-vu.mjs", ["init", "--json"], path).data.ready, false);
+});
+
+test("JSONL parse diagnostics never echo malformed record contents", () => {
+  const sentinel = "PRIVATE_DEMO_VALUE";
+  for (const [filename, commands] of [
+    ["impressions.jsonl", [["deja-vu.mjs", ["doctor", "--json"]], ["dejavu-lint-memory.mjs", []], ["dejavu-scan-memory.mjs", ["settings"]]]],
+    ["recall-feedback.jsonl", [["deja-vu.mjs", ["doctor", "--json"]], ["dejavu-lint-memory.mjs", []], ["dejavu-feedback-report.mjs", []]]],
+  ] as const) {
+    const path = project();
+    const file = join(path, "memory", filename);
+    fs.writeFileSync(file, `\n${sentinel}\n`);
+    for (const [script, args] of commands) {
+      const result = cli(script, [...args], path);
+      assert.equal(result.status, 1);
+      assert.equal(result.data.ok, false);
+      assert.equal(JSON.stringify(result.data).includes(sentinel), false);
+      assert.ok(result.data.diagnostics.some((item: { path?: string; line?: number; code?: string }) =>
+        item.path === file && item.line === 2 && item.code === "invalid_jsonl_record"));
+    }
+    assert.equal(fs.readFileSync(file, "utf8"), `\n${sentinel}\n`);
+  }
+});
+
 test("executable demo preserves lexical limits and grounds the successful recall", () => {
   const memoryRoot = join(root, "docs", "examples", "settings-project", "memory");
   const vague = cli("dejavu-scan-memory.mjs", ["--memory-root", memoryRoot, "Continue the settings refactor."], root);
