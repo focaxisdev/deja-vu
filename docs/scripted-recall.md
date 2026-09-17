@@ -39,11 +39,21 @@ The linter also warns about low-quality cue routes that make future recall more 
 
 ## Inputs
 
-The script reads:
+In project mode (default or `--memory-root`), the script requires all three
+setup files to exist as files:
 
 - `memory/impressions.jsonl`
+- `memory/summary.md`
+- `AGENTS.md`
 
-Use `--memory-root` or `--file` when the memory directory is not under the current working directory:
+For weak/strong results it also checks returned route targets and their lifecycle
+metadata, including successor links. These local validation reads do not inject
+record bodies into the agent context: the reported loading budget measures
+context loading, not filesystem I/O. Run `doctor` for a full health check.
+
+Use `--memory-root` for another project's memory directory. Use `--file`
+only for a standalone cue-index scan: it validates JSONL schema but does not
+validate setup files or target documents; the host owns those checks.
 
 ```bash
 node scripts/dejavu-scan-memory.mjs --memory-root ./examples/protocol-project/memory "protocol memory"
@@ -84,7 +94,12 @@ The script prints JSON:
 }
 ```
 
-If `memory/impressions.jsonl` is missing, the script returns `level: "not_initialized"` with a bootstrap hint instead of pretending the task had no familiarity match.
+If any required setup file is missing, project mode returns
+`ok: false, level: "not_initialized"` and exit code 1 with a bootstrap hint.
+Malformed JSONL, invalid schema, and unusable matched routes return
+`ok: false, level: "error"` and exit code 1. Healthy scans (including `none`)
+return `ok: true` and exit code 0. Never interpret an error as no familiarity.
+The linter, doctor, and feedback report also return nonzero on validation errors.
 
 ## Host Workflow
 
@@ -96,6 +111,8 @@ If `memory/impressions.jsonl` is missing, the script returns `level: "not_initia
 6. Watch `budget` before loading more memory.
 7. Record recall feedback only when the result should tune future cue quality.
 8. Continue to apply normal writeback and compaction rules after work completes.
+
+Stop recall on `error`; repair the indicated record or route first.
 
 ## Bootstrap Rule
 

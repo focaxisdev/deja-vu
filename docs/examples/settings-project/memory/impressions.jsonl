@@ -1,0 +1,2 @@
+{"schema_version":1,"id":"decision-settings-sync","scope":"project:demo","title":"Settings sync stays server-backed","keywords":["settings","sync","localstorage","preferences"],"record_path":"memory/decisions/settings-sync.md","updated":"2026-05-16","weight":0.9,"status":"active"}
+{"schema_version":1,"id":"open-loop-settings-migration","scope":"project:demo","title":"Migrate old setting names","keywords":["settings","migration","legacy","names"],"record_path":"memory/open-loops/settings-migration.md","updated":"2026-05-16","weight":0.8,"status":"active"}

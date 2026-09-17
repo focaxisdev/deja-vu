@@ -1,6 +1,11 @@
 # Demo Walkthrough
 
-This walkthrough shows the behavior Deja Vu is designed to create.
+This walkthrough uses fictional, sanitized data. The checked-in
+[summary](examples/settings-project/memory/summary.md),
+[cue index](examples/settings-project/memory/impressions.jsonl),
+[decision](examples/settings-project/memory/decisions/settings-sync.md), and
+[follow-up](examples/settings-project/memory/open-loops/settings-migration.md)
+make the example reproducible.
 
 ## Before Deja Vu
 
@@ -44,9 +49,26 @@ User: Continue the settings refactor.
 Agent: I will follow AGENTS.md and scan memory/impressions.jsonl before planning.
 ```
 
-The cue scan finds a strong match for `settings` and `sync`.
+That exact request does **not** produce a strong scripted match: it returns
+`level: "none"` and a top score of `0.2437`. The lexical scanner does not infer
+the word "sync" from "refactor". No detail should be loaded on that result.
 
-The agent reads only:
+When the task supplies the explicit cues `settings sync`, the scanner returns
+`strong`, score `0.975`, with the settings decision first. The second route is
+the migration follow-up (score `0.475`).
+
+Run both from the repository root:
+
+```bash
+node scripts/dejavu-scan-memory.mjs --memory-root docs/examples/settings-project/memory "Continue the settings refactor."
+node scripts/dejavu-scan-memory.mjs --memory-root docs/examples/settings-project/memory "settings sync"
+```
+
+These exact outcomes are regression-tested. This demonstrates cue-based
+retrieval, not measured improvements in agent task success.
+
+For the explicit-cue task, the agent can read the decision and its relevant
+migration link, within the one-to-three-record budget:
 
 - `memory/decisions/settings-sync.md`
 - `memory/open-loops/settings-migration.md`
@@ -54,7 +76,7 @@ The agent reads only:
 Then it plans with the right constraints:
 
 - do not move synced preferences to localStorage
-- preserve the existing IME workaround
+- preserve the IME composition guard documented in the settings decision
 - continue the legacy setting-name migration
 
 ## Post-Task Writeback

@@ -101,7 +101,7 @@ Before substantial planning, coding, or answering:
 3. If the scan is `none`, do not load project memory by default.
 4. If the scan is `weak`, read `memory/summary.md`.
 5. If the scan is `strong`, open only the detailed records needed for the current task.
-6. If no script is available, fall back to `memory/summary.md` and only then to `memory/index.md` when present.
+6. If no script is available, inspect `memory/impressions.jsonl` directly for familiar cues and apply the same none/weak/strong loading rules. Do not unconditionally load the summary or index.
 7. Track the recall budget used for the task: impression scan, summary count, detailed records, and why anything was loaded.
 
 Default recall budget:

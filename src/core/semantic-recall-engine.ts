@@ -14,12 +14,27 @@ import type {
   RecallInput,
   RecallResult,
   SummaryRecord,
+  StoredMemory,
   UpdateMemoryInput,
 } from "../types/memory.js";
 import type { SemanticRecallEngineConfig } from "../types/plugins.js";
 import { createId } from "../utils/id.js";
 import { extractKeywords } from "../utils/text.js";
 import { isoNow } from "../utils/time.js";
+
+/** Includes a recovery copy if an adapter fails during compensation. Do not log its contents. */
+export class MemoryWriteError extends Error {
+  constructor(
+    message: string,
+    cause: unknown,
+    readonly recoverySnapshot: StoredMemory | null,
+    readonly recoveryErrors: unknown[],
+    readonly memoryId: string,
+  ) {
+    super(message, { cause });
+    this.name = "MemoryWriteError";
+  }
+}
 
 export class SemanticRecallEngine {
   private readonly familiarityLayer: FamiliarityLayer;
@@ -29,6 +44,13 @@ export class SemanticRecallEngine {
   private readonly summaryGenerator;
   private readonly thresholds;
   private readonly scoringStrategy;
+  private mutationQueue: Promise<unknown> = Promise.resolve();
+
+  private mutate<T>(operation: () => Promise<T>): Promise<T> {
+    const result = this.mutationQueue.then(operation);
+    this.mutationQueue = result.catch(() => undefined);
+    return result;
+  }
 
   constructor(private readonly config: SemanticRecallEngineConfig) {
     this.familiarityLayer = new FamiliarityLayer(config.storage, config.familiarityVectorStore);
@@ -41,6 +63,16 @@ export class SemanticRecallEngine {
   }
 
   async addMemory(input: AddMemoryInput): Promise<{ id: string }> {
+    return this.mutate(async () => {
+      const id = input.id ?? createId("memory");
+      if (await this.snapshot(id)) throw new Error(`Memory already exists: ${id}; use updateMemory`);
+      const prepared = await this.prepareMemory({ ...input, id });
+      await this.commitMemory(prepared, null);
+      return { id };
+    });
+  }
+
+  private async prepareMemory(input: AddMemoryInput): Promise<StoredMemory> {
     const id = input.id ?? createId("memory");
     const now = isoNow();
     const shortSummary = await this.summaryGenerator.generateShortSummary(input);
@@ -89,12 +121,62 @@ export class SemanticRecallEngine {
       embeddingVector: summaryVector,
     };
 
-    await this.familiarityLayer.save(familiarity);
-    await this.summaryLayer.save(summary);
-    await this.chunkLayer.save(chunks);
-    await this.config.storage.saveRawContent(id, input.content, now, now);
+    return { familiarity, summary, chunks, rawContent: input.content, createdAt: now, updatedAt: now };
+  }
 
-    return { id };
+  private async snapshot(id: string): Promise<StoredMemory | null> {
+    if (this.config.storage.getMemorySnapshot) {
+      return structuredClone(await this.config.storage.getMemorySnapshot(id));
+    }
+    const familiarity = await this.config.storage.getFamiliarity(id);
+    const summary = await this.config.storage.getSummary(id);
+    const rawContent = await this.config.storage.getRawContent(id);
+    const chunks = await this.config.storage.getChunks(id);
+    if (!familiarity && !summary && rawContent === null && chunks.length === 0) return null;
+    if (!familiarity || !summary || rawContent === null) {
+      throw new Error(`Incomplete memory: ${id}; repair storage before writing`);
+    }
+    // Legacy adapters do not expose raw timestamps. They can implement getMemorySnapshot to preserve them.
+    const createdAt = chunks[0]?.createdAt ?? familiarity.lastAccessedAt;
+    return structuredClone({ familiarity, summary, rawContent, chunks, createdAt, updatedAt: createdAt });
+  }
+
+  private async commitMemory(next: StoredMemory, previous: StoredMemory | null): Promise<void> {
+    const id = next.familiarity.id;
+    try {
+      // Generation has already completed and a detached recovery snapshot exists.
+      // Remove the old chunks too, including when the replacement has zero chunks.
+      if (previous) {
+        await this.config.storage.deleteMemory(id);
+        await this.config.chunkVectorStore.removeByMemoryId(id);
+      }
+      await this.summaryLayer.save(next.summary);
+      await this.chunkLayer.save(next.chunks);
+      await this.config.storage.saveRawContent(id, next.rawContent, next.createdAt, next.updatedAt);
+      await this.familiarityLayer.save(next.familiarity);
+    } catch (cause) {
+      const recoveryErrors: unknown[] = [];
+      const attempt = async (operation: () => Promise<void>) => {
+        try { await operation(); } catch (error) { recoveryErrors.push(error); }
+      };
+      await attempt(() => this.config.storage.deleteMemory(id));
+      await attempt(() => this.config.familiarityVectorStore.remove(id));
+      await attempt(() => this.config.chunkVectorStore.removeByMemoryId(id));
+      if (previous) {
+        await attempt(() => this.config.storage.saveSummary(previous.summary));
+        await attempt(() => this.config.storage.saveChunks(previous.chunks));
+        await attempt(() => this.config.storage.saveRawContent(
+          id, previous.rawContent, previous.createdAt, previous.updatedAt,
+        ));
+        await attempt(() => this.config.storage.saveFamiliarity(previous.familiarity));
+        await attempt(() => this.config.familiarityVectorStore.upsert(previous.familiarity));
+        await attempt(() => this.config.chunkVectorStore.upsert(previous.chunks));
+      }
+      throw new MemoryWriteError(
+        recoveryErrors.length ? "Memory write failed; recovery requires adapter repair" : "Memory write failed; previous state restored",
+        cause, previous, recoveryErrors, id,
+      );
+    }
   }
 
   async recall(query: RecallInput | string): Promise<RecallResult> {
@@ -210,33 +292,38 @@ export class SemanticRecallEngine {
   }
 
   async updateMemory(id: string, input: UpdateMemoryInput): Promise<{ id: string }> {
-    const existingSummary = await this.summaryLayer.get(id);
-    const rawContent = await this.config.storage.getRawContent(id);
-    if (!existingSummary || rawContent === null) {
-      throw new Error(`Memory not found: ${id}`);
-    }
-
-    await this.deleteMemory(id);
-    return this.addMemory({
-      id,
-      title: input.title ?? String(existingSummary.metadata.title ?? id),
-      content: input.content ?? rawContent,
-      tags: (input.tags as string[] | undefined) ?? (existingSummary.metadata.tags as string[] | undefined),
-      context: input.context ?? existingSummary.context,
-      architectureOrIntent: input.architectureOrIntent ?? existingSummary.architectureOrIntent,
-      recentUpdates: input.recentUpdates ?? existingSummary.recentUpdates,
-      importance: input.importance,
-      metadata: {
-        ...existingSummary.metadata,
-        ...(input.metadata ?? {}),
-      },
-      chunkStrategy: input.chunkStrategy,
+    return this.mutate(async () => {
+      const previous = await this.snapshot(id);
+      if (!previous) throw new Error(`Memory not found: ${id}`);
+      const existingSummary = previous.summary;
+      const prepared = await this.prepareMemory({
+        id,
+        title: input.title ?? previous.familiarity.title,
+        content: input.content ?? previous.rawContent,
+        tags: input.tags ?? previous.familiarity.tags,
+        context: input.context ?? existingSummary.context,
+        architectureOrIntent: input.architectureOrIntent ?? existingSummary.architectureOrIntent,
+        recentUpdates: input.recentUpdates ?? existingSummary.recentUpdates,
+        importance: input.importance ?? previous.familiarity.importance,
+        metadata: {
+          ...existingSummary.metadata,
+          ...(input.metadata ?? {}),
+          title: input.title ?? previous.familiarity.title,
+          tags: input.tags ?? previous.familiarity.tags,
+        },
+        chunkStrategy: input.chunkStrategy,
+      });
+      prepared.createdAt = previous.createdAt;
+      await this.commitMemory(prepared, previous);
+      return { id };
     });
   }
 
   async deleteMemory(id: string): Promise<void> {
-    await this.familiarityLayer.remove(id);
-    await this.chunkLayer.remove(id);
-    await this.config.storage.deleteMemory(id);
+    return this.mutate(async () => {
+      await this.familiarityLayer.remove(id);
+      await this.chunkLayer.remove(id);
+      await this.config.storage.deleteMemory(id);
+    });
   }
 }

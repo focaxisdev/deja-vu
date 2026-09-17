@@ -11,7 +11,10 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
@@ -26,20 +29,14 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Source tests
-        run: npm run test:src:readonly
-
-      - name: Markdown links
-        run: npm run check:links
+      - name: Source, compiled, links and installed-package tests
+        run: npm test
 
       - name: Memory lint
-        run: npm run lint:memory
+        run: node scripts/dejavu-lint-memory.mjs && node scripts/dejavu-lint-memory.mjs --memory-root starter-kit/memory && node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory && node scripts/dejavu-lint-memory.mjs --memory-root docs/examples/settings-project/memory
+
+      - name: Project readiness
+        run: node scripts/deja-vu.mjs doctor --json
 
       - name: Feedback report
         run: npm run report:feedback
-
-      - name: Build
-        run: npm run build
-
-      - name: Pack verification
-        run: npm run test:pack

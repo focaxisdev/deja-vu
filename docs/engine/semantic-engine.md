@@ -48,6 +48,31 @@ await engine.updateMemory(id, input);
 await engine.deleteMemory(id);
 ```
 
+## Write failure contract
+
+Adds and updates prepare summaries, chunks, and all embeddings before changing
+storage. Updates retain importance, tags, and creation time unless explicitly
+changed where supported. Adding an existing ID is rejected; use `updateMemory`.
+Mutations are serialized within one engine instance.
+
+If a storage or vector write fails, the engine attempts compensating cleanup
+and restoration. `MemoryWriteError.memoryId` identifies the affected memory,
+including auto-generated IDs on failed adds. `recoveryErrors` is empty when compensation
+succeeds. Otherwise, repair the adapter using `recoverySnapshot`; it may contain
+private raw content and must not be logged or included in telemetry.
+
+This is **not a durable transaction**. Process termination, persistent adapter
+outages, concurrent readers, multiple engine instances, and direct adapter
+writes are not isolated by this queue. Deletion is serialized but does not
+provide compensating rollback. Production hosts must supply transactional
+persistence/coordination where those guarantees are required.
+
+Storage adapters may implement optional `getMemorySnapshot(id)` to return a
+complete detached snapshot, including raw creation/update timestamps. The
+legacy getter fallback reconstructs those timestamps from chunk or access
+metadata and cannot guarantee their exact preservation. The built-in in-memory
+adapter implements complete snapshots; it is still not persistent storage.
+
 ## Optional npm install
 
 ```bash

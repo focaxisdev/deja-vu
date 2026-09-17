@@ -1,4 +1,4 @@
-import type { FamiliarityRecord, MemoryChunk, SummaryRecord } from "../types/memory.js";
+import type { FamiliarityRecord, MemoryChunk, SummaryRecord, StoredMemory } from "../types/memory.js";
 import type { ImpressionSearchHit, MemoryStorage } from "../types/plugins.js";
 import { lexicalSimilarity } from "../utils/text.js";
 
@@ -14,6 +14,19 @@ export class InMemoryStorage implements MemoryStorage {
   private readonly summaries = new Map<string, SummaryRecord>();
   private readonly chunks = new Map<string, MemoryChunk[]>();
   private readonly raw = new Map<string, RawMemoryRecord>();
+
+  async getMemorySnapshot(id: string): Promise<StoredMemory | null> {
+    const familiarity = this.familiarities.get(id);
+    const summary = this.summaries.get(id);
+    const raw = this.raw.get(id);
+    const chunks = this.chunks.get(id) ?? [];
+    if (!familiarity && !summary && !raw && chunks.length === 0) return null;
+    if (!familiarity || !summary || !raw) throw new Error(`Incomplete memory: ${id}`);
+    return structuredClone({
+      familiarity, summary, chunks, rawContent: raw.content,
+      createdAt: raw.createdAt, updatedAt: raw.updatedAt,
+    });
+  }
 
   async saveFamiliarity(record: FamiliarityRecord): Promise<void> {
     this.removeFromImpressionIndex(record.id);
