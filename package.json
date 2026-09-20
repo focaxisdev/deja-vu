@@ -1,6 +1,6 @@
 {
   "name": "@focaxisdev/deja-vu",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A 3-file, repo-local memory system for AI coding agents. No database, embeddings, or SaaS.",
   "type": "module",
   "main": "./dist/src/index.js",

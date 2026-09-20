@@ -8,6 +8,10 @@ import { join } from "node:path";
 const root = process.cwd();
 
 test("package metadata exposes memory CLI binaries and starter kit", () => {
+  const manifest = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+  const lock = JSON.parse(readFileSync(join(root, "package-lock.json"), "utf8"));
+  assert.equal(lock.version, manifest.version);
+  assert.equal(lock.packages[""].version, manifest.version);
   const npmExecPath = process.env.npm_execpath;
   assert.ok(npmExecPath, "npm_execpath must be available when this test runs through npm");
   const packRoot = mkdtempSync(join(tmpdir(), "dejavu-pack-"));
@@ -22,7 +26,7 @@ test("package metadata exposes memory CLI binaries and starter kit", () => {
   const files = new Set(result[0].files.map((file: { path: string }) => file.path));
 
   assert.equal(result[0].name, "@focaxisdev/deja-vu");
-  assert.equal(result[0].version, "0.7.0");
+  assert.equal(result[0].version, manifest.version);
   assert.ok(files.has("scripts/deja-vu.mjs"));
   assert.ok(files.has("scripts/lib/init-files.mjs"));
   assert.ok(files.has("scripts/lib/memory-validation.mjs"));
@@ -48,6 +52,7 @@ test("package metadata exposes memory CLI binaries and starter kit", () => {
 
   const installedRoot = join(installRoot, "node_modules", "@focaxisdev", "deja-vu");
   const installedManifest = JSON.parse(readFileSync(join(installedRoot, "package.json"), "utf8"));
+  assert.equal(installedManifest.version, manifest.version);
   assert.equal(installedManifest.bin["deja-vu"], "scripts/deja-vu.mjs");
   const help = execFileSync(process.execPath, [join(installedRoot, "scripts", "deja-vu.mjs"), "--help"], {
     cwd: installRoot,
