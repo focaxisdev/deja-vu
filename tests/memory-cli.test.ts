@@ -56,7 +56,7 @@ test("scan CLI reports unmatched when overlap stays below threshold", () => {
     "utf8",
   );
 
-  const result = runJson(scanScript, ["alpha delta epsilon zeta eta theta"], project);
+  const result = runJson(scanScript, ["--file", "memory/impressions.jsonl", "alpha delta epsilon zeta eta theta"], project);
 
   assert.equal(result.level, "none");
   assert.equal(result.matched, false);
@@ -70,7 +70,7 @@ test("scan CLI reports unmatched when overlap stays below threshold", () => {
 test("scan CLI distinguishes missing setup from no familiarity", () => {
   const project = mkdtempSync(join(tmpdir(), "dejavu-scan-missing-"));
 
-  const result = runJson(scanScript, ["settings refactor"], project);
+  const result = runJsonAllowFailure(scanScript, ["settings refactor"], project);
 
   assert.equal(result.level, "not_initialized");
   assert.equal(result.matched, false);

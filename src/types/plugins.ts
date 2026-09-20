@@ -5,6 +5,7 @@ import type {
   RecallInput,
   ScoredCandidate,
   SummaryRecord,
+  StoredMemory,
 } from "./memory.js";
 
 export interface EmbeddingProvider {
@@ -55,6 +56,8 @@ export interface ChunkVectorStore {
 }
 
 export interface MemoryStorage {
+  /** Optional complete snapshot, including raw timestamps, for recoverable updates. */
+  getMemorySnapshot?(id: string): Promise<StoredMemory | null>;
   saveFamiliarity(record: FamiliarityRecord): Promise<void>;
   saveSummary(record: SummaryRecord): Promise<void>;
   saveChunks(chunks: MemoryChunk[]): Promise<void>;

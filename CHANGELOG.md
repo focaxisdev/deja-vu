@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Use the same validated rules block for readiness and scope checks; reject ambiguous scopes and omit raw JSONL parse messages from diagnostics.
+
+- Prepare engine writes before mutation; compensate failed writes, expose recovery errors, preserve update metadata, reject duplicate IDs, and serialize mutations.
+- Preflight initialization, back up overwritten/appended files, stage replacements, and report rollback failures as JSON.
+- Share schema and route diagnostics across CLI tools; reject invalid input, inactive routes, missing successors, cycles, and scope mismatches.
+- Recognize actual recall rules instead of filename mentions; validate all three setup files in project scans.
+- Add fault-injection regression tests, executable settings-demo fixtures, installed-package smoke checks, and full-suite CI coverage.
+- Clarify lexical recall limits, cue-first manual fallback, and non-transactional recovery boundaries.
+
 ## [0.7.0] - 2026-08-09
 
 - Rebuilt the README around a one-command start, concrete before/after proof, agent compatibility, safety boundaries, and a shareable product visual.

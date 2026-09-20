@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 import {
   existsSync,
-  mkdirSync,
   readFileSync,
   readdirSync,
+  lstatSync,
   statSync,
-  writeFileSync,
 } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseJsonl as readJsonl, parseFrontmatter, parseRules } from "./lib/memory-validation.mjs";
+import { executePlan, plannedFile } from "./lib/init-files.mjs";
+import { lintMemory } from "./dejavu-lint-memory.mjs";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const starterRoot = resolve(packageRoot, "starter-kit");
@@ -79,10 +81,6 @@ function materializeRulesTemplate(projectId) {
   );
 }
 
-function hasDejaVuRules(text) {
-  return text.includes("memory/impressions.jsonl") && text.includes("memory/summary.md");
-}
-
 function readUtf8ForMerge(path) {
   try {
     return new TextDecoder("utf-8", { fatal: true }).decode(readFileSync(path));
@@ -97,7 +95,7 @@ function rulesBlock(projectId, eol = "\n") {
     .replace(/^## /gm, "### ")
     .replace(/^# Deja Vu Project Memory Rules/m, "## Deja Vu Project Memory Rules")
     .trim();
-  return [rulesStart, rules, rulesEnd, ""].join(eol);
+  return [rulesStart, "<!-- deja-vu:rules:version=1 -->", rules.replace(/\n/g, eol), rulesEnd, ""].join(eol);
 }
 
 function getAgents(value) {
@@ -126,45 +124,32 @@ function print(data, json) {
   console.log(JSON.stringify(data, null, 2));
 }
 
-function writePlannedFile(plan, targetPath, content, { force, dryRun }) {
-  const exists = existsSync(targetPath);
-  const operation = exists ? (force ? "overwrite" : "skip") : "create";
-  plan.push({ operation, path: targetPath });
-  if (dryRun || operation === "skip") return;
-  mkdirSync(dirname(targetPath), { recursive: true });
-  writeFileSync(targetPath, content, "utf8");
+function writePlannedFile(plan, targetPath, content, { force }) {
+  const operation = existsSync(targetPath) ? (force ? "overwrite" : "skip") : "create";
+  plannedFile(plan, operation, targetPath, content);
 }
 
-function writeAgentsFile(plan, targetPath, content, { force, dryRun, mergeAgents, projectId }) {
-  if (!existsSync(targetPath)) {
-    plan.push({ operation: "create", path: targetPath });
-    if (!dryRun) writeFileSync(targetPath, content, "utf8");
+function writeAgentsFile(plan, targetPath, content, { force, mergeAgents, projectId }) {
+  if (!existsSync(targetPath) || force) {
+    plannedFile(plan, existsSync(targetPath) ? "overwrite" : "create", targetPath, content);
     return true;
   }
-
-  if (force) {
-    plan.push({ operation: "overwrite", path: targetPath });
-    if (!dryRun) writeFileSync(targetPath, content, "utf8");
-    return true;
-  }
-
   const existing = readUtf8ForMerge(targetPath);
-  if (hasDejaVuRules(existing)) {
-    plan.push({ operation: "skip", path: targetPath, reason: "Deja Vu rules already present" });
-    return true;
+  const rules = parseRules(existing);
+  if (rules) {
+    const ready = rules.scope === projectId;
+    plannedFile(plan, ready ? "skip" : "manual_merge", targetPath, null,
+      ready ? "Deja Vu rules already present" : "Existing rules use a different project scope");
+    return ready;
   }
-
-  if (!mergeAgents) {
-    plan.push({ operation: "manual_merge", path: targetPath, reason: "existing AGENTS.md has no Deja Vu rules" });
+  if (!mergeAgents || existing.includes(rulesStart) || existing.includes(rulesEnd)
+      || /memory\/(?:impressions\.jsonl|summary\.md)/.test(existing)) {
+    plannedFile(plan, "manual_merge", targetPath, null, "existing AGENTS.md requires rule review");
     return false;
   }
-
-  plan.push({ operation: "append", path: targetPath });
-  if (!dryRun) {
-    const eol = existing.includes("\r\n") ? "\r\n" : "\n";
-    const separator = existing.endsWith(`${eol}${eol}`) ? "" : existing.endsWith(eol) ? eol : `${eol}${eol}`;
-    writeFileSync(targetPath, `${existing}${separator}${rulesBlock(projectId, eol)}`, "utf8");
-  }
+  const eol = existing.includes("\r\n") ? "\r\n" : "\n";
+  const separator = existing.endsWith(eol + eol) ? "" : existing.endsWith(eol) ? eol : eol + eol;
+  plannedFile(plan, "append", targetPath, existing + separator + rulesBlock(projectId, eol));
   return true;
 }
 
@@ -175,7 +160,10 @@ function initCommand(values) {
   const force = asBoolean(options.force);
   const mergeAgents = asBoolean(options.mergeAgents);
   const json = asBoolean(options.json);
-  const projectId = slugifyProjectId(String(options.projectId ?? options.scope ?? basename(cwd)));
+  const existingSummaryPath = resolve(cwd, "memory", "summary.md");
+  const existingScope = existsSync(existingSummaryPath) && statSync(existingSummaryPath).isFile()
+    ? parseFrontmatter(readUtf8ForMerge(existingSummaryPath))?.scope : null;
+  const projectId = slugifyProjectId(String(options.projectId ?? options.scope ?? existingScope ?? basename(cwd)));
   const agents = getAgents(options.agents ?? options.agent);
   const plan = [];
 
@@ -186,7 +174,7 @@ function initCommand(values) {
   const rulesReady = writeAgentsFile(
     plan,
     resolve(cwd, "AGENTS.md"),
-    materializeRulesTemplate(projectId),
+    rulesBlock(projectId),
     { dryRun, force, mergeAgents, projectId },
   );
   writePlannedFile(
@@ -211,6 +199,14 @@ function initCommand(values) {
     );
   }
 
+  const execution = executePlan(plan, { cwd, dryRun });
+  const health = dryRun ? null : lintMemory(resolve(cwd, "memory"));
+  if (health && !force && existingScope && existingScope !== projectId) {
+    health.ok = false;
+    health.diagnostics.push({ level: "error", message: "Existing memory uses a different project scope" });
+  }
+  const ready = rulesReady && (health?.ok ?? true) && (force || !existingScope || existingScope === projectId);
+
   const prompt = [
     "Follow AGENTS.md.",
     "Before substantial planning or code changes, scan memory/impressions.jsonl for familiar cues.",
@@ -224,12 +220,14 @@ function initCommand(values) {
     print(
       {
         ok: true,
-        ready: rulesReady,
+        ready,
         dry_run: dryRun,
         project_id: projectId,
         agents,
         operations: plan,
-        required_action: rulesReady ? null : "Run init again with --merge-agents or merge the starter rules manually.",
+        ...execution,
+        required_action: ready ? null : "Review rules and memory diagnostics; use --merge-agents for an unrelated rules file or merge conflicting rules manually.",
+        diagnostics: health?.diagnostics ?? [],
         next_prompt: prompt,
       },
       true,
@@ -241,14 +239,15 @@ function initCommand(values) {
     dryRun ? "Deja Vu init dry run:" : "Deja Vu init complete:",
     ...plan.map((item) => `- ${item.operation}: ${relative(cwd, item.path)}`),
   ];
-  if (!rulesReady) {
+  if (!ready) {
     lines.push(
       "",
       "Action required:",
-      "- AGENTS.md already exists but does not include Deja Vu rules.",
-      "- Run `deja-vu init --merge-agents` to append a marked, idempotent rules block, or merge the starter rules manually.",
+      "- Rules or memory require review before this setup is ready.",
+      "- Review rules and run doctor; use --merge-agents for unrelated rules, or merge conflicting rules manually.",
     );
   }
+  if (execution.backup_directory) lines.push("", `Original files backed up to: ${execution.backup_directory}`);
   lines.push("", "Next agent prompt:", prompt);
   print(lines.join("\n"), false);
 }
@@ -257,14 +256,22 @@ function addDiagnostic(diagnostics, level, message, details = {}) {
   diagnostics.push({ level, message, ...details });
 }
 
-function listFiles(root) {
+function listFiles(root, diagnostics) {
   if (!existsSync(root)) return [];
+  if (lstatSync(root).isSymbolicLink() || !lstatSync(root).isDirectory()) {
+    addDiagnostic(diagnostics, "error", "Memory root must be a real directory", { path: root });
+    return [];
+  }
   const files = [];
   for (const entry of readdirSync(root)) {
     const fullPath = resolve(root, entry);
-    const stat = statSync(fullPath);
+    const stat = lstatSync(fullPath);
+    if (stat.isSymbolicLink()) {
+      addDiagnostic(diagnostics, "error", "Refusing symlink in memory tree", { path: fullPath });
+      continue;
+    }
     if (stat.isDirectory()) {
-      files.push(...listFiles(fullPath));
+      files.push(...listFiles(fullPath, diagnostics));
     } else {
       files.push(fullPath);
     }
@@ -273,22 +280,7 @@ function listFiles(root) {
 }
 
 function parseJsonl(filePath, diagnostics, kind) {
-  const records = [];
-  if (!existsSync(filePath)) return records;
-  for (const [index, line] of readFileSync(filePath, "utf8").split(/\r?\n/).entries()) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
-    try {
-      records.push({ record: JSON.parse(trimmed), line: index + 1 });
-    } catch (error) {
-      addDiagnostic(diagnostics, "error", `Invalid ${kind} JSONL record`, {
-        path: filePath,
-        line: index + 1,
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
-  return records;
+  return readJsonl(filePath, diagnostics, kind);
 }
 
 function scanTextSafety(filePath, text, diagnostics) {
@@ -327,44 +319,27 @@ function doctorCommand(values) {
   const cwd = resolve(process.cwd(), String(options.cwd ?? "."));
   const memoryRoot = resolve(cwd, String(options.memoryRoot ?? "memory"));
   const json = asBoolean(options.json);
-  const diagnostics = [];
+  const diagnostics = [...lintMemory(memoryRoot).diagnostics];
 
   const agentsPath = resolve(cwd, "AGENTS.md");
   const summaryPath = resolve(memoryRoot, "summary.md");
   const impressionsPath = resolve(memoryRoot, "impressions.jsonl");
   const feedbackPath = resolve(memoryRoot, "recall-feedback.jsonl");
 
+  const rules = existsSync(agentsPath) ? parseRules(readFileSync(agentsPath, "utf8")) : null;
   if (!existsSync(agentsPath)) {
     addDiagnostic(diagnostics, "error", "Missing AGENTS.md", { path: agentsPath });
-  } else if (!hasDejaVuRules(readFileSync(agentsPath, "utf8"))) {
+  } else if (!rules) {
     addDiagnostic(diagnostics, "error", "AGENTS.md does not include Deja Vu recall rules", { path: agentsPath });
   }
-  if (!existsSync(summaryPath)) {
-    addDiagnostic(diagnostics, "error", "Missing memory/summary.md", { path: summaryPath });
-  }
-  if (!existsSync(impressionsPath)) {
-    addDiagnostic(diagnostics, "error", "Missing memory/impressions.jsonl", { path: impressionsPath });
-  }
-
-  const impressionEntries = parseJsonl(impressionsPath, diagnostics, "impression");
-  const impressionIds = new Set();
-  for (const { record, line } of impressionEntries) {
-    for (const field of ["id", "scope", "title", "record_path", "updated"]) {
-      if (typeof record[field] !== "string" || record[field].trim() === "") {
-        addDiagnostic(diagnostics, "error", `Impression missing ${field}`, { path: impressionsPath, line });
-      }
-    }
-    if (!Array.isArray(record.keywords) || record.keywords.length === 0) {
-      addDiagnostic(diagnostics, "error", "Impression keywords must be a non-empty array", {
-        path: impressionsPath,
-        line,
-        id: record.id,
-      });
-    }
-    if (record.id && (!record.status || record.status === "active")) impressionIds.add(record.id);
+  const impressionEntries = parseJsonl(impressionsPath, [], "impression");
+  const impressionIds = new Set(impressionEntries.filter(({record}) => !record.status || record.status === "active").map(({record}) => record.id));
+  const ruleScope = rules?.scope;
+  if (ruleScope && impressionEntries.some(({record}) => record.scope !== ruleScope)) {
+    addDiagnostic(diagnostics, "error", "Rules and impressions use different project scopes", { path: agentsPath });
   }
 
-  const feedbackEntries = parseJsonl(feedbackPath, diagnostics, "feedback");
+  const feedbackEntries = parseJsonl(feedbackPath, [], "feedback");
   for (const { record, line } of feedbackEntries) {
     if (record.matched_id && record.matched_id !== "unmatched" && !impressionIds.has(record.matched_id)) {
       addDiagnostic(diagnostics, "warning", "Feedback matched_id does not resolve to an active impression", {
@@ -385,7 +360,7 @@ function doctorCommand(values) {
     addDiagnostic(diagnostics, "warning", "memory/summary.md is large; keep summary compact", { path: summaryPath });
   }
 
-  for (const filePath of [agentsPath, ...listFiles(memoryRoot)].filter((path) => existsSync(path))) {
+  for (const filePath of [agentsPath, ...listFiles(memoryRoot, diagnostics)].filter((path) => existsSync(path))) {
     if (/\.(md|jsonl|txt)$/i.test(filePath)) {
       scanTextSafety(filePath, readFileSync(filePath, "utf8"), diagnostics);
     }
@@ -472,6 +447,18 @@ try {
     process.exitCode = 2;
   }
 } catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
+  if (args.includes("--json") || args.includes("--json=true")) {
+    print({
+      ok: false,
+      ready: false,
+      error_count: 1,
+      diagnostics: [{ level: "error", message: error instanceof Error ? error.message : String(error) }],
+      backup_directory: error.backup_directory ?? null,
+      recovery_errors: error.recovery_errors ?? [],
+    }, true);
+  } else {
+    console.error(error instanceof Error ? error.message : String(error));
+    if (error.backup_directory) console.error(`Recovery backups: ${error.backup_directory}`);
+  }
   process.exitCode = 1;
 }

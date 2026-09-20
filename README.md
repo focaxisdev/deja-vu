@@ -143,7 +143,9 @@ npx @focaxisdev/deja-vu doctor --json
 npx @focaxisdev/deja-vu explain
 ```
 
-`init` creates missing files only. It never replaces existing files unless `--force` is explicitly passed. When `AGENTS.md` already exists without Deja Vu rules, the command reports that setup is incomplete; `--merge-agents` appends a marked block without deleting existing rules.
+`init` creates missing files only. It never replaces existing files unless `--force` is explicitly passed. When `AGENTS.md` already exists without Deja Vu rules, the command reports that setup is incomplete; `--merge-agents` appends a marked block to unrelated rules and leaves conflicting or partial blocks for manual review.
+
+Initialization backs up files before overwriting or appending and reports the backup directory. Check `ready` and run `doctor` before use; see [reliability and recovery](docs/reliability.md) for restoration instructions and transaction limits.
 
 Focused tools are also available:
 

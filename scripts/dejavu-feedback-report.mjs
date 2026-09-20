@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { parseJsonl, validateFeedback } from "./lib/memory-validation.mjs";
 
 const args = process.argv.slice(2);
 let memoryRoot = "memory";
@@ -33,25 +34,12 @@ function addRoute(id, outcome) {
   byMatchedId.set(key, entry);
 }
 
-if (existsSync(feedbackPath)) {
-  for (const [index, line] of readFileSync(feedbackPath, "utf8").split(/\r?\n/).entries()) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
-    try {
-      const record = JSON.parse(trimmed);
-      if (!outcomes.includes(record.outcome)) continue;
-      byOutcome[record.outcome] += 1;
-      addRoute(record.matched_id, record.outcome);
-    } catch (error) {
-      diagnostics.push({
-        level: "error",
-        message: "Invalid recall feedback record",
-        path: feedbackPath,
-        line: index + 1,
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
+const entries = parseJsonl(feedbackPath, diagnostics, "recall feedback");
+validateFeedback(entries, diagnostics, feedbackPath);
+for (const { record } of entries) {
+  if (!outcomes.includes(record.outcome)) continue;
+  byOutcome[record.outcome] += 1;
+  addRoute(record.matched_id, record.outcome);
 }
 
 for (const entry of byMatchedId.values()) {
@@ -84,6 +72,7 @@ console.log(
   JSON.stringify(
     {
       feedback_file_found: existsSync(feedbackPath),
+      ok: !diagnostics.some((item) => item.level === "error"),
       totals: byOutcome,
       routes,
       diagnostics,
@@ -92,3 +81,4 @@ console.log(
     2,
   ),
 );
+process.exitCode = diagnostics.some((item) => item.level === "error") ? 1 : 0;
