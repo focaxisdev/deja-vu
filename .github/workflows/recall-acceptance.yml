@@ -34,7 +34,8 @@ jobs:
             public_root="$(cygpath -u "$RUNNER_TEMP")/deja-vu-public"
           fi
           mkdir -p "$public_root"
-          git archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$public_root"
+          # Export committed bytes rather than runner-specific CRLF conversion.
+          git -c core.autocrlf=false archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$public_root"
 
       - name: Setup Node
         uses: actions/setup-node@v4
