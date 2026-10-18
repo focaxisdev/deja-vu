@@ -1,8 +1,8 @@
 # Local social draft: recall cues and lifecycle
 
-Unpublished social draft only. Package v0.8.0 is prepared, with no publication date
-assigned; see the [release status](release-v0.8.0.md). Hosted source acceptance
-has passed; publishing the package or a social announcement remains a separate action.
+Unpublished social draft only. Package v0.8.0 and its GitHub Release are public;
+see the [release status](release-v0.8.0.md) and [registry verification](registry-v0.8.0-verification.md).
+No social announcement has been posted as part of this closeout.
 See the [evidence and limitations](release-recall-lifecycle.md).
 
 ## Short introduction
@@ -23,5 +23,5 @@ and this round did not improve measured latency. Direct offline packaging and
 installed smoke checks pass. Full source, compiled and installed-package tests
 also pass on Ubuntu and Windows in the verification branch's GitHub Actions.
 That does not explain the earlier Cloud runtime's native EPERM. The source is
-public; the package update and this social draft remain unreleased. Usage, migration,
-full measurements and remaining limits are in the release-note draft.
+public, as is package v0.8.0; this social draft remains unpublished. Usage, migration,
+full measurements and remaining limits are in the release notes.

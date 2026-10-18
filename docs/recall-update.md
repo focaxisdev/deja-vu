@@ -1,10 +1,10 @@
 # More reliable recall, with explicit budgets and opt-ins
 
-These changes are available in repository source and prepared for package v0.8.0.
-Npm publication and the GitHub Release are still pending; see the
-[release status and final verification checklist](release-v0.8.0.md). The existing
-npm setup instructions still describe the three-file protocol; do not assume an
-npm install already includes every source addition below.
+These changes are available in repository source and the published
+[`@focaxisdev/deja-vu@0.8.0`](https://www.npmjs.com/package/@focaxisdev/deja-vu/v/0.8.0)
+package. See the [release notes](release-v0.8.0.md) and independent
+[registry artifact and clean-install verification](registry-v0.8.0-verification.md).
+The three-file protocol still requires no npm installation.
 
 ## What improves
 
@@ -22,7 +22,7 @@ These are optional engine features, not new requirements for file-first adoption
 
 ## Enable only what your host needs
 
-With the repository build, exact aliases can route familiar wording to an existing
+With package v0.8.0 or the repository build, exact aliases can route familiar wording to an existing
 distinctive cue, while candidate search and prompt output have separate budgets:
 
 ```ts

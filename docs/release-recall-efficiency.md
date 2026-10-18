@@ -1,7 +1,8 @@
 # More reliable, bounded engine recall: first-batch evidence
 
-Included in the [v0.8.0 preparation](release-v0.8.0.md); package publication is
-pending. These historical measurements are not a publication record. Start with the
+Included in the published [v0.8.0 release](release-v0.8.0.md). These historical
+measurements retain their original scope; publication is independently checked
+in the [registry verification report](registry-v0.8.0-verification.md). Start with the
 [combined update and opt-in overview](recall-update.md).
 
 These measurements and validation counts describe the first implementation batch
