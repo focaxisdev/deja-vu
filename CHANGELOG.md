@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Preserve original CLI subprocess failures in test helpers, retain execution/parse causes for invalid error responses, and add ten diagnostic regressions without weakening product assertions.
+- Append general acceptance/evidence/repair-loop rules to AGENTS.md and record an [external-blocker checkpoint](docs/verification-loop.md); complete subprocess validation remains unverified.
+
+- Add opt-in exact query aliases, managed per-memory/revision embedding scopes, and serialized reads; digest cache keys avoid retained plaintext input keys.
+- Compensate failed deletions, add explicit recoverable `supersedeMemory`, and return defensive summary/chunk copies from the in-memory adapter.
+- Add opt-in prompt provenance and qualifier-loss warnings, plus explicit raw-content retrieval.
+- Record development/held-out synthetic recall evaluation, ownership costs, repeated performance comparisons, and direct offline installed-package verification in the [round-two notes](docs/release-recall-lifecycle.md). Subprocess tests still report EPERM; no release is claimed.
+
+- Fix optional-engine false-none recall when an ineligible hybrid winner hides an eligible candidate; keep existing thresholds.
+- Add opt-in candidate search breadth, bounded prompt projection, metadata-only embedding reuse, and a content/model-keyed bounded embedding cache.
+- Cache lexical token sets with update/delete invalidation and validate recall/chunking limits before expensive work.
+- Add synthetic regression tests, a reproducible comparison benchmark, and [unreleased notes](docs/release-recall-efficiency.md) with migration guidance and measurement limits.
+
 ## [0.7.1] - Unreleased
 
 Release preparation only; not yet published. See the [release checklist](docs/release-v0.7.1.md).

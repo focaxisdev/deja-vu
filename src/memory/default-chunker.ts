@@ -1,5 +1,6 @@
 import type { AddMemoryInput, MemoryChunkType } from "../types/memory.js";
 import type { Chunker, MemoryChunkSeed } from "../types/plugins.js";
+import { boundedInteger } from "../utils/limits.js";
 
 const DEFAULT_MAX = 280;
 const DEFAULT_OVERLAP = 40;
@@ -78,8 +79,8 @@ function packBoundaryChunks(blocks: string[], maxCharacters: number, overlapChar
 
 export class DefaultChunker implements Chunker {
   chunk(input: AddMemoryInput): MemoryChunkSeed[] {
-    const maxCharacters = input.chunkStrategy?.maxCharacters ?? DEFAULT_MAX;
-    const overlapCharacters = input.chunkStrategy?.overlapCharacters ?? DEFAULT_OVERLAP;
+    const maxCharacters = boundedInteger("maxCharacters", input.chunkStrategy?.maxCharacters ?? DEFAULT_MAX, 1_000_000, 1);
+    const overlapCharacters = boundedInteger("overlapCharacters", input.chunkStrategy?.overlapCharacters ?? Math.min(DEFAULT_OVERLAP, maxCharacters - 1), maxCharacters - 1);
     const fallbackType = input.chunkStrategy?.preferredTypes?.[0] ?? "note";
     const text = input.content.trim();
 

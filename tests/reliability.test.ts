@@ -1,3 +1,4 @@
+import { requireSpawnResult } from "./helpers/cli-errors.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import * as fs from "node:fs";
@@ -180,8 +181,7 @@ test("concurrent updates retain each other's fields", async () => {
 
 const root = process.cwd();
 function cli(script: string, args: string[], cwd: string) {
-  const result = spawnSync(process.execPath, [join(root, "scripts", script), ...args], { cwd, encoding: "utf8" });
-  assert.equal(result.error, undefined);
+  const result = requireSpawnResult(spawnSync(process.execPath, [join(root, "scripts", script), ...args], { cwd, encoding: "utf8" }));
   return { status: result.status, data: JSON.parse(result.stdout) };
 }
 function project() {

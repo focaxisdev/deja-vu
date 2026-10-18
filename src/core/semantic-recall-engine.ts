@@ -17,9 +17,11 @@ import type {
   StoredMemory,
   UpdateMemoryInput,
 } from "../types/memory.js";
-import type { SemanticRecallEngineConfig } from "../types/plugins.js";
+import type { EmbeddingProvider, EmbeddingScope, SemanticRecallEngineConfig } from "../types/plugins.js";
 import { createId } from "../utils/id.js";
 import { extractKeywords } from "../utils/text.js";
+import { boundedInteger, MAX_RECALL_LIMIT } from "../utils/limits.js";
+import { compileCueAliases, normalizeCue } from "../retrieval/cue-aliases.js";
 import { isoNow } from "../utils/time.js";
 
 /** Includes a recovery copy if an adapter fails during compensation. Do not log its contents. */
@@ -36,6 +38,15 @@ export class MemoryWriteError extends Error {
   }
 }
 
+/** A successor cleanup failure is explicit; inspect both IDs before retrying. */
+export class MemorySupersedeError extends Error {
+  constructor(cause: unknown, readonly memoryId: string, readonly replacementId: string,
+    readonly recoveryErrors: unknown[]) {
+    super(recoveryErrors.length ? "Supersede failed; recovery requires adapter repair" : "Supersede failed; previous state restored", { cause });
+    this.name = "MemorySupersedeError";
+  }
+}
+
 export class SemanticRecallEngine {
   private readonly familiarityLayer: FamiliarityLayer;
   private readonly summaryLayer: SummaryLayer;
@@ -44,6 +55,8 @@ export class SemanticRecallEngine {
   private readonly summaryGenerator;
   private readonly thresholds;
   private readonly scoringStrategy;
+  private readonly cueAliases;
+  private readonly embeddingScopes = new Map<string, EmbeddingScope>();
   private mutationQueue: Promise<unknown> = Promise.resolve();
 
   private mutate<T>(operation: () => Promise<T>): Promise<T> {
@@ -53,12 +66,20 @@ export class SemanticRecallEngine {
   }
 
   constructor(private readonly config: SemanticRecallEngineConfig) {
+    this.cueAliases = compileCueAliases(config.cueAliases);
+    if (config.manageEmbeddingCache && typeof config.embeddingProvider.createScope !== "function") {
+      throw new TypeError("manageEmbeddingCache requires embeddingProvider.createScope");
+    }
     this.familiarityLayer = new FamiliarityLayer(config.storage, config.familiarityVectorStore);
     this.summaryLayer = new SummaryLayer(config.storage);
     this.chunkLayer = new ChunkLayer(config.storage, config.chunkVectorStore);
     this.chunker = config.chunker ?? new DefaultChunker();
     this.summaryGenerator = config.summaryGenerator ?? new DefaultSummaryGenerator();
-    this.thresholds = config.thresholds ?? { strong: 0.85, weak: 0.75 };
+    this.thresholds = { ...(config.thresholds ?? { strong: 0.85, weak: 0.75 }) };
+    const { weak, strong } = this.thresholds;
+    if (!Number.isFinite(weak) || !Number.isFinite(strong) || weak < 0 || strong > 1 || weak > strong) {
+      throw new RangeError("thresholds must satisfy 0 <= weak <= strong <= 1");
+    }
     this.scoringStrategy = config.scoringStrategy ?? new HybridScoringStrategy();
   }
 
@@ -66,23 +87,36 @@ export class SemanticRecallEngine {
     return this.mutate(async () => {
       const id = input.id ?? createId("memory");
       if (await this.snapshot(id)) throw new Error(`Memory already exists: ${id}; use updateMemory`);
-      const prepared = await this.prepareMemory({ ...input, id });
-      await this.commitMemory(prepared, null);
+      await this.writeMemory({ ...input, id }, null);
       return { id };
     });
   }
 
-  private async prepareMemory(input: AddMemoryInput): Promise<StoredMemory> {
+  private async writeMemory(input: AddMemoryInput & { id: string }, previous: StoredMemory | null): Promise<void> {
+    const scope = this.config.manageEmbeddingCache ? this.config.embeddingProvider.createScope!() : undefined;
+    try {
+      const prepared = await this.prepareMemory(input, scope ?? this.config.embeddingProvider);
+      if (previous) prepared.createdAt = previous.createdAt;
+      await this.commitMemory(prepared, previous);
+    } catch (error) {
+      scope?.dispose();
+      throw error;
+    }
+    this.embeddingScopes.get(input.id)?.dispose();
+    if (scope) this.embeddingScopes.set(input.id, scope);
+  }
+
+  private async prepareMemory(input: AddMemoryInput, provider: Pick<EmbeddingProvider, "embed">): Promise<StoredMemory> {
     const id = input.id ?? createId("memory");
     const now = isoNow();
     const shortSummary = await this.summaryGenerator.generateShortSummary(input);
     const structuredSummary = await this.summaryGenerator.generateStructuredSummary(input);
     const chunkSeeds = this.chunker.chunk(input, now);
 
-    const familiarityVector = await this.config.embeddingProvider.embed(
+    const familiarityVector = await provider.embed(
       [input.title, shortSummary, ...(input.tags ?? [])].join("\n"),
     );
-    const summaryVector = await this.config.embeddingProvider.embed(
+    const summaryVector = await provider.embed(
       `${structuredSummary.description}\n${structuredSummary.context}\n${structuredSummary.architectureOrIntent}`,
     );
 
@@ -96,7 +130,7 @@ export class SemanticRecallEngine {
         createdAt: now,
         updatedAt: now,
         importance: seed.importance ?? input.importance ?? 0.5,
-        embeddingVector: await this.config.embeddingProvider.embed(seed.content),
+        embeddingVector: await provider.embed(seed.content),
       });
     }
 
@@ -180,9 +214,13 @@ export class SemanticRecallEngine {
   }
 
   async recall(query: RecallInput | string): Promise<RecallResult> {
+    return this.config.consistentReads || this.config.manageEmbeddingCache ? this.mutate(() => this.recallInternal(query)) : this.recallInternal(query);
+  }
+
+  private async recallInternal(query: RecallInput | string): Promise<RecallResult> {
     const normalized: RecallInput = typeof query === "string" ? { text: query } : query;
-    const chunkLimit = normalized.chunkLimit ?? 3;
-    const scan = await this.scanImpressions(normalized);
+    const chunkLimit = boundedInteger("chunkLimit", normalized.chunkLimit ?? 3, MAX_RECALL_LIMIT);
+    const scan = await this.scanImpressionsInternal(normalized);
     const topMatch = scan.topMatch;
     const familiarityLevel = scan.familiarityLevel;
     const budget: RecallBudgetReport = {
@@ -213,8 +251,13 @@ export class SemanticRecallEngine {
         budget.whyLoaded.push("weak familiarity loaded a clipped summary");
       }
 
-      if (familiarityLevel === "strong" && normalized.loadChunks) {
-        const vector = await this.config.embeddingProvider.embed(normalized.text);
+      if (familiarityLevel === "strong" && normalized.loadChunks && chunkLimit > 0) {
+        let scope = this.embeddingScopes.get(topMatch.id);
+        if (this.config.manageEmbeddingCache && !scope) {
+          scope = this.config.embeddingProvider.createScope!();
+          this.embeddingScopes.set(topMatch.id, scope);
+        }
+        const vector = await (scope ?? this.config.embeddingProvider).embed(normalized.text);
         const chunkHits = await this.chunkLayer.search(topMatch.id, vector, chunkLimit);
         const allChunks = await this.chunkLayer.get(topMatch.id);
         const chunkMap = new Map(allChunks.map((chunk) => [chunk.chunkId, chunk]));
@@ -244,12 +287,20 @@ export class SemanticRecallEngine {
   }
 
   async scanImpressions(query: RecallInput | string): Promise<ImpressionScanResult> {
-    const normalized: RecallInput = typeof query === "string" ? { text: query } : query;
-    const topK = normalized.topK ?? 5;
-    const queryTokens = extractKeywords(normalized.text, 200);
-    const hits = await this.config.storage.searchImpressions(queryTokens, topK);
+    return this.config.consistentReads || this.config.manageEmbeddingCache ? this.mutate(() => this.scanImpressionsInternal(query)) : this.scanImpressionsInternal(query);
+  }
 
-    const candidates = this.scoringStrategy.rank(
+  private async scanImpressionsInternal(query: RecallInput | string): Promise<ImpressionScanResult> {
+    const normalized: RecallInput = typeof query === "string" ? { text: query } : query;
+    if (typeof normalized.text !== "string") throw new TypeError("text must be a string");
+    const topK = boundedInteger("topK", normalized.topK ?? 5, MAX_RECALL_LIMIT);
+    const candidateLimit = boundedInteger("candidateLimit", normalized.candidateLimit ?? topK, MAX_RECALL_LIMIT, topK);
+    boundedInteger("chunkLimit", normalized.chunkLimit ?? 3, MAX_RECALL_LIMIT);
+    const cue = this.cueAliases.size ? this.cueAliases.get(normalizeCue(normalized.text)) ?? normalized.text : normalized.text;
+    const queryTokens = extractKeywords(cue, 200);
+    const hits = topK === 0 ? [] : await this.config.storage.searchImpressions(queryTokens, candidateLimit);
+
+    const ranked = this.scoringStrategy.rank(
       hits.map((hit) => ({
         record: hit.record,
         similarity: hit.similarity,
@@ -259,6 +310,12 @@ export class SemanticRecallEngine {
       familiarityLevel: resolveFamiliarityLevel(candidate.semanticSimilarity, this.thresholds),
     }));
 
+    // Eligibility precedes hybrid preference. Keep hybrid ordering within each group,
+    // including weak vs strong, and retain ineligible candidates for diagnostics.
+    const candidates = [
+      ...ranked.filter((candidate) => candidate.familiarityLevel !== "none"),
+      ...ranked.filter((candidate) => candidate.familiarityLevel === "none"),
+    ].slice(0, topK);
     const topMatch = candidates[0] ?? null;
     const familiarityLevel = topMatch
       ? resolveFamiliarityLevel(topMatch.semanticSimilarity, this.thresholds)
@@ -284,19 +341,38 @@ export class SemanticRecallEngine {
   }
 
   async getSummary(id: string): Promise<SummaryRecord | null> {
-    return this.summaryLayer.get(id);
+    return this.config.consistentReads || this.config.manageEmbeddingCache ? this.mutate(() => this.summaryLayer.get(id)) : this.summaryLayer.get(id);
   }
 
   async getChunks(id: string): Promise<MemoryChunk[]> {
-    return this.chunkLayer.get(id);
+    return this.config.consistentReads || this.config.manageEmbeddingCache ? this.mutate(() => this.chunkLayer.get(id)) : this.chunkLayer.get(id);
+  }
+
+  /** Explicit full raw-content retrieval; never loaded by prompt projection automatically. */
+  async getRawContent(id: string): Promise<string | null> {
+    return this.config.consistentReads || this.config.manageEmbeddingCache ? this.mutate(() => this.config.storage.getRawContent(id)) : this.config.storage.getRawContent(id);
   }
 
   async updateMemory(id: string, input: UpdateMemoryInput): Promise<{ id: string }> {
     return this.mutate(async () => {
       const previous = await this.snapshot(id);
       if (!previous) throw new Error(`Memory not found: ${id}`);
+      if (this.config.preserveDerivedOnMetadataUpdate &&
+          Object.keys(input).every((key) => key === "importance" || key === "metadata")) {
+        // Explicitly preserve derived fields even for custom generators/chunkers.
+        // Reuse the existing compensated write path and detached snapshot.
+        const next = structuredClone(previous);
+        next.updatedAt = isoNow();
+        next.familiarity.importance = input.importance ?? previous.familiarity.importance;
+        next.summary.metadata = {
+          ...previous.summary.metadata, ...input.metadata,
+          title: previous.familiarity.title, tags: [...previous.familiarity.tags],
+        };
+        await this.commitMemory(next, previous);
+        return { id };
+      }
       const existingSummary = previous.summary;
-      const prepared = await this.prepareMemory({
+      await this.writeMemory({
         id,
         title: input.title ?? previous.familiarity.title,
         content: input.content ?? previous.rawContent,
@@ -312,18 +388,57 @@ export class SemanticRecallEngine {
           tags: input.tags ?? previous.familiarity.tags,
         },
         chunkStrategy: input.chunkStrategy,
-      });
-      prepared.createdAt = previous.createdAt;
-      await this.commitMemory(prepared, previous);
+      }, previous);
       return { id };
     });
   }
 
-  async deleteMemory(id: string): Promise<void> {
+  /** Replace a live memory with a new ID. No historical redirect is stored by this optional engine. */
+  async supersedeMemory(id: string, replacement: AddMemoryInput): Promise<{ id: string; supersededId: string }> {
     return this.mutate(async () => {
+      const previous = await this.snapshot(id);
+      if (!previous) throw new Error(`Memory not found: ${id}`);
+      const nextId = replacement.id ?? createId("memory");
+      if (nextId === id || await this.snapshot(nextId)) throw new Error(`Replacement memory already exists: ${nextId}`);
+      await this.writeMemory({ ...replacement, id: nextId }, null);
+      try {
+        await this.deleteInternal(id, previous);
+      } catch (cause) {
+        const recoveryErrors: unknown[] = cause instanceof MemoryWriteError ? [...cause.recoveryErrors] : [cause];
+        try { await this.deleteInternal(nextId, await this.snapshot(nextId)); }
+        catch (error) { recoveryErrors.push(error); }
+        throw new MemorySupersedeError(cause, id, nextId, recoveryErrors);
+      }
+      return { id: nextId, supersededId: id };
+    });
+  }
+
+  async deleteMemory(id: string): Promise<void> {
+    return this.mutate(async () => this.deleteInternal(id, await this.snapshot(id)));
+  }
+
+  private async deleteInternal(id: string, previous: StoredMemory | null): Promise<void> {
+    try {
       await this.familiarityLayer.remove(id);
       await this.chunkLayer.remove(id);
       await this.config.storage.deleteMemory(id);
-    });
+    } catch (cause) {
+      const recoveryErrors: unknown[] = [];
+      const attempt = async (operation: () => Promise<void>) => {
+        try { await operation(); } catch (error) { recoveryErrors.push(error); }
+      };
+      if (previous) {
+        await attempt(() => this.config.storage.saveSummary(previous.summary));
+        await attempt(() => this.config.storage.saveChunks(previous.chunks));
+        await attempt(() => this.config.storage.saveRawContent(id, previous.rawContent, previous.createdAt, previous.updatedAt));
+        await attempt(() => this.config.storage.saveFamiliarity(previous.familiarity));
+        await attempt(() => this.config.familiarityVectorStore.upsert(previous.familiarity));
+        await attempt(() => this.config.chunkVectorStore.upsert(previous.chunks));
+      }
+      throw new MemoryWriteError(recoveryErrors.length ? "Memory delete failed; recovery requires adapter repair" : "Memory delete failed; previous state restored",
+        cause, previous, recoveryErrors, id);
+    }
+    this.embeddingScopes.get(id)?.dispose();
+    this.embeddingScopes.delete(id);
   }
 }

@@ -1,0 +1,425 @@
+{
+  "description": "Synthetic, small diagnostic fixture; not a semantic model benchmark. Corpus aliases and both topic-disjoint query splits frozen before the first evaluation. Held-out scoring follows development-only inspection; cases share an author and are not independent validation. No real memories.",
+  "splits": {
+    "development": {
+      "memories": [
+        {
+          "id": "d-cache",
+          "title": "快取失效規則",
+          "content": "更新或刪除後釋放快取。只有測試環境可以停用驗證。",
+          "tags": [
+            "d-cache"
+          ],
+          "aliases": [
+            "更新後快取怎麼辦",
+            "cache eviction",
+            "刷新記憶快取"
+          ]
+        },
+        {
+          "id": "d-login",
+          "title": "登入重試",
+          "content": "帳號驗證失敗最多重試三次。",
+          "tags": [
+            "d-login"
+          ],
+          "aliases": [
+            "無法登入怎麼處理",
+            "sign in retry",
+            "authentication retries"
+          ]
+        },
+        {
+          "id": "d-backup",
+          "title": "備份還原",
+          "content": "每日離線備份；還原前驗證校驗碼。",
+          "tags": [
+            "d-backup"
+          ],
+          "aliases": [
+            "如何救回資料",
+            "restore backup",
+            "recover archived data"
+          ]
+        },
+        {
+          "id": "d-theme",
+          "title": "顏色主題",
+          "content": "無障礙深色模式需要足夠對比。",
+          "tags": [
+            "d-theme"
+          ],
+          "aliases": [
+            "深色介面",
+            "night mode",
+            "dark appearance"
+          ]
+        }
+      ],
+      "cases": [
+        {
+          "id": "d-01",
+          "category": "chinese",
+          "query": "快取失效規則",
+          "relevant": [
+            "d-cache"
+          ],
+          "rationale": "Exact title cue remains a valid control."
+        },
+        {
+          "id": "d-02",
+          "category": "chinese",
+          "query": "登入重試",
+          "relevant": [
+            "d-login"
+          ],
+          "rationale": "Exact title cue remains a valid control."
+        },
+        {
+          "id": "d-03",
+          "category": "chinese",
+          "query": "更新後快取怎麼辦",
+          "relevant": [
+            "d-cache"
+          ],
+          "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token."
+        },
+        {
+          "id": "d-04",
+          "category": "chinese",
+          "query": "無法登入怎麼處理",
+          "relevant": [
+            "d-login"
+          ],
+          "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token."
+        },
+        {
+          "id": "d-05",
+          "category": "synonym",
+          "query": "restore backup",
+          "relevant": [
+            "d-backup"
+          ],
+          "rationale": "Authored English synonym routes to the corpus tag."
+        },
+        {
+          "id": "d-06",
+          "category": "synonym",
+          "query": "night mode",
+          "relevant": [
+            "d-theme"
+          ],
+          "rationale": "Authored English synonym routes to the corpus tag."
+        },
+        {
+          "id": "d-07",
+          "category": "cross-language",
+          "query": "CACHE EVICTION",
+          "relevant": [
+            "d-cache"
+          ],
+          "rationale": "Explicit bilingual alias; case normalization only."
+        },
+        {
+          "id": "d-08",
+          "category": "cross-language",
+          "query": "SIGN IN RETRY",
+          "relevant": [
+            "d-login"
+          ],
+          "rationale": "Explicit bilingual alias; case normalization only."
+        },
+        {
+          "id": "d-09",
+          "category": "cross-language",
+          "query": "  recover   archived   data  ",
+          "relevant": [
+            "d-backup"
+          ],
+          "rationale": "Explicit bilingual alias with whitespace normalization."
+        },
+        {
+          "id": "d-10",
+          "category": "paraphrase",
+          "query": "重新整理存下來的線索以免拿到舊版",
+          "relevant": [
+            "d-cache"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "d-11",
+          "category": "paraphrase",
+          "query": "進不去帳號時應該再試幾次",
+          "relevant": [
+            "d-login"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "d-12",
+          "category": "paraphrase",
+          "query": "希望找回昨日保存的內容",
+          "relevant": [
+            "d-backup"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "d-13",
+          "category": "synonym",
+          "query": "dark appearance",
+          "relevant": [
+            "d-theme"
+          ],
+          "rationale": "Explicit alternate terminology."
+        },
+        {
+          "id": "d-14",
+          "category": "unrelated",
+          "query": "海底火山的溫度",
+          "relevant": [],
+          "rationale": "Outside the corpus."
+        },
+        {
+          "id": "d-15",
+          "category": "unrelated",
+          "query": "do not restore backup",
+          "relevant": [],
+          "rationale": "Negated query must not activate a substring alias."
+        },
+        {
+          "id": "d-16",
+          "category": "unrelated",
+          "query": "sign in retry price prediction",
+          "relevant": [],
+          "rationale": "Alias plus unrelated qualification must not be rewritten."
+        },
+        {
+          "id": "d-17",
+          "category": "stale",
+          "query": "dretiredobsolete",
+          "relevant": [],
+          "rationale": "The only matching record has been superseded."
+        },
+        {
+          "id": "d-18",
+          "category": "stale",
+          "query": "ddeletedobsolete",
+          "relevant": [],
+          "rationale": "The only matching record has been deleted."
+        }
+      ]
+    },
+    "held-out": {
+      "memories": [
+        {
+          "id": "h-billing",
+          "title": "發票修正",
+          "content": "已結帳的發票只能以折讓單修正。",
+          "tags": [
+            "h-billing"
+          ],
+          "aliases": [
+            "發票寫錯怎麼辦",
+            "correct invoice",
+            "billing correction"
+          ]
+        },
+        {
+          "id": "h-timeout",
+          "title": "連線逾時",
+          "content": "連線逾時只允許重試冪等請求。",
+          "tags": [
+            "h-timeout"
+          ],
+          "aliases": [
+            "連不上伺服器",
+            "connection deadline",
+            "network timeout"
+          ]
+        },
+        {
+          "id": "h-export",
+          "title": "資料匯出",
+          "content": "匯出報表前必須遮蔽私人欄位。",
+          "tags": [
+            "h-export"
+          ],
+          "aliases": [
+            "怎樣下載報表",
+            "download report",
+            "export records"
+          ]
+        },
+        {
+          "id": "h-schedule",
+          "title": "排程時區",
+          "content": "排程使用明確時區並處理日光節約時間。",
+          "tags": [
+            "h-schedule"
+          ],
+          "aliases": [
+            "定時工作用哪個時區",
+            "scheduled job timezone",
+            "timer zone"
+          ]
+        }
+      ],
+      "cases": [
+        {
+          "id": "h-01",
+          "category": "chinese",
+          "query": "發票修正",
+          "relevant": [
+            "h-billing"
+          ],
+          "rationale": "Exact title cue remains a valid control."
+        },
+        {
+          "id": "h-02",
+          "category": "chinese",
+          "query": "連線逾時",
+          "relevant": [
+            "h-timeout"
+          ],
+          "rationale": "Exact title cue remains a valid control."
+        },
+        {
+          "id": "h-03",
+          "category": "chinese",
+          "query": "發票寫錯怎麼辦",
+          "relevant": [
+            "h-billing"
+          ],
+          "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token."
+        },
+        {
+          "id": "h-04",
+          "category": "chinese",
+          "query": "連不上伺服器",
+          "relevant": [
+            "h-timeout"
+          ],
+          "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token."
+        },
+        {
+          "id": "h-05",
+          "category": "synonym",
+          "query": "download report",
+          "relevant": [
+            "h-export"
+          ],
+          "rationale": "Authored English synonym routes to the corpus tag."
+        },
+        {
+          "id": "h-06",
+          "category": "synonym",
+          "query": "scheduled job timezone",
+          "relevant": [
+            "h-schedule"
+          ],
+          "rationale": "Authored English synonym routes to the corpus tag."
+        },
+        {
+          "id": "h-07",
+          "category": "cross-language",
+          "query": "CORRECT INVOICE",
+          "relevant": [
+            "h-billing"
+          ],
+          "rationale": "Explicit bilingual alias; case normalization only."
+        },
+        {
+          "id": "h-08",
+          "category": "cross-language",
+          "query": "CONNECTION DEADLINE",
+          "relevant": [
+            "h-timeout"
+          ],
+          "rationale": "Explicit bilingual alias; case normalization only."
+        },
+        {
+          "id": "h-09",
+          "category": "cross-language",
+          "query": "  export   records  ",
+          "relevant": [
+            "h-export"
+          ],
+          "rationale": "Explicit bilingual alias with whitespace normalization."
+        },
+        {
+          "id": "h-10",
+          "category": "paraphrase",
+          "query": "帳單的金額填錯要如何更正",
+          "relevant": [
+            "h-billing"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "h-11",
+          "category": "paraphrase",
+          "query": "伺服器等太久了需要重新連線嗎",
+          "relevant": [
+            "h-timeout"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "h-12",
+          "category": "paraphrase",
+          "query": "把表格存成外部檔案需要注意什麼",
+          "relevant": [
+            "h-export"
+          ],
+          "rationale": "Unseen paraphrase deliberately has no exact alias."
+        },
+        {
+          "id": "h-13",
+          "category": "synonym",
+          "query": "timer zone",
+          "relevant": [
+            "h-schedule"
+          ],
+          "rationale": "Explicit alternate terminology."
+        },
+        {
+          "id": "h-14",
+          "category": "unrelated",
+          "query": "海底火山的溫度",
+          "relevant": [],
+          "rationale": "Outside the corpus."
+        },
+        {
+          "id": "h-15",
+          "category": "unrelated",
+          "query": "do not download report",
+          "relevant": [],
+          "rationale": "Negated query must not activate a substring alias."
+        },
+        {
+          "id": "h-16",
+          "category": "unrelated",
+          "query": "connection deadline price prediction",
+          "relevant": [],
+          "rationale": "Alias plus unrelated qualification must not be rewritten."
+        },
+        {
+          "id": "h-17",
+          "category": "stale",
+          "query": "hretiredobsolete",
+          "relevant": [],
+          "rationale": "The only matching record has been superseded."
+        },
+        {
+          "id": "h-18",
+          "category": "stale",
+          "query": "hdeletedobsolete",
+          "relevant": [],
+          "rationale": "The only matching record has been deleted."
+        }
+      ]
+    }
+  }
+}

@@ -9,3 +9,6 @@ export * from "./storage/in-memory-vector-store.js";
 export * from "./types/memory.js";
 export * from "./types/plugins.js";
 export * from "./utils/text.js";
+export * from "./retrieval/prompt-projection.js";
+export * from "./plugins/cached-embedding-provider.js";
+export type { CueAlias } from "./retrieval/cue-aliases.js";

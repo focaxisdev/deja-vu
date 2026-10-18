@@ -1,0 +1,80 @@
+name: Recall acceptance
+
+on:
+  push:
+    branches:
+      - fix/recall-efficiency-and-budgets
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ runner.temp }}/deja-vu-public
+    steps:
+      - name: Checkout exact push revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Export public source and synthetic fixtures
+        working-directory: ${{ github.workspace }}
+        run: |
+          git rev-parse HEAD
+          mkdir -p "$RUNNER_TEMP/deja-vu-public"
+          git archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$RUNNER_TEMP/deja-vu-public"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Type check
+        run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
+
+      - name: Complete source, links, compiled and installed-package acceptance
+        run: npm test
+
+      - name: Frozen recall quality and cache lifecycle counts
+        run: |
+          node scripts/evaluate-recall.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-quality.json"
+          node scripts/benchmark-cache-ownership.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-cache.json"
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const read = path => JSON.parse(readFileSync(path, 'utf8'));
+          const quality = read(join(process.env.RUNNER_TEMP, 'recall-quality.json'));
+          const expected = read('docs/engine/recall-evaluation.json');
+          // Runtime metadata is recorded, not a recall quality assertion.
+          console.log('Evaluation runtime:', quality.node, 'recorded runtime:', expected.node);
+          const { node: actualNode, ...actualQuality } = quality;
+          const { node: expectedNode, ...expectedQuality } = expected;
+          assert.deepEqual(actualQuality, expectedQuality);
+          const cache = read(join(process.env.RUNNER_TEMP, 'recall-cache.json'));
+          const recorded = read('docs/engine/recall-cache-ownership-benchmark.json');
+          for (const mode of ['after-unscoped', 'after-owned']) {
+            assert.deepEqual(cache.modes[mode], recorded.modes[mode]);
+          }
+          assert.deepEqual(cache.modes['before-unscoped'], cache.modes['after-unscoped']);
+          console.log('Frozen development/held-out IDs and metrics, cache call counts and retained entries: passed');
+          NODE
+
+      - name: Synthetic protocol fixture checks
+        run: |
+          node scripts/dejavu-lint-memory.mjs --memory-root starter-kit/memory
+          node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory
+          node scripts/dejavu-lint-memory.mjs --memory-root docs/examples/settings-project/memory
+          npm run report:feedback

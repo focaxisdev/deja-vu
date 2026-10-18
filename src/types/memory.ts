@@ -108,7 +108,10 @@ export interface ImpressionScanResult {
 
 export interface RecallInput {
   text: string;
+  /** Final candidate output limit (default 5, maximum 1000). */
   topK?: number;
+  /** Opt-in search breadth before ranking; defaults to topK and must be >= topK. */
+  candidateLimit?: number;
   loadChunks?: boolean;
   chunkLimit?: number;
 }

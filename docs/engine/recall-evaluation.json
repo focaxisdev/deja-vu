@@ -1,0 +1,1675 @@
+{
+  "fixtureSha256": "4e1b70b5520e1d3cfb85489aad053825e339938016b20e659f2a4eb4677aee5d",
+  "node": "v24.19.0",
+  "interpretation": "Recall@K is mean recall over positive queries, considering only eligible candidates. False recalls include any non-gold eligible ID in the first K; only the first candidate is loaded by recall(). Exact authored aliases are routing rules, not learned multilingual semantics. Held-out topics are disjoint; this small author-created split is not independent validation.",
+  "splits": {
+    "development": {
+      "before": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 0.5,
+            "missedQueries": 2,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "d-01",
+            "category": "chinese",
+            "query": "快取失效規則",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-cache"
+            ]
+          },
+          {
+            "id": "d-02",
+            "category": "chinese",
+            "query": "登入重試",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-login"
+            ]
+          },
+          {
+            "id": "d-03",
+            "category": "chinese",
+            "query": "更新後快取怎麼辦",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "d-04",
+            "category": "chinese",
+            "query": "無法登入怎麼處理",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "d-05",
+            "category": "synonym",
+            "query": "restore backup",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "d-06",
+            "category": "synonym",
+            "query": "night mode",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "d-07",
+            "category": "cross-language",
+            "query": "CACHE EVICTION",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "d-08",
+            "category": "cross-language",
+            "query": "SIGN IN RETRY",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "d-09",
+            "category": "cross-language",
+            "query": "  recover   archived   data  ",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": []
+          },
+          {
+            "id": "d-10",
+            "category": "paraphrase",
+            "query": "重新整理存下來的線索以免拿到舊版",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-11",
+            "category": "paraphrase",
+            "query": "進不去帳號時應該再試幾次",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-12",
+            "category": "paraphrase",
+            "query": "希望找回昨日保存的內容",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-13",
+            "category": "synonym",
+            "query": "dark appearance",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": []
+          },
+          {
+            "id": "d-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "d-15",
+            "category": "unrelated",
+            "query": "do not restore backup",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-16",
+            "category": "unrelated",
+            "query": "sign in retry price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "d-17",
+            "category": "stale",
+            "query": "dretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "d-18",
+            "category": "stale",
+            "query": "ddeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      },
+      "after-default": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 0.5,
+            "missedQueries": 2,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "d-01",
+            "category": "chinese",
+            "query": "快取失效規則",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-cache"
+            ]
+          },
+          {
+            "id": "d-02",
+            "category": "chinese",
+            "query": "登入重試",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-login"
+            ]
+          },
+          {
+            "id": "d-03",
+            "category": "chinese",
+            "query": "更新後快取怎麼辦",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "d-04",
+            "category": "chinese",
+            "query": "無法登入怎麼處理",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "d-05",
+            "category": "synonym",
+            "query": "restore backup",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "d-06",
+            "category": "synonym",
+            "query": "night mode",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "d-07",
+            "category": "cross-language",
+            "query": "CACHE EVICTION",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "d-08",
+            "category": "cross-language",
+            "query": "SIGN IN RETRY",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "d-09",
+            "category": "cross-language",
+            "query": "  recover   archived   data  ",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": []
+          },
+          {
+            "id": "d-10",
+            "category": "paraphrase",
+            "query": "重新整理存下來的線索以免拿到舊版",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-11",
+            "category": "paraphrase",
+            "query": "進不去帳號時應該再試幾次",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-12",
+            "category": "paraphrase",
+            "query": "希望找回昨日保存的內容",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-13",
+            "category": "synonym",
+            "query": "dark appearance",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": []
+          },
+          {
+            "id": "d-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "d-15",
+            "category": "unrelated",
+            "query": "do not restore backup",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-16",
+            "category": "unrelated",
+            "query": "sign in retry price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "d-17",
+            "category": "stale",
+            "query": "dretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "d-18",
+            "category": "stale",
+            "query": "ddeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      },
+      "after-aliases": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "d-01",
+            "category": "chinese",
+            "query": "快取失效規則",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-cache"
+            ]
+          },
+          {
+            "id": "d-02",
+            "category": "chinese",
+            "query": "登入重試",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "d-login"
+            ]
+          },
+          {
+            "id": "d-03",
+            "category": "chinese",
+            "query": "更新後快取怎麼辦",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": [
+              "d-cache"
+            ]
+          },
+          {
+            "id": "d-04",
+            "category": "chinese",
+            "query": "無法登入怎麼處理",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": [
+              "d-login"
+            ]
+          },
+          {
+            "id": "d-05",
+            "category": "synonym",
+            "query": "restore backup",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": [
+              "d-backup"
+            ]
+          },
+          {
+            "id": "d-06",
+            "category": "synonym",
+            "query": "night mode",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": [
+              "d-theme"
+            ]
+          },
+          {
+            "id": "d-07",
+            "category": "cross-language",
+            "query": "CACHE EVICTION",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": [
+              "d-cache"
+            ]
+          },
+          {
+            "id": "d-08",
+            "category": "cross-language",
+            "query": "SIGN IN RETRY",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": [
+              "d-login"
+            ]
+          },
+          {
+            "id": "d-09",
+            "category": "cross-language",
+            "query": "  recover   archived   data  ",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": [
+              "d-backup"
+            ]
+          },
+          {
+            "id": "d-10",
+            "category": "paraphrase",
+            "query": "重新整理存下來的線索以免拿到舊版",
+            "relevant": [
+              "d-cache"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-11",
+            "category": "paraphrase",
+            "query": "進不去帳號時應該再試幾次",
+            "relevant": [
+              "d-login"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-12",
+            "category": "paraphrase",
+            "query": "希望找回昨日保存的內容",
+            "relevant": [
+              "d-backup"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-13",
+            "category": "synonym",
+            "query": "dark appearance",
+            "relevant": [
+              "d-theme"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": [
+              "d-theme"
+            ]
+          },
+          {
+            "id": "d-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "d-15",
+            "category": "unrelated",
+            "query": "do not restore backup",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "d-16",
+            "category": "unrelated",
+            "query": "sign in retry price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "d-17",
+            "category": "stale",
+            "query": "dretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "d-18",
+            "category": "stale",
+            "query": "ddeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      }
+    },
+    "held-out": {
+      "before": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 0.5,
+            "missedQueries": 2,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "h-01",
+            "category": "chinese",
+            "query": "發票修正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-billing"
+            ]
+          },
+          {
+            "id": "h-02",
+            "category": "chinese",
+            "query": "連線逾時",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-timeout"
+            ]
+          },
+          {
+            "id": "h-03",
+            "category": "chinese",
+            "query": "發票寫錯怎麼辦",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "h-04",
+            "category": "chinese",
+            "query": "連不上伺服器",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "h-05",
+            "category": "synonym",
+            "query": "download report",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "h-06",
+            "category": "synonym",
+            "query": "scheduled job timezone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "h-07",
+            "category": "cross-language",
+            "query": "CORRECT INVOICE",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "h-08",
+            "category": "cross-language",
+            "query": "CONNECTION DEADLINE",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "h-09",
+            "category": "cross-language",
+            "query": "  export   records  ",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": []
+          },
+          {
+            "id": "h-10",
+            "category": "paraphrase",
+            "query": "帳單的金額填錯要如何更正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-11",
+            "category": "paraphrase",
+            "query": "伺服器等太久了需要重新連線嗎",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-12",
+            "category": "paraphrase",
+            "query": "把表格存成外部檔案需要注意什麼",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-13",
+            "category": "synonym",
+            "query": "timer zone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": []
+          },
+          {
+            "id": "h-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "h-15",
+            "category": "unrelated",
+            "query": "do not download report",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-16",
+            "category": "unrelated",
+            "query": "connection deadline price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "h-17",
+            "category": "stale",
+            "query": "hretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "h-18",
+            "category": "stale",
+            "query": "hdeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      },
+      "after-default": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.15384615384615385,
+            "missedQueries": 11,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 0.5,
+            "missedQueries": 2,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "h-01",
+            "category": "chinese",
+            "query": "發票修正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-billing"
+            ]
+          },
+          {
+            "id": "h-02",
+            "category": "chinese",
+            "query": "連線逾時",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-timeout"
+            ]
+          },
+          {
+            "id": "h-03",
+            "category": "chinese",
+            "query": "發票寫錯怎麼辦",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "h-04",
+            "category": "chinese",
+            "query": "連不上伺服器",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": []
+          },
+          {
+            "id": "h-05",
+            "category": "synonym",
+            "query": "download report",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "h-06",
+            "category": "synonym",
+            "query": "scheduled job timezone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": []
+          },
+          {
+            "id": "h-07",
+            "category": "cross-language",
+            "query": "CORRECT INVOICE",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "h-08",
+            "category": "cross-language",
+            "query": "CONNECTION DEADLINE",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": []
+          },
+          {
+            "id": "h-09",
+            "category": "cross-language",
+            "query": "  export   records  ",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": []
+          },
+          {
+            "id": "h-10",
+            "category": "paraphrase",
+            "query": "帳單的金額填錯要如何更正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-11",
+            "category": "paraphrase",
+            "query": "伺服器等太久了需要重新連線嗎",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-12",
+            "category": "paraphrase",
+            "query": "把表格存成外部檔案需要注意什麼",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-13",
+            "category": "synonym",
+            "query": "timer zone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": []
+          },
+          {
+            "id": "h-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "h-15",
+            "category": "unrelated",
+            "query": "do not download report",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-16",
+            "category": "unrelated",
+            "query": "connection deadline price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "h-17",
+            "category": "stale",
+            "query": "hretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "h-18",
+            "category": "stale",
+            "query": "hdeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      },
+      "after-aliases": {
+        "overall": [
+          {
+            "k": 1,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 3,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          {
+            "k": 5,
+            "queries": 18,
+            "positiveQueries": 13,
+            "negativeQueries": 5,
+            "recallAtK": 0.7692307692307693,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        ],
+        "byCategory": {
+          "chinese": {
+            "k": 1,
+            "queries": 4,
+            "positiveQueries": 4,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "synonym": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "cross-language": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 1,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "paraphrase": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 3,
+            "negativeQueries": 0,
+            "recallAtK": 0,
+            "missedQueries": 3,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "unrelated": {
+            "k": 1,
+            "queries": 3,
+            "positiveQueries": 0,
+            "negativeQueries": 3,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          },
+          "stale": {
+            "k": 1,
+            "queries": 2,
+            "positiveQueries": 0,
+            "negativeQueries": 2,
+            "recallAtK": null,
+            "missedQueries": 0,
+            "falseRecallQueries": 0,
+            "falsePositiveNegativeQueries": 0
+          }
+        },
+        "rows": [
+          {
+            "id": "h-01",
+            "category": "chinese",
+            "query": "發票修正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-billing"
+            ]
+          },
+          {
+            "id": "h-02",
+            "category": "chinese",
+            "query": "連線逾時",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Exact title cue remains a valid control.",
+            "retrieved": [
+              "h-timeout"
+            ]
+          },
+          {
+            "id": "h-03",
+            "category": "chinese",
+            "query": "發票寫錯怎麼辦",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": [
+              "h-billing"
+            ]
+          },
+          {
+            "id": "h-04",
+            "category": "chinese",
+            "query": "連不上伺服器",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Authored Chinese alias; baseline treats the whole phrase as one token.",
+            "retrieved": [
+              "h-timeout"
+            ]
+          },
+          {
+            "id": "h-05",
+            "category": "synonym",
+            "query": "download report",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": [
+              "h-export"
+            ]
+          },
+          {
+            "id": "h-06",
+            "category": "synonym",
+            "query": "scheduled job timezone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Authored English synonym routes to the corpus tag.",
+            "retrieved": [
+              "h-schedule"
+            ]
+          },
+          {
+            "id": "h-07",
+            "category": "cross-language",
+            "query": "CORRECT INVOICE",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": [
+              "h-billing"
+            ]
+          },
+          {
+            "id": "h-08",
+            "category": "cross-language",
+            "query": "CONNECTION DEADLINE",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Explicit bilingual alias; case normalization only.",
+            "retrieved": [
+              "h-timeout"
+            ]
+          },
+          {
+            "id": "h-09",
+            "category": "cross-language",
+            "query": "  export   records  ",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Explicit bilingual alias with whitespace normalization.",
+            "retrieved": [
+              "h-export"
+            ]
+          },
+          {
+            "id": "h-10",
+            "category": "paraphrase",
+            "query": "帳單的金額填錯要如何更正",
+            "relevant": [
+              "h-billing"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-11",
+            "category": "paraphrase",
+            "query": "伺服器等太久了需要重新連線嗎",
+            "relevant": [
+              "h-timeout"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-12",
+            "category": "paraphrase",
+            "query": "把表格存成外部檔案需要注意什麼",
+            "relevant": [
+              "h-export"
+            ],
+            "rationale": "Unseen paraphrase deliberately has no exact alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-13",
+            "category": "synonym",
+            "query": "timer zone",
+            "relevant": [
+              "h-schedule"
+            ],
+            "rationale": "Explicit alternate terminology.",
+            "retrieved": [
+              "h-schedule"
+            ]
+          },
+          {
+            "id": "h-14",
+            "category": "unrelated",
+            "query": "海底火山的溫度",
+            "relevant": [],
+            "rationale": "Outside the corpus.",
+            "retrieved": []
+          },
+          {
+            "id": "h-15",
+            "category": "unrelated",
+            "query": "do not download report",
+            "relevant": [],
+            "rationale": "Negated query must not activate a substring alias.",
+            "retrieved": []
+          },
+          {
+            "id": "h-16",
+            "category": "unrelated",
+            "query": "connection deadline price prediction",
+            "relevant": [],
+            "rationale": "Alias plus unrelated qualification must not be rewritten.",
+            "retrieved": []
+          },
+          {
+            "id": "h-17",
+            "category": "stale",
+            "query": "hretiredobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been superseded.",
+            "retrieved": []
+          },
+          {
+            "id": "h-18",
+            "category": "stale",
+            "query": "hdeletedobsolete",
+            "relevant": [],
+            "rationale": "The only matching record has been deleted.",
+            "retrieved": []
+          }
+        ]
+      }
+    }
+  }
+}

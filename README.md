@@ -196,6 +196,13 @@ const engine = createInMemorySemanticRecallEngine({
 
 Read the [engine guide](./docs/engine/semantic-engine.md) or run the [basic example](./examples/basic/index.ts). The engine is an optional acceleration layer, not the default adoption path.
 
+Unreleased engine work adds eligible-candidate selection, bounded prompt output,
+and opt-in embedding reuse. The three-file setup is unchanged. See the
+[local release-note draft](docs/release-recall-efficiency.md) and
+[usage examples](docs/engine/recall-efficiency.md).
+Further unreleased work adds opt-in [explicit aliases, cache ownership and provenance](docs/engine/recall-lifecycle.md).
+The [round-two notes](docs/release-recall-lifecycle.md) report recall gains from authored aliases, measured costs and remaining verification blockers.
+
 ## Contributing
 
 Issues and focused pull requests are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) for the project boundaries and verification commands.
