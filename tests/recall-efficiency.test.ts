@@ -30,7 +30,10 @@ test("eligible lexical match cannot be hidden by a recent ineligible hybrid winn
   assert.equal((await engine.recall(query.join(" "))).matched, true);
 });
 
-test("candidateLimit widens search without widening output; default breadth stays compatible", async () => {
+test("candidateLimit widens search without widening output; default breadth stays compatible", async (t) => {
+  // These candidates must tie on recency as well as lexical score. Wall-clock
+  // changes during setup otherwise make the tie0 assertion timing-dependent.
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-01-01T00:00:00Z") });
   const storage = new InMemoryStorage();
   for (let i = 0; i < 6; i++) await storage.saveFamiliarity(familiarity(`tie${i}`, ["alpha"], i === 5 ? 1 : 0));
   const engine = createInMemorySemanticRecallEngine({ storage });

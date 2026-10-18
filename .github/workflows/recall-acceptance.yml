@@ -29,8 +29,12 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           git rev-parse HEAD
-          mkdir -p "$RUNNER_TEMP/deja-vu-public"
-          git archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$RUNNER_TEMP/deja-vu-public"
+          public_root="$RUNNER_TEMP/deja-vu-public"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            public_root="$(cygpath -u "$RUNNER_TEMP")/deja-vu-public"
+          fi
+          mkdir -p "$public_root"
+          git archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$public_root"
 
       - name: Setup Node
         uses: actions/setup-node@v4
