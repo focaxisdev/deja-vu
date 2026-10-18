@@ -11,32 +11,4 @@ permissions:
 
 jobs:
   test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
-      - name: Source, compiled, links and installed-package tests
-        run: npm test
-
-      - name: Memory lint
-        run: node scripts/dejavu-lint-memory.mjs && node scripts/dejavu-lint-memory.mjs --memory-root starter-kit/memory && node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory && node scripts/dejavu-lint-memory.mjs --memory-root docs/examples/settings-project/memory
-
-      - name: Project readiness
-        run: node scripts/deja-vu.mjs doctor --json
-
-      - name: Feedback report
-        run: npm run report:feedback
+    uses: ./.github/workflows/recall-acceptance.yml

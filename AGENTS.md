@@ -30,3 +30,16 @@ Write back only durable project memory:
 - safety or privacy constraints
 
 Never store secrets, full transcripts, PII, raw logs, low-signal chatter, or disposable exploration noise.
+
+## Verification Loop
+
+For implementation or repair work:
+
+1. Define the scope, exclusions, baseline revision and acceptance checklist before changing code. Preserve unrelated user changes and original requirements.
+2. Make acceptance observable: include relevant source and compiled tests, types, package/install/use checks, regression coverage, behavior/quality checks and accurate documentation. Distinguish case counts from file-level summaries.
+3. Keep evidence for each failure: command, environment, revision, exit status, original error/cause and the smallest reproducible example. Do not replace an operational error with a secondary parsing error.
+4. Follow failure -> diagnosis -> focused correction -> affected regression tests -> full acceptance. State the hypothesis and use a check that can distinguish it from alternatives.
+5. After two iterations without new evidence or improvement, change the hypothesis or strategy. Do not endlessly retry the same failure or spend the loop on unrelated polish.
+6. Never weaken assertions, skip failing cases, hide errors or change security controls to obtain a green result. Use runtime/execution alternatives only when authorized and established not to bypass restrictions.
+7. Finish only when acceptance passes or a genuine external blocker is demonstrated. For a blocker, preserve a reproducible checkpoint, identify the blocked gates and exact resource/permission needed, and report it as blocked rather than passed.
+8. Review the final diff, document measured effects and limitations, and verify repository status. Commit, push, merge or publish only within the user's authorization. Task-specific data/privacy constraints take precedence over a generic verification command.

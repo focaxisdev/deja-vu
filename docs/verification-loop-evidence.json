@@ -1,0 +1,95 @@
+{
+  "baselineCommit": "fa479335dbc5acbad46a352d1ee8bd6086c62cd7",
+  "scope": "Same Cloud, public-source baseline snapshot; private memory excluded; existing dependencies linked, no alternate runtime.",
+  "runtime": {
+    "node": "v24.19.0",
+    "libuv": "1.52.1",
+    "permissionAPI": "undefined",
+    "NODE_OPTIONS_present": false,
+    "LD_PRELOAD_present": false,
+    "NoNewPrivs": 1,
+    "Seccomp": 2,
+    "Seccomp_filters": 1,
+    "CapEff": "0000000000000000"
+  },
+  "historicalCompleteCompiledRun": {
+    "commit": "fa479335dbc5acbad46a352d1ee8bd6086c62cd7",
+    "log": "/tmp/dejavu-round2/full-compiled.log",
+    "tests": 109,
+    "pass": 77,
+    "fail": 32,
+    "directEperm": 9,
+    "assertionOnEperm": 18,
+    "originalCauseMaskedByJsonParse": 5,
+    "note": "Historical result, not a rerun of this revision. Five original error codes remain unknown."
+  },
+  "diagnosticTrace": {
+    "exitCode": 1,
+    "stderr": [
+      "strace: test_ptrace_get_syscall_info: PTRACE_TRACEME: Operation not permitted",
+      "strace: ptrace(PTRACE_TRACEME, ...): Operation not permitted",
+      "strace: PTRACE_SETOPTIONS: Operation not permitted",
+      "strace: cleanup: waitpid(-1, __WALL): No child processes"
+    ],
+    "probeOutputBytes": 0,
+    "traceBytes": 0,
+    "interpretation": "Tracing itself is denied. No successful syscall trace or new Node probe result was obtained. No retry, fallback tracer or security change.",
+    "argv": [
+      "strace",
+      "-f",
+      "-qq",
+      "-e",
+      "trace=process,epoll_ctl,epoll_wait,epoll_pwait,epoll_pwait2,io_uring_setup,io_uring_enter,pipe2,socketpair,dup2,dup3,fcntl",
+      "-o",
+      "/tmp/dejavu-round3/spawn-sync.trace",
+      "node",
+      "-e",
+      "const r=require(\"node:child_process\").spawnSync(process.execPath,[\"-e\",\"process.stdout.write(\\\"synthetic-ok\\\")\"],{encoding:\"utf8\"});console.log(JSON.stringify({error:r.error?.code,syscall:r.error?.syscall,status:r.status,signal:r.signal,stdout:r.stdout,stderr:r.stderr,pid:r.pid}));"
+    ]
+  },
+  "nativeBoundary": "Installed internal/child_process.spawnSync calls spawn_sync.spawn and wraps returned result.error in ErrnoException. This narrows the error boundary, not the underlying syscall or policy decision.",
+  "freshSubsetResults": {
+    "baseline-source-engine.log": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "skipped": 0
+    },
+    "baseline-compiled-engine.log": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "skipped": 0
+    },
+    "current-source-engine-harness.log": {
+      "tests": 60,
+      "pass": 60,
+      "fail": 0,
+      "skipped": 0
+    },
+    "current-compiled-engine-harness.log": {
+      "tests": 60,
+      "pass": 60,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "gates": {
+    "completeSourceSuite": "BLOCKED_NOT_RERUN: known subprocess failures; no bypass or skipped-test success claim",
+    "completeCompiledSuite": "BLOCKED_NOT_RERUN: known subprocess failures; partial subsets do not satisfy this gate",
+    "automatedPackageTest": "BLOCKED_NOT_RERUN: execFileSync pack call previously failed; direct checks are separate",
+    "baselineAndCurrentTypecheckAndBuild": "PASS",
+    "baselineAndCurrentDirectOfflinePackInstallUse": "PASS: unchanged prepack lifecycle, local tarball install, help/init/doctor/lint/scan/report and old/new engine API",
+    "productAssertions": "PASS: 70 memory-cli, 80 reliability and 27 package-pack assertions unchanged; infrastructure undefined guard replaced by equivalent strict rethrow",
+    "qualityAndCache": "PASS: frozen evaluation JSON unchanged; current cache lifecycle counts unchanged; baseline/current unscoped counts equal",
+    "privateMemoryAndCredentials": "NOT_USED",
+    "publicDocumentation": "PASS: unmodified checker on public snapshots; baseline 67 Markdown files, current 68. Private-memory documentation is outside this evidence.",
+    "originalAgentsPrefix": "PASS: original instructions retained byte-for-byte",
+    "helperBaselineComparison": "PASS: exact baseline helper loses synthetic EPERM cause; repaired helpers retain original identity without subprocess calls"
+  },
+  "fixtureSha256": "4e1b70b5520e1d3cfb85489aad053825e339938016b20e659f2a4eb4677aee5d",
+  "checkpointDirectory": "/tmp/dejavu-round3",
+  "requiredResource": "Environment-owner-provided denied-syscall audit/trace for the synthetic probe, or narrowly approved tracing capability for that probe; then a confirmed policy-compliant runtime/execution configuration for complete subprocess tests.",
+  "unresolved": "Native spawn_sync EPERM has not been proven to be a Node/libuv bug or a specific sandbox rule. Ptrace denial is independently confirmed. No alternative spawn API/runtime/security option was tried.",
+  "unchangedEngineSourceTreeSha256": "b63b7595c48900bf94e59f4ceebff4260d22bee420b9fe40d01c3b414a11fc4a"
+}

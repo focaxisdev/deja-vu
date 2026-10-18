@@ -1,0 +1,314 @@
+{
+  "sourceLocalCommit": "c2a9bb103e4f502d23a66a6c067f00c8b0b10467",
+  "sourceLocalTree": "66a2c3949b8ad087289f438b451c47e608413b68",
+  "remoteBase": "188d7e8c3aed224e45071d041cd140509887b29f",
+  "remoteBaseTree": "cb95df23b058b72a75b365b4d352e737f376241f",
+  "baselineEntriesVerified": 122,
+  "finalLocalEntries": 147,
+  "changes": [
+    {
+      "path": ".github/workflows/recall-acceptance.yml",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "8b1ed489e6415c500c4023169695c006dd89b085"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "33270d556f5c1be0d02ca54c32dc8e09f584a7ba"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "4ef58f21f543ca5961e95ecf2fa20b215ed962da"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "e2320bbbf83644662fe84808b76207c782ab2e3f"
+    },
+    {
+      "path": "docs/actions-acceptance.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "0b0307a9b95bf570c186cf8219e6932b68f59e8d"
+    },
+    {
+      "path": "docs/engine/recall-benchmark.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "95d93c5bb453d61eebf5f5cb231afcea2a00bd8e"
+    },
+    {
+      "path": "docs/engine/recall-cache-ownership-benchmark.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "f92893f3cd63bf547945baa69d16455cbaa45955"
+    },
+    {
+      "path": "docs/engine/recall-efficiency.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "c80a43583a6a55530dd51b68129aebf2416baf91"
+    },
+    {
+      "path": "docs/engine/recall-evaluation.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "e95e87e688358f55caf086f203d071ebd6c9c729"
+    },
+    {
+      "path": "docs/engine/recall-lifecycle.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "2591379befb4825968837b52c04f385173c80366"
+    },
+    {
+      "path": "docs/engine/recall-round2-benchmark.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "861faee413e75d501f15ea69c75eb77cd8a98584"
+    },
+    {
+      "path": "docs/engine/semantic-engine.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "42ceb868d1acca6ce8671a38171acdc3e3bd2537"
+    },
+    {
+      "path": "docs/release-recall-efficiency.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "d5b44490488e97637f678d4b9a11ea3b2c1b2bfa"
+    },
+    {
+      "path": "docs/release-recall-lifecycle.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "0bf5db999b1d1725322653c501b2e6743fecb40d"
+    },
+    {
+      "path": "docs/social-recall-lifecycle-draft.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "1da8f6e526cad1c92d048d74f26cad8995cf7f2a"
+    },
+    {
+      "path": "docs/verification-loop-evidence.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "e7e5de1ebf19f10b575ceb062ac5b8a4e9d5871c"
+    },
+    {
+      "path": "docs/verification-loop.md",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "0e55770b76e82b314d5d1dcbaf9071210587c716"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "0a50d3ab17808c647384733fbc9f7493ef69b701"
+    },
+    {
+      "path": "scripts/benchmark-cache-ownership.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "1d8a23e7f9941c3c5c4f9fb6cc569818ac661f59"
+    },
+    {
+      "path": "scripts/benchmark-recall.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "004f08a2ad406deb0659e9fea6cfda79ede5cc57"
+    },
+    {
+      "path": "scripts/evaluate-recall.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "a78f6102ba5d7aa8820ae869365605e3ed6295eb"
+    },
+    {
+      "path": "scripts/fixtures/recall-evaluation.json",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "3e3aa9cc7fa9d2cef41b3b1035520f158e357831"
+    },
+    {
+      "path": "src/core/semantic-recall-engine.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "14392eae632bbb459e54499a97135729275e8b9c"
+    },
+    {
+      "path": "src/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "a161f611bf081328e0c408d71f82403288a914b2"
+    },
+    {
+      "path": "src/memory/default-chunker.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "8eea21770ca802a4b686193b52089d5f2d4c0bd5"
+    },
+    {
+      "path": "src/plugins/cached-embedding-provider.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "b022f6d4b9e054093782b11df0b8bd015931aec6"
+    },
+    {
+      "path": "src/plugins/create-in-memory-engine.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "ab0566ed641cec6bd7bc8505fdf95e9491d4319f"
+    },
+    {
+      "path": "src/retrieval/cue-aliases.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "58088a6571f8c1a392e31a28cf515ec9b35e792e"
+    },
+    {
+      "path": "src/retrieval/prompt-projection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "55b8e694749dafba4099f4bc93652b5b7dfa251b"
+    },
+    {
+      "path": "src/storage/in-memory-storage.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "fe57cd4bab44fe33766ee8e3568160be6029a199"
+    },
+    {
+      "path": "src/storage/in-memory-vector-store.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "8f2f74767246be6a93bb8ba4fc3d456b5af2bfb8"
+    },
+    {
+      "path": "src/types/memory.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "29d17a0b8752ac4e4ad2ab142d33b901a5a2808a"
+    },
+    {
+      "path": "src/types/plugins.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "893f997f8c2b9976592d7a69feb009b589507deb"
+    },
+    {
+      "path": "src/utils/limits.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "b15ca1ff1f6f5b923129968e7fb7bc70c79c4475"
+    },
+    {
+      "path": "tests/cli-errors.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "7447239aa5e8ada5238f339040556ac6c1ec8537"
+    },
+    {
+      "path": "tests/helpers/cli-errors.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "35d6b9300479f6429acac2c31af8142409f5267b"
+    },
+    {
+      "path": "tests/memory-cli.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "18d736b13a1cf5b6ef8a4c3eadf8f6579bb3de2c"
+    },
+    {
+      "path": "tests/package-pack.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "15c3800262e09e0e4edfaf4716786679cf32280a"
+    },
+    {
+      "path": "tests/recall-efficiency.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "a37c0afd8634ccc029b551fad4cfceaea8cc9bed"
+    },
+    {
+      "path": "tests/recall-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "add",
+      "sha": "5e944848c81426f1556cce594455d36b22c2342b"
+    },
+    {
+      "path": "tests/reliability.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "action": "modify",
+      "sha": "c52772bdbed7671760abaa97f2264965b2fdba48"
+    }
+  ],
+  "verification": {
+    "remoteBaselineTree": "exact match",
+    "changedBlobEncodingAndHashes": "verified locally",
+    "secretPatternAlerts": 0,
+    "finalRemoteTree": "not created or verified; API denied",
+    "remoteBranch": "absent",
+    "actions": "not run"
+  },
+  "blockedAction": {
+    "tool": "github_create_tree",
+    "method": "POST",
+    "endpoint": "https://api.github.com/repos/focaxisdev/deja-vu/git/trees",
+    "status": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "remoteCommit": null,
+  "remoteTree": null
+}

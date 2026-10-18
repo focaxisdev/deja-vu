@@ -1,6 +1,19 @@
 import type { FamiliarityRecord, MemoryChunk, SummaryRecord, StoredMemory } from "../types/memory.js";
 import type { ImpressionSearchHit, MemoryStorage } from "../types/plugins.js";
-import { lexicalSimilarity } from "../utils/text.js";
+import { extractKeywords } from "../utils/text.js";
+import { boundedInteger, MAX_RECALL_LIMIT } from "../utils/limits.js";
+
+function copyFamiliarity(record: FamiliarityRecord): FamiliarityRecord {
+  return { ...record, impressionTokens: [...record.impressionTokens], tags: [...record.tags], embeddingVector: [...record.embeddingVector] };
+}
+
+function copySummary(record: SummaryRecord): SummaryRecord {
+  return { ...record, embeddingVector: [...record.embeddingVector],
+    metadata: Object.fromEntries(Object.entries(record.metadata).map(([key, value]) => [key, Array.isArray(value) ? [...value] : value])) };
+}
+function copyChunks(chunks: MemoryChunk[]): MemoryChunk[] {
+  return chunks.map(chunk => ({ ...chunk, embeddingVector: [...chunk.embeddingVector] }));
+}
 
 interface RawMemoryRecord {
   content: string;
@@ -11,6 +24,7 @@ interface RawMemoryRecord {
 export class InMemoryStorage implements MemoryStorage {
   private readonly familiarities = new Map<string, FamiliarityRecord>();
   private readonly impressionTokenIndex = new Map<string, Set<string>>();
+  private readonly scoringTokens = new Map<string, Set<string>>();
   private readonly summaries = new Map<string, SummaryRecord>();
   private readonly chunks = new Map<string, MemoryChunk[]>();
   private readonly raw = new Map<string, RawMemoryRecord>();
@@ -30,7 +44,8 @@ export class InMemoryStorage implements MemoryStorage {
 
   async saveFamiliarity(record: FamiliarityRecord): Promise<void> {
     this.removeFromImpressionIndex(record.id);
-    this.familiarities.set(record.id, record);
+    this.familiarities.set(record.id, copyFamiliarity(record));
+    this.scoringTokens.set(record.id, new Set(extractKeywords(record.impressionTokens.join(" "), 200)));
     for (const token of record.impressionTokens) {
       const ids = this.impressionTokenIndex.get(token) ?? new Set<string>();
       ids.add(record.id);
@@ -39,12 +54,12 @@ export class InMemoryStorage implements MemoryStorage {
   }
 
   async saveSummary(record: SummaryRecord): Promise<void> {
-    this.summaries.set(record.id, record);
+    this.summaries.set(record.id, copySummary(record));
   }
 
   async saveChunks(chunks: MemoryChunk[]): Promise<void> {
     if (chunks.length === 0) return;
-    this.chunks.set(chunks[0].memoryId, chunks);
+    this.chunks.set(chunks[0].memoryId, copyChunks(chunks));
   }
 
   async saveRawContent(memoryId: string, content: string, createdAt: string, updatedAt: string): Promise<void> {
@@ -52,15 +67,17 @@ export class InMemoryStorage implements MemoryStorage {
   }
 
   async getFamiliarity(id: string): Promise<FamiliarityRecord | null> {
-    return this.familiarities.get(id) ?? null;
+    const record = this.familiarities.get(id);
+    return record ? copyFamiliarity(record) : null;
   }
 
   async getSummary(id: string): Promise<SummaryRecord | null> {
-    return this.summaries.get(id) ?? null;
+    const record = this.summaries.get(id);
+    return record ? copySummary(record) : null;
   }
 
   async getChunks(id: string): Promise<MemoryChunk[]> {
-    return this.chunks.get(id) ?? [];
+    return copyChunks(this.chunks.get(id) ?? []);
   }
 
   async getRawContent(id: string): Promise<string | null> {
@@ -76,10 +93,12 @@ export class InMemoryStorage implements MemoryStorage {
   }
 
   async listFamiliarities(): Promise<FamiliarityRecord[]> {
-    return [...this.familiarities.values()];
+    return [...this.familiarities.values()].map(copyFamiliarity);
   }
 
   async searchImpressions(tokens: string[], topK: number): Promise<ImpressionSearchHit[]> {
+    boundedInteger("topK", topK, MAX_RECALL_LIMIT);
+    if (topK === 0) return [];
     const candidateIds = new Set<string>();
     for (const token of tokens) {
       for (const id of this.impressionTokenIndex.get(token) ?? []) {
@@ -87,18 +106,22 @@ export class InMemoryStorage implements MemoryStorage {
       }
     }
 
+    if (candidateIds.size === 0) return [];
+    const queryTokens = new Set(extractKeywords(tokens.join(" "), 200));
     return [...candidateIds]
       .map((id) => {
         const record = this.familiarities.get(id);
         if (!record) return null;
-        return {
-          record,
-          similarity: lexicalSimilarity(tokens.join(" "), record.impressionTokens.join(" ")),
-        };
+        const recordTokens = this.scoringTokens.get(id)!;
+        let overlap = 0;
+        for (const token of queryTokens) if (recordTokens.has(token)) overlap++;
+        const denominator = Math.min(queryTokens.size, recordTokens.size);
+        return { record, similarity: denominator ? overlap / denominator : 0 };
       })
       .filter((hit): hit is ImpressionSearchHit => hit !== null)
       .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, topK);
+      .slice(0, topK)
+      .map((hit) => ({ ...hit, record: copyFamiliarity(hit.record) }));
   }
 
   async touchMemory(id: string, lastAccessedAt: string): Promise<void> {
@@ -108,6 +131,7 @@ export class InMemoryStorage implements MemoryStorage {
   }
 
   private removeFromImpressionIndex(id: string): void {
+    this.scoringTokens.delete(id);
     const existing = this.familiarities.get(id);
     if (!existing) return;
     for (const token of existing.impressionTokens) {

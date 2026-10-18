@@ -1,0 +1,335 @@
+{
+  "node": "v24.19.0",
+  "samples": 25,
+  "warmups": 5,
+  "units": "milliseconds",
+  "notes": [
+    "Micro: storage.searchImpressions only. Scan: engine.scanImpressions.",
+    "API end-to-end: resident recall(loadChunks=true) plus JSON.stringify, including query embedding and chunk retrieval.",
+    "Excludes process start, index construction, persistence, network, model inference and host/LLM execution.",
+    "Baseline/current alternate measurement order. Medians/p95 are descriptive of this small synthetic run."
+  ],
+  "workloads": [
+    {
+      "n": 100,
+      "kind": "rare",
+      "micro": {
+        "baseline": {
+          "median": 0.0083,
+          "p95": 0.0254
+        },
+        "current": {
+          "median": 0.0042,
+          "p95": 0.0172
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0129,
+          "p95": 0.0435
+        },
+        "current": {
+          "median": 0.0098,
+          "p95": 0.0535
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0694,
+          "p95": 1.6628
+        },
+        "current": {
+          "median": 0.0654,
+          "p95": 0.155
+        }
+      }
+    },
+    {
+      "n": 100,
+      "kind": "common",
+      "micro": {
+        "baseline": {
+          "median": 0.282,
+          "p95": 0.5696
+        },
+        "current": {
+          "median": 0.0236,
+          "p95": 0.1202
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.2596,
+          "p95": 1.6196
+        },
+        "current": {
+          "median": 0.0304,
+          "p95": 0.1273
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.3136,
+          "p95": 1.9662
+        },
+        "current": {
+          "median": 0.0906,
+          "p95": 1.273
+        }
+      }
+    },
+    {
+      "n": 100,
+      "kind": "none",
+      "micro": {
+        "baseline": {
+          "median": 0.0006,
+          "p95": 0.001
+        },
+        "current": {
+          "median": 0.0005,
+          "p95": 0.0007
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0014,
+          "p95": 0.0039
+        },
+        "current": {
+          "median": 0.0019,
+          "p95": 0.0024
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0027,
+          "p95": 0.0031
+        },
+        "current": {
+          "median": 0.0032,
+          "p95": 0.005
+        }
+      }
+    },
+    {
+      "n": 1000,
+      "kind": "rare",
+      "micro": {
+        "baseline": {
+          "median": 0.0053,
+          "p95": 0.0058
+        },
+        "current": {
+          "median": 0.003,
+          "p95": 0.0046
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0085,
+          "p95": 0.0104
+        },
+        "current": {
+          "median": 0.0073,
+          "p95": 0.0085
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0506,
+          "p95": 0.2037
+        },
+        "current": {
+          "median": 0.0518,
+          "p95": 0.5262
+        }
+      }
+    },
+    {
+      "n": 1000,
+      "kind": "common",
+      "micro": {
+        "baseline": {
+          "median": 3.1107,
+          "p95": 4.956
+        },
+        "current": {
+          "median": 0.1643,
+          "p95": 0.4436
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 2.4218,
+          "p95": 4.4501
+        },
+        "current": {
+          "median": 0.1747,
+          "p95": 0.3611
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 2.4995,
+          "p95": 3.9804
+        },
+        "current": {
+          "median": 0.2487,
+          "p95": 0.6969
+        }
+      }
+    },
+    {
+      "n": 1000,
+      "kind": "none",
+      "micro": {
+        "baseline": {
+          "median": 0.0004,
+          "p95": 0.0005
+        },
+        "current": {
+          "median": 0.0004,
+          "p95": 0.0005
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0012,
+          "p95": 0.0016
+        },
+        "current": {
+          "median": 0.0015,
+          "p95": 0.002
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0026,
+          "p95": 0.0028
+        },
+        "current": {
+          "median": 0.0028,
+          "p95": 0.0032
+        }
+      }
+    },
+    {
+      "n": 10000,
+      "kind": "rare",
+      "micro": {
+        "baseline": {
+          "median": 0.0035,
+          "p95": 0.0077
+        },
+        "current": {
+          "median": 0.0014,
+          "p95": 0.0027
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0056,
+          "p95": 0.0079
+        },
+        "current": {
+          "median": 0.004,
+          "p95": 0.0066
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0503,
+          "p95": 0.133
+        },
+        "current": {
+          "median": 0.0478,
+          "p95": 0.1606
+        }
+      }
+    },
+    {
+      "n": 10000,
+      "kind": "common",
+      "micro": {
+        "baseline": {
+          "median": 30.7427,
+          "p95": 42.9272
+        },
+        "current": {
+          "median": 2.6053,
+          "p95": 6.1685
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 30.5848,
+          "p95": 44.0301
+        },
+        "current": {
+          "median": 2.528,
+          "p95": 4.9677
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 30.8083,
+          "p95": 39.9615
+        },
+        "current": {
+          "median": 2.7437,
+          "p95": 4.7024
+        }
+      }
+    },
+    {
+      "n": 10000,
+      "kind": "none",
+      "micro": {
+        "baseline": {
+          "median": 0.0009,
+          "p95": 0.0015
+        },
+        "current": {
+          "median": 0.0004,
+          "p95": 0.0009
+        }
+      },
+      "scan": {
+        "baseline": {
+          "median": 0.0024,
+          "p95": 0.0033
+        },
+        "current": {
+          "median": 0.0024,
+          "p95": 0.0027
+        }
+      },
+      "apiEndToEnd": {
+        "baseline": {
+          "median": 0.0032,
+          "p95": 0.0046
+        },
+        "current": {
+          "median": 0.003,
+          "p95": 0.005
+        }
+      }
+    }
+  ],
+  "operations": {
+    "baseline": {
+      "addCalls": 12,
+      "repeatedRecallCalls": 5,
+      "metadataUpdateCalls": 12,
+      "rawRecallBytes": 10253
+    },
+    "currentOptIn": {
+      "addCalls": 4,
+      "repeatedRecallCalls": 1,
+      "metadataUpdateCalls": 0,
+      "rawRecallBytes": 10253,
+      "projectedBytes": 2301
+    }
+  }
+}

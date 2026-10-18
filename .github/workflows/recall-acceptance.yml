@@ -1,0 +1,101 @@
+name: Recall acceptance
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - fix/recall-efficiency-and-budgets
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout exact push revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Export public source and synthetic fixtures
+        working-directory: ${{ github.workspace }}
+        run: |
+          git rev-parse HEAD
+          public_root="$RUNNER_TEMP/deja-vu-public"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            public_root="$(cygpath -u "$RUNNER_TEMP")/deja-vu-public"
+          fi
+          mkdir -p "$public_root"
+          # Export committed bytes rather than runner-specific CRLF conversion.
+          git -c core.autocrlf=false archive HEAD AGENTS.md CHANGELOG.md CONTRIBUTING.md LICENSE README.md package.json package-lock.json tsconfig.json src tests scripts docs examples starter-kit .github .gitignore encoding-status.md llms.txt | tar -x -C "$public_root"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install locked dependencies
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: npm ci
+
+      - name: Type check
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
+
+      - name: Complete source, links, compiled and installed-package acceptance
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: npm test
+
+      - name: Frozen recall quality and cache lifecycle counts
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: |
+          node scripts/evaluate-recall.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-quality.json"
+          node scripts/benchmark-cache-ownership.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-cache.json"
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const read = path => JSON.parse(readFileSync(path, 'utf8'));
+          const quality = read(join(process.env.RUNNER_TEMP, 'recall-quality.json'));
+          const expected = read('docs/engine/recall-evaluation.json');
+          // Runtime metadata is recorded, not a recall quality assertion.
+          console.log('Evaluation runtime:', quality.node, 'recorded runtime:', expected.node);
+          const { node: actualNode, ...actualQuality } = quality;
+          const { node: expectedNode, ...expectedQuality } = expected;
+          assert.deepEqual(actualQuality, expectedQuality);
+          const cache = read(join(process.env.RUNNER_TEMP, 'recall-cache.json'));
+          const recorded = read('docs/engine/recall-cache-ownership-benchmark.json');
+          for (const mode of ['after-unscoped', 'after-owned']) {
+            assert.deepEqual(cache.modes[mode], recorded.modes[mode]);
+          }
+          assert.deepEqual(cache.modes['before-unscoped'], cache.modes['after-unscoped']);
+          console.log('Frozen development/held-out IDs and metrics, cache call counts and retained entries: passed');
+          NODE
+
+      - name: Synthetic protocol fixture checks
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: |
+          node scripts/dejavu-lint-memory.mjs --memory-root starter-kit/memory
+          node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory
+          node scripts/dejavu-lint-memory.mjs --memory-root docs/examples/settings-project/memory
+          npm run report:feedback
+
+      - name: Fresh synthetic project readiness
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: |
+          project_root="$RUNNER_TEMP/deja-vu-readiness"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            project_root="$(cygpath -u "$RUNNER_TEMP")/deja-vu-readiness"
+          fi
+          node scripts/deja-vu.mjs init --cwd "$project_root" --project-id project:ci --json
+          node scripts/dejavu-lint-memory.mjs --memory-root "$project_root/memory"
+          node scripts/deja-vu.mjs doctor --cwd "$project_root" --json

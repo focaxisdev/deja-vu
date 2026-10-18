@@ -1,5 +1,6 @@
 import type { FamiliarityRecord, MemoryChunk } from "../types/memory.js";
 import type { ChunkVectorStore, FamiliarityVectorStore, VectorSearchHit } from "../types/plugins.js";
+import { boundedInteger, MAX_RECALL_LIMIT } from "../utils/limits.js";
 import { cosineSimilarity } from "../utils/math.js";
 
 export class InMemoryFamiliarityVectorStore implements FamiliarityVectorStore {
@@ -14,6 +15,8 @@ export class InMemoryFamiliarityVectorStore implements FamiliarityVectorStore {
   }
 
   async search(vector: number[], topK: number): Promise<VectorSearchHit[]> {
+    boundedInteger("topK", topK, MAX_RECALL_LIMIT);
+    if (topK === 0) return [];
     return [...this.records.values()]
       .map((record) => ({
         id: record.id,
@@ -37,6 +40,8 @@ export class InMemoryChunkVectorStore implements ChunkVectorStore {
   }
 
   async searchByMemoryId(memoryId: string, vector: number[], topK: number): Promise<VectorSearchHit[]> {
+    boundedInteger("topK", topK, MAX_RECALL_LIMIT);
+    if (topK === 0) return [];
     return (this.chunksByMemoryId.get(memoryId) ?? [])
       .map((chunk) => ({
         id: chunk.chunkId,

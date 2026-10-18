@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { parseExpectedCliFailure } from "./helpers/cli-errors.js";
 
 const root = process.cwd();
 const unifiedCli = join(root, "scripts", "deja-vu.mjs");
@@ -19,10 +20,7 @@ function runJsonAllowFailure(script: string, args: string[], cwd: string) {
   try {
     return runJson(script, args, cwd);
   } catch (error) {
-    if (typeof error === "object" && error !== null && "stdout" in error) {
-      return JSON.parse(String((error as { stdout: string }).stdout));
-    }
-    throw error;
+    return parseExpectedCliFailure(error);
   }
 }
 

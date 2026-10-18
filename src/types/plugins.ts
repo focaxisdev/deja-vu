@@ -8,8 +8,16 @@ import type {
   StoredMemory,
 } from "./memory.js";
 
+export interface EmbeddingScope {
+  embed(text: string): Promise<number[]>;
+  /** Must synchronously release this scope and prevent late cache insertion; must not throw. */
+  dispose(): void;
+}
+
 export interface EmbeddingProvider {
   embed(text: string): Promise<number[]>;
+  /** Optional independent cache ownership; implementations must not share entries across scopes. */
+  createScope?(): EmbeddingScope;
 }
 
 export interface Chunker {
@@ -92,6 +100,14 @@ export interface SemanticRecallEngineConfig {
   scoringStrategy?: ScoringStrategy;
   chunker?: Chunker;
   summaryGenerator?: SummaryGenerator;
+  /** Opt in to preserving summaries/chunks/vectors for importance/metadata-only updates. */
+  preserveDerivedOnMetadataUpdate?: boolean;
+  /** Exact, bounded, host-authored query routing. No automatic translation. */
+  cueAliases?: readonly import("../retrieval/cue-aliases.js").CueAlias[];
+  /** Opt in to per-memory/revision cache ownership and serialized reads; requires provider.createScope. */
+  manageEmbeddingCache?: boolean;
+  /** Serialize this engine instance's reads with writes; adapters shared by other engines need transactions. */
+  consistentReads?: boolean;
   thresholds?: {
     strong: number;
     weak: number;

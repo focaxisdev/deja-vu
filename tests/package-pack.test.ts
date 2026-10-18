@@ -17,7 +17,7 @@ test("package metadata exposes memory CLI binaries and starter kit", () => {
   const packRoot = mkdtempSync(join(tmpdir(), "dejavu-pack-"));
   const cache = join(packRoot, "npm-cache");
   const result = JSON.parse(
-    execFileSync(process.execPath, [npmExecPath, "pack", "--json", "--pack-destination", packRoot], {
+    execFileSync(process.execPath, [npmExecPath, "pack", "--offline", "--json", "--pack-destination", packRoot], {
       cwd: root,
       encoding: "utf8",
       env: { ...process.env, npm_config_cache: cache },
@@ -46,7 +46,7 @@ test("package metadata exposes memory CLI binaries and starter kit", () => {
   const tarball = join(packRoot, result[0].filename);
   execFileSync(
     process.execPath,
-    [npmExecPath, "install", "--prefix", installRoot, "--ignore-scripts", "--no-audit", "--no-fund", tarball],
+    [npmExecPath, "install", "--offline", "--prefix", installRoot, "--ignore-scripts", "--no-audit", "--no-fund", tarball],
     { cwd: packRoot, encoding: "utf8", env: { ...process.env, npm_config_cache: cache } },
   );
 

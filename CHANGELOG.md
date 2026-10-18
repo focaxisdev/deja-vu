@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Introduce the source update on the repository homepage, with [opt-in examples, migration guidance and scoped measurements](docs/recall-update.md). No new npm package or GitHub Release is published.
+- Reuse the complete synthetic-data acceptance workflow for main and pull requests, including fresh-project lint/readiness checks, without reading project memory.
+- Preserve original CLI subprocess failures in test helpers, retain execution/parse causes for invalid error responses, and add ten diagnostic regressions without weakening product assertions.
+- Append general acceptance/evidence/repair-loop rules to AGENTS.md and preserve the historical [Cloud blocker checkpoint](docs/verification-loop.md).
+- Verify complete source, compiled, installed-package, type, recall-quality and cache gates on Ubuntu and Windows in [branch-only Actions](docs/actions-acceptance-results.md). Fix workflow context/path/newline handling and freeze the recall tie fixture's clock without changing product assertions. These changes remain unreleased.
+
+- Add opt-in exact query aliases, managed per-memory/revision embedding scopes, and serialized reads; digest cache keys avoid retained plaintext input keys.
+- Compensate failed deletions, add explicit recoverable `supersedeMemory`, and return defensive summary/chunk copies from the in-memory adapter.
+- Add opt-in prompt provenance and qualifier-loss warnings, plus explicit raw-content retrieval.
+- Record development/held-out synthetic recall evaluation, ownership costs, repeated performance comparisons, and direct offline installed-package verification in the [round-two notes](docs/release-recall-lifecycle.md). Hosted validation now passes; the native cause of the historical Cloud EPERM remains unresolved.
+
+- Fix optional-engine false-none recall when an ineligible hybrid winner hides an eligible candidate; keep existing thresholds.
+- Add opt-in candidate search breadth, bounded prompt projection, metadata-only embedding reuse, and a content/model-keyed bounded embedding cache.
+- Cache lexical token sets with update/delete invalidation and validate recall/chunking limits before expensive work.
+- Add synthetic regression tests, a reproducible comparison benchmark, and [unreleased notes](docs/release-recall-efficiency.md) with migration guidance and measurement limits.
+
 ## [0.7.1] - Unreleased
 
 Release preparation only; not yet published. See the [release checklist](docs/release-v0.7.1.md).

@@ -50,9 +50,10 @@ await engine.deleteMemory(id);
 
 ## Write failure contract
 
-Adds and updates prepare summaries, chunks, and all embeddings before changing
-storage. Updates retain importance, tags, and creation time unless explicitly
-changed where supported. Adding an existing ID is rejected; use `updateMemory`.
+Adds and normal updates prepare summaries, chunks, and all embeddings before changing
+storage. Opt-in metadata-only updates may preserve those derived values; see
+[bounded recall and reuse](recall-efficiency.md). Updates retain importance, tags,
+and creation time unless explicitly changed where supported. Adding an existing ID is rejected; use `updateMemory`.
 Mutations are serialized within one engine instance.
 
 If a storage or vector write fails, the engine attempts compensating cleanup
@@ -90,7 +91,10 @@ If you adopt the engine, the host still owns:
 
 ## Related references
 
+- [Bounded recall, opt-in reuse and migration](recall-efficiency.md)
 - [docs/agent-handshake.md](../agent-handshake.md)
 - [docs/engine/protocol-to-engine.md](./protocol-to-engine.md)
 - [src/types/plugins.ts](../../src/types/plugins.ts)
 - [src/types/memory.ts](../../src/types/memory.ts)
+
+See [explicit cues, lifecycle recovery and provenance](recall-lifecycle.md) for the additional opt-ins and their concurrency/migration limits.

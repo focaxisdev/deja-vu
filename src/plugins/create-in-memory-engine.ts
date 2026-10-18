@@ -15,9 +15,13 @@ export function createInMemorySemanticRecallEngine(
     familiarityVectorStore: config.familiarityVectorStore ?? new InMemoryFamiliarityVectorStore(),
     chunkVectorStore: config.chunkVectorStore ?? new InMemoryChunkVectorStore(),
     storage: config.storage ?? new InMemoryStorage(),
+    cueAliases: config.cueAliases,
+    manageEmbeddingCache: config.manageEmbeddingCache,
+    consistentReads: config.consistentReads,
     scoringStrategy: config.scoringStrategy,
     chunker: config.chunker,
     summaryGenerator: config.summaryGenerator,
     thresholds: config.thresholds,
+    preserveDerivedOnMetadataUpdate: config.preserveDerivedOnMetadataUpdate,
   });
 }
