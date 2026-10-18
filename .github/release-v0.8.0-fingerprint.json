@@ -1,0 +1,708 @@
+{
+  "releaseCommit": "42221805bdb1853b4cc347d7bfba29532594b3f2",
+  "ci": "https://github.com/focaxisdev/deja-vu/actions/runs/39093665904",
+  "manifest": {
+    "id": "@focaxisdev/deja-vu@0.8.0",
+    "name": "@focaxisdev/deja-vu",
+    "version": "0.8.0",
+    "size": 486560,
+    "unpackedSize": 822678,
+    "shasum": "9e09a7067f2a56ebbeefaee89933ad5487276d31",
+    "integrity": "sha512-QPwz0brkGf7Ip1P7xnfcB1XwKeI3DvLjApccKP+H+CULWkOxtIqdFglMLhN62X5XcawdGyL03aLVigmTaL4H3w==",
+    "filename": "focaxisdev-deja-vu-0.8.0.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 10814,
+        "mode": 420
+      },
+      {
+        "path": "CONTRIBUTING.md",
+        "size": 1432,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 1056,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 9721,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/core/semantic-recall-engine.d.ts",
+        "size": 2544,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/core/semantic-recall-engine.js",
+        "size": 21153,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.d.ts",
+        "size": 683,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.js",
+        "size": 623,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/chunk-layer.d.ts",
+        "size": 567,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/chunk-layer.js",
+        "size": 599,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/familiarity-layer.d.ts",
+        "size": 576,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/familiarity-layer.js",
+        "size": 551,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/summary-layer.d.ts",
+        "size": 324,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/layers/summary-layer.js",
+        "size": 257,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/memory/default-chunker.d.ts",
+        "size": 239,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/memory/default-chunker.js",
+        "size": 2989,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/memory/default-summary-generator.d.ts",
+        "size": 545,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/memory/default-summary-generator.js",
+        "size": 2211,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/cached-embedding-provider.d.ts",
+        "size": 1305,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/cached-embedding-provider.js",
+        "size": 4294,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/create-in-memory-engine.d.ts",
+        "size": 273,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/create-in-memory-engine.js",
+        "size": 1169,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/mock-embedding-provider.d.ts",
+        "size": 253,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/plugins/mock-embedding-provider.js",
+        "size": 1254,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/cue-aliases.d.ts",
+        "size": 490,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/cue-aliases.js",
+        "size": 973,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/prompt-projection.d.ts",
+        "size": 927,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/prompt-projection.js",
+        "size": 4866,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/threshold-gate.d.ts",
+        "size": 259,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/retrieval/threshold-gate.js",
+        "size": 231,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/scoring/hybrid-scoring-strategy.d.ts",
+        "size": 797,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/scoring/hybrid-scoring-strategy.js",
+        "size": 1645,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/storage/in-memory-storage.d.ts",
+        "size": 1321,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/storage/in-memory-storage.js",
+        "size": 5109,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/storage/in-memory-vector-store.d.ts",
+        "size": 783,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/storage/in-memory-vector-store.js",
+        "size": 1524,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types/memory.d.ts",
+        "size": 3014,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types/memory.js",
+        "size": 11,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types/plugins.d.ts",
+        "size": 4042,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types/plugins.js",
+        "size": 11,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/id.d.ts",
+        "size": 58,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/id.js",
+        "size": 104,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/limits.d.ts",
+        "size": 238,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/limits.js",
+        "size": 368,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/math.d.ts",
+        "size": 158,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/math.js",
+        "size": 528,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/text.d.ts",
+        "size": 154,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/text.js",
+        "size": 929,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/time.d.ts",
+        "size": 116,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/utils/time.js",
+        "size": 243,
+        "mode": 420
+      },
+      {
+        "path": "docs/actions-acceptance-results.json",
+        "size": 5425,
+        "mode": 420
+      },
+      {
+        "path": "docs/actions-acceptance-results.md",
+        "size": 6933,
+        "mode": 420
+      },
+      {
+        "path": "docs/actions-acceptance.md",
+        "size": 7970,
+        "mode": 420
+      },
+      {
+        "path": "docs/actions-publication-evidence.json",
+        "size": 8512,
+        "mode": 420
+      },
+      {
+        "path": "docs/agent-compatibility.md",
+        "size": 1749,
+        "mode": 420
+      },
+      {
+        "path": "docs/agent-handshake.md",
+        "size": 2206,
+        "mode": 420
+      },
+      {
+        "path": "docs/architecture.md",
+        "size": 1722,
+        "mode": 420
+      },
+      {
+        "path": "docs/assets/deja-vu-preview.svg",
+        "size": 5912,
+        "mode": 420
+      },
+      {
+        "path": "docs/assets/deja-vu-social-preview.png",
+        "size": 250897,
+        "mode": 420
+      },
+      {
+        "path": "docs/assets/deja-vu-terminal-demo.gif",
+        "size": 128064,
+        "mode": 420
+      },
+      {
+        "path": "docs/bootstrap-instructions.md",
+        "size": 2673,
+        "mode": 420
+      },
+      {
+        "path": "docs/comparison.md",
+        "size": 2710,
+        "mode": 420
+      },
+      {
+        "path": "docs/demo-walkthrough.md",
+        "size": 3837,
+        "mode": 420
+      },
+      {
+        "path": "docs/diagrams/deja-vu-flow.md",
+        "size": 823,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/protocol-to-engine.md",
+        "size": 1469,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-benchmark.json",
+        "size": 6625,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-cache-ownership-benchmark.json",
+        "size": 887,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-efficiency.md",
+        "size": 9781,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-evaluation.json",
+        "size": 50393,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-lifecycle.md",
+        "size": 10104,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/recall-round2-benchmark.json",
+        "size": 24221,
+        "mode": 420
+      },
+      {
+        "path": "docs/engine/semantic-engine.md",
+        "size": 3374,
+        "mode": 420
+      },
+      {
+        "path": "docs/examples/settings-project/AGENTS.md",
+        "size": 1619,
+        "mode": 420
+      },
+      {
+        "path": "docs/examples/settings-project/memory/decisions/settings-sync.md",
+        "size": 684,
+        "mode": 420
+      },
+      {
+        "path": "docs/examples/settings-project/memory/impressions.jsonl",
+        "size": 561,
+        "mode": 420
+      },
+      {
+        "path": "docs/examples/settings-project/memory/open-loops/settings-migration.md",
+        "size": 468,
+        "mode": 420
+      },
+      {
+        "path": "docs/examples/settings-project/memory/summary.md",
+        "size": 452,
+        "mode": 420
+      },
+      {
+        "path": "docs/impression-layer.md",
+        "size": 2987,
+        "mode": 420
+      },
+      {
+        "path": "docs/launch-copy.md",
+        "size": 3216,
+        "mode": 420
+      },
+      {
+        "path": "docs/project-rules-template.md",
+        "size": 661,
+        "mode": 420
+      },
+      {
+        "path": "docs/protocol.md",
+        "size": 8566,
+        "mode": 420
+      },
+      {
+        "path": "docs/recall-update.md",
+        "size": 5215,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-recall-efficiency.md",
+        "size": 7060,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-recall-lifecycle.md",
+        "size": 10340,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.1.0.md",
+        "size": 1375,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.2.0.md",
+        "size": 1096,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.2.1.md",
+        "size": 878,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.2.2.md",
+        "size": 827,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.3.0.md",
+        "size": 865,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.3.1.md",
+        "size": 666,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.4.0.md",
+        "size": 1977,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.4.1.md",
+        "size": 1671,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.5.0.md",
+        "size": 1494,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.6.0.md",
+        "size": 1834,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.7.0.md",
+        "size": 1906,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.7.1.md",
+        "size": 4074,
+        "mode": 420
+      },
+      {
+        "path": "docs/release-v0.8.0.md",
+        "size": 4889,
+        "mode": 420
+      },
+      {
+        "path": "docs/reliability.md",
+        "size": 2630,
+        "mode": 420
+      },
+      {
+        "path": "docs/scripted-recall.md",
+        "size": 4967,
+        "mode": 420
+      },
+      {
+        "path": "docs/social-recall-lifecycle-draft.md",
+        "size": 1481,
+        "mode": 420
+      },
+      {
+        "path": "docs/storage-markdown.md",
+        "size": 4272,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/AGENTS.template.md",
+        "size": 3008,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/context/project-context.md",
+        "size": 346,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/decisions/decision-template.md",
+        "size": 522,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/events/YYYY-MM.md",
+        "size": 256,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/impressions.jsonl",
+        "size": 295,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/index.md",
+        "size": 500,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/open-loops/open-loop-template.md",
+        "size": 587,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/recall-feedback.jsonl",
+        "size": 177,
+        "mode": 420
+      },
+      {
+        "path": "docs/templates/memory/summary.md",
+        "size": 610,
+        "mode": 420
+      },
+      {
+        "path": "docs/verification-loop-evidence.json",
+        "size": 4840,
+        "mode": 420
+      },
+      {
+        "path": "docs/verification-loop.md",
+        "size": 11120,
+        "mode": 420
+      },
+      {
+        "path": "docs/workflow.md",
+        "size": 4866,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 3672,
+        "mode": 420
+      },
+      {
+        "path": "scripts/benchmark-cache-ownership.mjs",
+        "size": 2023,
+        "mode": 420
+      },
+      {
+        "path": "scripts/benchmark-recall.mjs",
+        "size": 5304,
+        "mode": 420
+      },
+      {
+        "path": "scripts/check-markdown-links.mjs",
+        "size": 2059,
+        "mode": 420
+      },
+      {
+        "path": "scripts/deja-vu.mjs",
+        "size": 17088,
+        "mode": 420
+      },
+      {
+        "path": "scripts/dejavu-feedback-report.mjs",
+        "size": 2507,
+        "mode": 420
+      },
+      {
+        "path": "scripts/dejavu-lint-memory.mjs",
+        "size": 8338,
+        "mode": 420
+      },
+      {
+        "path": "scripts/dejavu-scan-memory.mjs",
+        "size": 5084,
+        "mode": 420
+      },
+      {
+        "path": "scripts/evaluate-recall.mjs",
+        "size": 3828,
+        "mode": 420
+      },
+      {
+        "path": "scripts/fixtures/recall-evaluation.json",
+        "size": 12258,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib/init-files.mjs",
+        "size": 5414,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib/memory-validation.mjs",
+        "size": 9951,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/AGENTS.md",
+        "size": 1696,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/memory/decisions/.gitkeep",
+        "size": 1,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/memory/impressions.jsonl",
+        "size": 276,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/memory/open-loops/.gitkeep",
+        "size": 1,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/memory/recall-feedback.jsonl",
+        "size": 1,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/memory/summary.md",
+        "size": 813,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/chatgpt.md",
+        "size": 782,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/claude-code.md",
+        "size": 671,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/codex.md",
+        "size": 665,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/cursor.md",
+        "size": 666,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/gemini-cli.md",
+        "size": 670,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/prompts/windsurf.md",
+        "size": 668,
+        "mode": 420
+      },
+      {
+        "path": "starter-kit/README.md",
+        "size": 1766,
+        "mode": 420
+      }
+    ],
+    "entryCount": 138,
+    "bundled": []
+  }
+}

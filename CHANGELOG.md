@@ -2,16 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.8.0] - Unreleased
+## Unreleased
 
-Minor release preparation for the additive, opt-in engine APIs; includes the
-unpublished 0.7.1 reliability fixes. See [publication status](docs/release-v0.8.0.md).
+- Close out repository documentation after independently verifying the published
+  0.8.0 registry metadata, original CI fingerprint, clean installation and CLI/API
+  on Ubuntu and Windows. Add a read-only, version-specific verification workflow;
+  these repository follow-ups do not change the published package or tag. See
+  [publication evidence](docs/registry-v0.8.0-verification.md).
 
-- Introduce the source update on the repository homepage, with [opt-in examples, migration guidance and scoped measurements](docs/recall-update.md). No new npm package or GitHub Release is published.
+## [0.8.0] - 2026-10-18
+
+Additive, opt-in engine APIs and the previously unpublished 0.7.1 reliability
+fixes. [Published on npm and GitHub](docs/release-v0.8.0.md) from commit
+`42221805bdb1853b4cc347d7bfba29532594b3f2`.
+
+- Introduce the source update on the repository homepage, with [opt-in examples, migration guidance and scoped measurements](docs/recall-update.md). The update is included in package 0.8.0.
 - Reuse the complete synthetic-data acceptance workflow for main and pull requests, including fresh-project lint/readiness checks, without reading project memory.
 - Preserve original CLI subprocess failures in test helpers, retain execution/parse causes for invalid error responses, and add ten diagnostic regressions without weakening product assertions.
 - Append general acceptance/evidence/repair-loop rules to AGENTS.md and preserve the historical [Cloud blocker checkpoint](docs/verification-loop.md).
-- Verify complete source, compiled, installed-package, type, recall-quality and cache gates on Ubuntu and Windows in [branch-only Actions](docs/actions-acceptance-results.md). Fix workflow context/path/newline handling and freeze the recall tie fixture's clock without changing product assertions. These changes remain unreleased.
+- Verify complete source, compiled, installed-package, type, recall-quality and cache gates on Ubuntu and Windows in [branch-only Actions](docs/actions-acceptance-results.md). Fix workflow context/path/newline handling and freeze the recall tie fixture's clock without changing product assertions. The release commit passed complete main CI before publication.
 
 - Add opt-in exact query aliases, managed per-memory/revision embedding scopes, and serialized reads; digest cache keys avoid retained plaintext input keys.
 - Compensate failed deletions, add explicit recoverable `supersedeMemory`, and return defensive summary/chunk copies from the in-memory adapter.

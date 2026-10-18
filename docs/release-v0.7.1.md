@@ -1,6 +1,6 @@
 # Deja Vu v0.7.1: historical release preparation
 
-This unpublished patch candidate is superseded by the [v0.8.0 preparation](release-v0.8.0.md),
+This unpublished patch candidate is superseded by the published [v0.8.0 release](release-v0.8.0.md),
 which includes these fixes and the later optional engine APIs. The current package
 manifest is 0.8.0; this page preserves the earlier candidate and its historical checks.
 

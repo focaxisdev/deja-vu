@@ -1,7 +1,7 @@
 # Explicit recall cues and recoverable memory lifecycle: second-batch evidence
 
-Included in the [v0.8.0 preparation](release-v0.8.0.md); package publication is
-pending. These historical measurements are not a publication record. See the
+Included in the published [v0.8.0 release](release-v0.8.0.md). These historical
+measurements retain their original scope; see the [registry verification report](registry-v0.8.0-verification.md) and the
 [combined introduction and opt-ins](recall-update.md). This follows the [first recall-efficiency changes](release-recall-efficiency.md)
 and uses `bad6b527409a44a693562fbe60c41be74126e573` as its comparison baseline.
 
@@ -10,8 +10,8 @@ These results describe the second implementation batch. The subsequent
 loss and records the historical native-execution blocker. Complete hosted
 [acceptance now passes on Ubuntu and Windows](actions-acceptance-results.md),
 including 119 source cases, 119 compiled cases and one package/install/use case
-per platform, with no skipped tests. The source and these notes are public; the
-package update and social draft remain unreleased. The original Cloud EPERM cause is
+per platform, with no skipped tests. The source, package and release notes are
+public; the social draft remains unpublished. The original Cloud EPERM cause is
 still unresolved, and the results below retain their original measurement scope.
 
 ## User introduction

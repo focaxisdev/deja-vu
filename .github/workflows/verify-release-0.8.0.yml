@@ -1,0 +1,33 @@
+name: Verify published 0.8.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, release/verify-0.8.0]
+    paths:
+      - .github/workflows/verify-release-0.8.0.yml
+      - .github/scripts/verify-release-0.8.0.mjs
+      - .github/release-v0.8.0-fingerprint.json
+      - docs/release-v0.8.0.md
+      - docs/registry-v0.8.0-verification.md
+
+permissions:
+  contents: read
+
+jobs:
+  registry:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify registry metadata, actual tarball and clean installed CLI/API
+        run: node .github/scripts/verify-release-0.8.0.mjs
