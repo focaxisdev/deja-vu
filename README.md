@@ -13,7 +13,7 @@ No database. No vector store. No embeddings. No SaaS. No daemon. No required npm
 
 ## Latest update: more reliable, bounded recall
 
-**Available in repository source; a new npm package release has not been published.**
+**Available in repository source; [v0.8.0 is prepared for publication](./docs/release-v0.8.0.md), but is not yet on npm.**
 
 The optional TypeScript engine now keeps eligible memories from being hidden by
 less relevant ranking winners. It also adds bounded prompt excerpts, recoverable
@@ -215,7 +215,7 @@ Read the [engine guide](./docs/engine/semantic-engine.md) or run the [basic exam
 
 Repository source includes eligible-candidate selection, bounded prompt output,
 and opt-in embedding reuse, [explicit aliases, cache ownership and provenance](docs/engine/recall-lifecycle.md).
-These additions are not yet published in a new npm package. See the
+These additions are prepared for v0.8.0 and are not yet published on npm. See the
 [update and migration overview](docs/recall-update.md),
 [usage examples](docs/engine/recall-efficiency.md), and
 [complete hosted acceptance results](docs/actions-acceptance-results.md).

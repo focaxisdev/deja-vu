@@ -1,7 +1,8 @@
 # Local social draft: recall cues and lifecycle
 
-Unpublished draft only. No release date or version is assigned. Hosted acceptance
-has passed; publishing a release or social announcement remains a separate action.
+Unpublished social draft only. Package v0.8.0 is prepared, with no publication date
+assigned; see the [release status](release-v0.8.0.md). Hosted source acceptance
+has passed; publishing the package or a social announcement remains a separate action.
 See the [evidence and limitations](release-recall-lifecycle.md).
 
 ## Short introduction

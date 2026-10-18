@@ -47,6 +47,10 @@ jobs:
         working-directory: ${{ runner.temp }}/deja-vu-public
         run: npm ci
 
+      - name: Read public npm release metadata
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: npm view @focaxisdev/deja-vu versions dist-tags dist --json --fetch-retries=0 --fetch-timeout=30000
+
       - name: Type check
         working-directory: ${{ runner.temp }}/deja-vu-public
         run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json

@@ -1,8 +1,8 @@
-# Deja Vu v0.7.1 Release Preparation
+# Deja Vu v0.7.1: historical release preparation
 
-Status: local release preparation, not published. The package version is 0.7.1;
-no npm prerelease, registry tag, Git tag, or GitHub Release has been created.
-The final release date must be recorded only when publication is completed.
+This unpublished patch candidate is superseded by the [v0.8.0 preparation](release-v0.8.0.md),
+which includes these fixes and the later optional engine APIs. The current package
+manifest is 0.8.0; this page preserves the earlier candidate and its historical checks.
 
 This patch candidate contains the reliability fixes merged in PR #12 at
 `f9c5704`. Deja Vu Protocol remains v0.4. No runtime dependency is added.
@@ -31,12 +31,14 @@ These changes intentionally reject inputs that previously appeared successful:
   preservation. The legacy getter fallback cannot preserve them exactly.
 
 Compensating recovery is not a crash-safe transaction or multi-instance lock.
-Delete operations do not provide compensating rollback. Backups and recovery
+The later engine implementation also compensates failed deletions by attempting
+to restore the snapshot and indexes. Adapter failures during recovery are reported
+through `MemoryWriteError`; recovery is not guaranteed. Backups and recovery
 snapshots can contain private data; keep them out of telemetry and public files.
 See [reliability and recovery](reliability.md) and the
 [engine contract](engine/semantic-engine.md).
 
-## Local verification
+## Historical local verification
 
 Run from the release-preparation checkout:
 
@@ -57,7 +59,10 @@ installed-package test and 65 Markdown link checks passed. Keep any exported
 candidate tarball and its checksum outside the repository; they are not a
 published release or a substitute for testing the final release commit.
 
-## Before public release
+## Historical checklist (superseded)
+
+Use the v0.8.0 checklist for the current candidate. The unchecked items below
+record the state of the abandoned 0.7.1 preparation, not current authorization.
 
 - [ ] Review and commit the release-preparation changes.
 - [ ] Push a release-preparation PR and pass its Windows/Linux CI.
