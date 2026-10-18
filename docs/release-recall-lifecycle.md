@@ -1,7 +1,7 @@
-# Unreleased: explicit recall cues and recoverable memory lifecycle
+# Explicit recall cues and recoverable memory lifecycle: second-batch evidence
 
-Source update notes; package release pending. No new version, release date, tag,
-npm package, GitHub Release or social post is published by these notes. See the
+Included in the [v0.8.0 preparation](release-v0.8.0.md); package publication is
+pending. These historical measurements are not a publication record. See the
 [combined introduction and opt-ins](recall-update.md). This follows the [first recall-efficiency changes](release-recall-efficiency.md)
 and uses `bad6b527409a44a693562fbe60c41be74126e573` as its comparison baseline.
 

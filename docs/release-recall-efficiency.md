@@ -1,7 +1,7 @@
-# Unreleased: more reliable, bounded engine recall
+# More reliable, bounded engine recall: first-batch evidence
 
-Source update notes; package release pending. No new package version, release
-date, tag or npm publication is assigned by this change. Start with the
+Included in the [v0.8.0 preparation](release-v0.8.0.md); package publication is
+pending. These historical measurements are not a publication record. Start with the
 [combined update and opt-in overview](recall-update.md).
 
 These measurements and validation counts describe the first implementation batch

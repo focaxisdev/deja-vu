@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [0.8.0] - Unreleased
+
+Minor release preparation for the additive, opt-in engine APIs; includes the
+unpublished 0.7.1 reliability fixes. See [publication status](docs/release-v0.8.0.md).
 
 - Introduce the source update on the repository homepage, with [opt-in examples, migration guidance and scoped measurements](docs/recall-update.md). No new npm package or GitHub Release is published.
 - Reuse the complete synthetic-data acceptance workflow for main and pull requests, including fresh-project lint/readiness checks, without reading project memory.
@@ -18,11 +21,11 @@ All notable changes to this project will be documented in this file.
 - Fix optional-engine false-none recall when an ineligible hybrid winner hides an eligible candidate; keep existing thresholds.
 - Add opt-in candidate search breadth, bounded prompt projection, metadata-only embedding reuse, and a content/model-keyed bounded embedding cache.
 - Cache lexical token sets with update/delete invalidation and validate recall/chunking limits before expensive work.
-- Add synthetic regression tests, a reproducible comparison benchmark, and [unreleased notes](docs/release-recall-efficiency.md) with migration guidance and measurement limits.
+- Add synthetic regression tests, a reproducible comparison benchmark, and [first-batch notes](docs/release-recall-efficiency.md) with migration guidance and measurement limits.
 
-## [0.7.1] - Unreleased
+### Reliability fixes carried forward from the unpublished 0.7.1 candidate
 
-Release preparation only; not yet published. See the [release checklist](docs/release-v0.7.1.md).
+The [historical preparation](docs/release-v0.7.1.md) was not a published release.
 
 - Use the same validated rules block for readiness and scope checks; reject ambiguous scopes and omit raw JSONL parse messages from diagnostics.
 - Prepare engine writes before mutation; compensate failed writes, expose recovery errors, preserve update metadata, reject duplicate IDs, and serialize mutations.

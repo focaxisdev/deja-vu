@@ -1,9 +1,10 @@
 # More reliable recall, with explicit budgets and opt-ins
 
-These changes are available in repository source. No new package version, npm
-publication, GitHub Release or release date is assigned. The existing npm setup
-instructions still describe the three-file protocol; do not assume an npm install
-already includes every source addition below.
+These changes are available in repository source and prepared for package v0.8.0.
+Npm publication and the GitHub Release are still pending; see the
+[release status and final verification checklist](release-v0.8.0.md). The existing
+npm setup instructions still describe the three-file protocol; do not assume an
+npm install already includes every source addition below.
 
 ## What improves
 
