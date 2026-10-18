@@ -19,7 +19,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ${{ runner.temp }}/deja-vu-public
     steps:
       - name: Checkout exact push revision
         uses: actions/checkout@v4
@@ -39,15 +38,19 @@ jobs:
           node-version: 22
 
       - name: Install locked dependencies
+        working-directory: ${{ runner.temp }}/deja-vu-public
         run: npm ci
 
       - name: Type check
+        working-directory: ${{ runner.temp }}/deja-vu-public
         run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
 
       - name: Complete source, links, compiled and installed-package acceptance
+        working-directory: ${{ runner.temp }}/deja-vu-public
         run: npm test
 
       - name: Frozen recall quality and cache lifecycle counts
+        working-directory: ${{ runner.temp }}/deja-vu-public
         run: |
           node scripts/evaluate-recall.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-quality.json"
           node scripts/benchmark-cache-ownership.mjs dist/src/index.js dist/src/index.js > "$RUNNER_TEMP/recall-cache.json"
@@ -73,6 +76,7 @@ jobs:
           NODE
 
       - name: Synthetic protocol fixture checks
+        working-directory: ${{ runner.temp }}/deja-vu-public
         run: |
           node scripts/dejavu-lint-memory.mjs --memory-root starter-kit/memory
           node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory
