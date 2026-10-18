@@ -1,6 +1,7 @@
 name: Recall acceptance
 
 on:
+  workflow_call:
   push:
     branches:
       - fix/recall-efficiency-and-budgets
@@ -87,3 +88,14 @@ jobs:
           node scripts/dejavu-lint-memory.mjs --memory-root examples/protocol-project/memory
           node scripts/dejavu-lint-memory.mjs --memory-root docs/examples/settings-project/memory
           npm run report:feedback
+
+      - name: Fresh synthetic project readiness
+        working-directory: ${{ runner.temp }}/deja-vu-public
+        run: |
+          project_root="$RUNNER_TEMP/deja-vu-readiness"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            project_root="$(cygpath -u "$RUNNER_TEMP")/deja-vu-readiness"
+          fi
+          node scripts/deja-vu.mjs init --cwd "$project_root" --project-id project:ci --json
+          node scripts/dejavu-lint-memory.mjs --memory-root "$project_root/memory"
+          node scripts/deja-vu.mjs doctor --cwd "$project_root" --json

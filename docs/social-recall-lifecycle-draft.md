@@ -6,7 +6,7 @@ See the [evidence and limitations](release-recall-lifecycle.md).
 
 ## Short introduction
 
-We're preparing optional-engine improvements for Deja Vu: explicit query aliases,
+Deja Vu's repository source now includes optional-engine improvements: explicit query aliases,
 embedding-cache ownership that follows memory updates and deletions, recoverable
 supersession, and prompt excerpts that warn when constraints may be missing.
 The three-file memory protocol stays the same.
@@ -21,6 +21,6 @@ The tradeoffs matter: separate cache ownership means less cross-memory reuse,
 and this round did not improve measured latency. Direct offline packaging and
 installed smoke checks pass. Full source, compiled and installed-package tests
 also pass on Ubuntu and Windows in the verification branch's GitHub Actions.
-That does not explain the earlier Cloud runtime's native EPERM. The branch is
-public; the package and this social draft remain unreleased. Usage, migration,
+That does not explain the earlier Cloud runtime's native EPERM. The source is
+public; the package update and this social draft remain unreleased. Usage, migration,
 full measurements and remaining limits are in the release-note draft.

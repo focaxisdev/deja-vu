@@ -1,7 +1,8 @@
 # Unreleased: more reliable, bounded engine recall
 
-Local release-note draft only. No new package version, release date, tag or
-publication is assigned by this change.
+Source update notes; package release pending. No new package version, release
+date, tag or npm publication is assigned by this change. Start with the
+[combined update and opt-in overview](recall-update.md).
 
 These measurements and validation counts describe the first implementation batch
 at `bad6b527409a44a693562fbe60c41be74126e573`. See the
@@ -75,7 +76,7 @@ The raw recall payload stayed at 10,253 bytes. Its optional prompt projection wa
 non-projected fields. **Bytes are not model tokens.** This is a representation
 comparison, not proof of equal task quality; omitted fields may matter to a host.
 
-## Validation and limitations
+## Historical first-batch validation and limitations
 
 - TypeScript no-emit validation and compilation passed with existing dependencies.
 - All 31 source engine/regression tests passed in Node's supported in-process test mode.
@@ -88,7 +89,8 @@ comparison, not proof of equal task quality; omitted fields may matter to a host
   that permits those subprocesses; this draft does not claim full-suite success.
 - No new dependency was installed. Repository-wide memory scans and link checks
   that read private memory were excluded; changed documentation links were checked
-  separately. Full `npm test` and CI remain required before a future release.
+  separately. Full `npm test` and CI were still outstanding at that checkpoint;
+  the later hosted acceptance linked above passed them.
 
 Regression coverage includes the false-none counterexample, lexical prefilter
 truncation, invalid and zero limits, multilingual score/tie equivalence, Unicode

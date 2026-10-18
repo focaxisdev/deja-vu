@@ -10,11 +10,13 @@ transport and permission sections below preserve earlier checkpoints.
 
 ## Scope and acceptance defined before execution
 
-The dedicated `Recall acceptance` workflow runs only on pushes to
-`fix/recall-efficiency-and-budgets`, with `contents: read`, Node 22, and the
-existing Ubuntu/Windows runner matrix. It does not publish, deploy, create a
-release, access secrets, or require a pull request. The existing main/PR CI is
-unchanged. Checkout does not persist credentials.
+The `Recall acceptance` workflow runs directly on pushes to
+`fix/recall-efficiency-and-budgets` and is reused by main/PR CI through
+`workflow_call`, with `contents: read`, Node 22, and the existing Ubuntu/Windows
+runner matrix. It does not publish, deploy, create a release or access configured
+secrets. Checkout does not persist credentials. Main/PR runs use the same complete
+test selection and frozen evaluation assertions as branch acceptance; fresh
+synthetic-project lint/readiness checks replace inspection of project memory.
 
 Both jobs must finish successfully at the exact pushed SHA:
 

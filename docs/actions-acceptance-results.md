@@ -1,7 +1,9 @@
 # Hosted acceptance results
 
-Unreleased engineering evidence. The branch is published for verification only;
-no main merge, release, npm publication or deployment is included.
+Engineering evidence for the public repository-source update. This report records
+pre-merge verification; current main results are available in
+[main CI](https://github.com/focaxisdev/deja-vu/actions/workflows/ci.yml).
+An npm package or GitHub Release is a separate publication, not implied by CI.
 
 ## Verified result
 
@@ -82,9 +84,11 @@ for private paths and credential patterns; unchanged baseline blobs are retained
 by reference. Root project memory and credentials are not read or uploaded anew.
 Hosted tests export public source and synthetic fixtures, excluding root memory.
 
-The dedicated workflow triggers only for this fix branch, has `contents: read`,
-does not persist checkout credentials, and has no release or deployment step.
-The main/PR workflow is unchanged. The original
+At the recorded runs, the dedicated workflow triggered only for the fix branch.
+It is now also reused by main/PR CI, retains `contents: read`, does not persist
+checkout credentials, and has no release or deployment step. Main/PR verification
+uses the same complete tests, adding fresh synthetic-project lint/readiness checks
+instead of reading project memory. The original
 [permission-denial checkpoint](actions-publication-evidence.json) remains historical
 evidence, not the current publication status.
 
@@ -102,5 +106,5 @@ evidence, not the current publication status.
 - No latency benchmark was added in this CI round. Cache call counts are not
   end-to-end speedups; accounted bytes are not tokens. The prior performance and
   ownership tradeoffs remain in the [release notes](release-recall-lifecycle.md).
-- A green verification branch is not a release. Publishing or merging requires
-  separate authorization.
+- A green CI result or source merge is not an npm package or GitHub Release.
+  Package/release publication requires separate authorization.

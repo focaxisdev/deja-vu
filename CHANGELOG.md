@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Introduce the source update on the repository homepage, with [opt-in examples, migration guidance and scoped measurements](docs/recall-update.md). No new npm package or GitHub Release is published.
+- Reuse the complete synthetic-data acceptance workflow for main and pull requests, including fresh-project lint/readiness checks, without reading project memory.
 - Preserve original CLI subprocess failures in test helpers, retain execution/parse causes for invalid error responses, and add ten diagnostic regressions without weakening product assertions.
 - Append general acceptance/evidence/repair-loop rules to AGENTS.md and preserve the historical [Cloud blocker checkpoint](docs/verification-loop.md).
 - Verify complete source, compiled, installed-package, type, recall-quality and cache gates on Ubuntu and Windows in [branch-only Actions](docs/actions-acceptance-results.md). Fix workflow context/path/newline handling and freeze the recall tie fixture's clock without changing product assertions. These changes remain unreleased.

@@ -1,7 +1,8 @@
 # Unreleased: explicit recall cues and recoverable memory lifecycle
 
-Unreleased release-note draft. No new version, release date, tag, release or social
-publication is assigned. This follows the [first recall-efficiency changes](release-recall-efficiency.md)
+Source update notes; package release pending. No new version, release date, tag,
+npm package, GitHub Release or social post is published by these notes. See the
+[combined introduction and opt-ins](recall-update.md). This follows the [first recall-efficiency changes](release-recall-efficiency.md)
 and uses `bad6b527409a44a693562fbe60c41be74126e573` as its comparison baseline.
 
 These results describe the second implementation batch. The subsequent
@@ -9,8 +10,8 @@ These results describe the second implementation batch. The subsequent
 loss and records the historical native-execution blocker. Complete hosted
 [acceptance now passes on Ubuntu and Windows](actions-acceptance-results.md),
 including 119 source cases, 119 compiled cases and one package/install/use case
-per platform, with no skipped tests. The verification branch is published; the
-package and social draft remain unreleased. The original Cloud EPERM cause is
+per platform, with no skipped tests. The source and these notes are public; the
+package update and social draft remain unreleased. The original Cloud EPERM cause is
 still unresolved, and the results below retain their original measurement scope.
 
 ## User introduction
@@ -101,7 +102,10 @@ accounted bytes); owned mode retains zero. Baseline has no public statistics API
 Separate ownership trades cross-memory reuse for predictable invalidation. Counts
 are deterministic mock calls, not paid-service costs, tokens or throughput.
 
-## Validation and blockers
+## Historical second-batch validation and blockers
+
+The following records the original Cloud checkpoint, before the later hosted
+acceptance linked above. It does not describe the current CI status.
 
 - TypeScript checking and compilation pass with existing dependencies.
 - Source and compiled engine regression suites pass: 50 distinct cases, including
@@ -129,9 +133,10 @@ are deterministic mock calls, not paid-service costs, tokens or throughput.
   private memory, so it was not run; public documentation links were checked
   separately. No private memory, network service or new dependency was used.
 
-The failed subprocess scenarios still need an authorized subprocess-capable Cloud
-configuration before release. No alternate environment was used. All files are
-local preparation; this is not a release-readiness claim.
+At that checkpoint the failed subprocess scenarios still needed an authorized
+environment. Subsequent GitHub Actions runs passed the complete source, compiled
+and installed-package selections on Ubuntu and Windows. The native Cloud EPERM
+cause remains unresolved; hosted success is not an npm or GitHub Release.
 
 ## Remaining limits
 

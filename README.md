@@ -11,6 +11,23 @@ Deja Vu is a three-file, repo-local memory system that any capable coding agent 
 
 No database. No vector store. No embeddings. No SaaS. No daemon. No required npm install.
 
+## Latest update: more reliable, bounded recall
+
+**Available in repository source; a new npm package release has not been published.**
+
+The optional TypeScript engine now keeps eligible memories from being hidden by
+less relevant ranking winners. It also adds bounded prompt excerpts, recoverable
+deletion and supersession, and opt-in query aliases and embedding-cache reuse.
+The three-file protocol and [60-second setup](#start-in-60-seconds) stay the same.
+
+Efficiency depends on the workload and enabled options: these changes do not
+make every request faster. Explicit aliases are routing rules, not a new
+multilingual semantic model.
+
+**[Read the full update, opt-in examples and migration notes](./docs/recall-update.md)**
+· [Measurements and tradeoffs](./docs/release-recall-lifecycle.md)
+· [Complete Ubuntu/Windows acceptance evidence](./docs/actions-acceptance-results.md)
+
 ![Deja Vu turns tiny repo-local cues into minimal, relevant recall](./docs/assets/deja-vu-preview.svg)
 
 ## Start in 60 seconds
@@ -196,12 +213,12 @@ const engine = createInMemorySemanticRecallEngine({
 
 Read the [engine guide](./docs/engine/semantic-engine.md) or run the [basic example](./examples/basic/index.ts). The engine is an optional acceleration layer, not the default adoption path.
 
-Unreleased engine work adds eligible-candidate selection, bounded prompt output,
-and opt-in embedding reuse. The three-file setup is unchanged. See the
-[local release-note draft](docs/release-recall-efficiency.md) and
-[usage examples](docs/engine/recall-efficiency.md).
-Further unreleased work adds opt-in [explicit aliases, cache ownership and provenance](docs/engine/recall-lifecycle.md).
-The [round-two notes](docs/release-recall-lifecycle.md) report recall gains from authored aliases, measured costs and remaining verification blockers.
+Repository source includes eligible-candidate selection, bounded prompt output,
+and opt-in embedding reuse, [explicit aliases, cache ownership and provenance](docs/engine/recall-lifecycle.md).
+These additions are not yet published in a new npm package. See the
+[update and migration overview](docs/recall-update.md),
+[usage examples](docs/engine/recall-efficiency.md), and
+[complete hosted acceptance results](docs/actions-acceptance-results.md).
 
 ## Contributing
 
