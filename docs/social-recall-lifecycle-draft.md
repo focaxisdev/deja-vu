@@ -1,8 +1,8 @@
 # Local social draft: recall cues and lifecycle
 
-Unpublished draft only. No release date or version is assigned. Do not use this
-copy as a release announcement until the remaining verification blockers are
-resolved. See the [evidence and limitations](release-recall-lifecycle.md).
+Unpublished draft only. No release date or version is assigned. Hosted acceptance
+has passed; publishing a release or social announcement remains a separate action.
+See the [evidence and limitations](release-recall-lifecycle.md).
 
 ## Short introduction
 
@@ -19,6 +19,8 @@ explicit routing, not a new multilingual semantic model.
 
 The tradeoffs matter: separate cache ownership means less cross-memory reuse,
 and this round did not improve measured latency. Direct offline packaging and
-installed smoke checks pass, while subprocess-based tests still report EPERM in
-the current Cloud. These changes remain local and unreleased. Usage, migration,
+installed smoke checks pass. Full source, compiled and installed-package tests
+also pass on Ubuntu and Windows in the verification branch's GitHub Actions.
+That does not explain the earlier Cloud runtime's native EPERM. The branch is
+public; the package and this social draft remain unreleased. Usage, migration,
 full measurements and remaining limits are in the release-note draft.

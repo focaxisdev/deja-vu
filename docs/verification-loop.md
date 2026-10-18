@@ -3,6 +3,10 @@
 Unreleased engineering checkpoint. Starting commit:
 `fa479335dbc5acbad46a352d1ee8bd6086c62cd7`, on the existing local fix branch.
 
+This is a historical Cloud checkpoint. Subsequent authorized
+[GitHub Actions acceptance](actions-acceptance-results.md) passes the complete
+suite on Ubuntu and Windows; the Cloud native EPERM cause remains unresolved.
+
 ## Scope and acceptance, defined before changes
 
 This iteration fixes loss of subprocess error evidence in test helpers, adds

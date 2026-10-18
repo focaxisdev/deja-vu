@@ -3,6 +3,11 @@
 Unreleased verification setup, continuing the [Cloud checkpoint](verification-loop.md).
 Starting revision: `4c05a77605f6cf63a10261dc394c0824208313ea`.
 
+Current outcome: the authorized connector publication succeeded after installation
+access was corrected, and both hosted jobs passed all gates. See the
+[verified results, logs and SHA mappings](actions-acceptance-results.md). The
+transport and permission sections below preserve earlier checkpoints.
+
 ## Scope and acceptance defined before execution
 
 The dedicated `Recall acceptance` workflow runs only on pushes to
@@ -90,7 +95,7 @@ in the verification checkpoint. If the connector rejects access or cannot preser
 the tree, stop without substituting an incomplete tree. Hosted acceptance remains
 unverified until both jobs reach successful terminal states at the published SHA.
 
-## Connector result: permission blocked
+## Historical connector result: permission blocked
 
 The reviewed source snapshot is local commit
 `c2a9bb103e4f502d23a66a6c067f00c8b0b10467`, tree
@@ -115,7 +120,7 @@ main unchanged and the target branch still absent. Repository metadata reporting
 missing permission is not exposed by this error and is not assumed to be a
 specific workflow or contents scope.
 
-All hosted gates remain **not run / connector permission blocked**. The final
+At that checkpoint all hosted gates were **not run / connector permission blocked**. The final
 remote tree could not be created or verified; there is no remote SHA or Actions
 run/log URL. A maintainer must restore ordinary approved Git transport or provide
 an already-authorized connection that can perform this Git tree write before

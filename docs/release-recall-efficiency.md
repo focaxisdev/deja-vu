@@ -7,6 +7,8 @@ These measurements and validation counts describe the first implementation batch
 at `bad6b527409a44a693562fbe60c41be74126e573`. See the
 [round-two notes](release-recall-lifecycle.md) for current cache ownership,
 provenance, quality evaluation, performance costs and installed-package results.
+The later [hosted acceptance report](actions-acceptance-results.md) records full
+Ubuntu/Windows validation; these first-batch counts remain historical.
 
 ## User introduction
 

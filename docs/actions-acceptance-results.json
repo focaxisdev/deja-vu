@@ -1,0 +1,168 @@
+{
+  "status": "hosted acceptance passed; unreleased",
+  "verifiedRun": {
+    "id": 39089631583,
+    "url": "https://github.com/focaxisdev/deja-vu/actions/runs/39089631583",
+    "sha": "db56925d789482ba1f2a850b5833e73e7f031de4",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "publicationMappings": [
+    {
+      "local": "a66a52d4fceaeba3dac4a24c8e7cc82d834a4331",
+      "remote": "586f73016fc134c09c2e19b02e45c94b390e8c98",
+      "tree": "7365590fdcc4ea07a3513e9695ecf53a0e80e759",
+      "run": 39089273873
+    },
+    {
+      "local": "f880ca2d67b14e939164bb7fc594800598e8fcdd",
+      "remote": "57aaf0d9d15733aa1c3c955ed09ac275d123b601",
+      "tree": "da94ba9b8c80a7cfd0d79a114a8dcdbb4fb5b97e",
+      "parent": "586f73016fc134c09c2e19b02e45c94b390e8c98",
+      "files": 148,
+      "changed": 1,
+      "run": 39089353842
+    },
+    {
+      "local": "bb2b64e486e8530c8eeca09ed3d8fe6fc71f8c67",
+      "remote": "262e82660c23b9cc008c9d944b58b57148f77331",
+      "tree": "c574e262740b3ec25a212c752ba1a14eb3953e0d",
+      "parent": "57aaf0d9d15733aa1c3c955ed09ac275d123b601",
+      "files": 148,
+      "changed": 2,
+      "run": 39089505184
+    },
+    {
+      "local": "b139302c87b891cdc4e45ed735b5e2b7461b941f",
+      "remote": "db56925d789482ba1f2a850b5833e73e7f031de4",
+      "tree": "0cbc219a67320f375f3685656e2e30ecf424baa2",
+      "parent": "262e82660c23b9cc008c9d944b58b57148f77331",
+      "files": 148,
+      "changed": 1,
+      "run": 39089631583
+    }
+  ],
+  "verification": {
+    "initialCompleteTreeFileCount": 148,
+    "initialDeltaFromMain": {
+      "added": 26,
+      "modified": 16,
+      "deleted": 0,
+      "modeChanges": 0
+    },
+    "everyPublication": "root tree SHA and each recursive file path/type/mode/blob SHA equal the source local tree; remote commit parent and branch ref verified",
+    "permissions": "contents: read; no release/deploy/publish job; no force updates",
+    "localHistory": "all original local commits retained"
+  },
+  "jobs": [
+    {
+      "os": "Ubuntu 24.04.5",
+      "id": 117563410807,
+      "url": "https://github.com/focaxisdev/deja-vu/actions/runs/39089631583/job/117563410807",
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "source": {
+        "tests": 119,
+        "pass": 119,
+        "fail": 0,
+        "skipped": 0
+      },
+      "compiled": {
+        "tests": 119,
+        "pass": 119,
+        "fail": 0,
+        "skipped": 0
+      },
+      "packageInstallUse": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "types": "passed",
+      "frozenRecallQuality": "passed",
+      "cacheLifecycleCounts": "passed",
+      "protocolFixtures": "passed",
+      "publicMarkdownLinks": {
+        "files": 69,
+        "status": "passed"
+      }
+    },
+    {
+      "os": "Windows Server 2025",
+      "id": 117563410610,
+      "url": "https://github.com/focaxisdev/deja-vu/actions/runs/39089631583/job/117563410610",
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "source": {
+        "tests": 119,
+        "pass": 119,
+        "fail": 0,
+        "skipped": 0
+      },
+      "compiled": {
+        "tests": 119,
+        "pass": 119,
+        "fail": 0,
+        "skipped": 0
+      },
+      "packageInstallUse": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "types": "passed",
+      "frozenRecallQuality": "passed",
+      "cacheLifecycleCounts": "passed",
+      "protocolFixtures": "passed",
+      "publicMarkdownLinks": {
+        "files": 69,
+        "status": "passed"
+      }
+    }
+  ],
+  "failuresPreserved": [
+    {
+      "run": 39089273873,
+      "kind": "workflow planning",
+      "jobs": 0,
+      "detail": "runner.temp context was used under job defaults; moved workdir resolution to steps. API exposed no validation annotation or runner log."
+    },
+    {
+      "run": 39089353842,
+      "job": 117562559666,
+      "kind": "nondeterministic test fixture",
+      "source": {
+        "tests": 119,
+        "pass": 118,
+        "fail": 1,
+        "skipped": 0
+      },
+      "error": "ERR_ASSERTION: 'tie2' !== 'tie0'",
+      "fix": "Freeze Date in the lexical-tie/candidateLimit test; all 95 efficiency assertions retained."
+    },
+    {
+      "run": 39089353842,
+      "job": 117562559864,
+      "kind": "Windows archive path",
+      "error": "tar: Cannot open: No such file or directory",
+      "fix": "Convert Windows RUNNER_TEMP to a Bash path using cygpath."
+    },
+    {
+      "run": 39089505184,
+      "job": 117563017821,
+      "kind": "frozen fixture byte mismatch",
+      "expectedFixtureSha256": "4e1b70b5520e1d3cfb85489aad053825e339938016b20e659f2a4eb4677aee5d",
+      "actualFixtureSha256": "21552541a3f35ae72ba055b265d2fd99a03f67c768bd9ca9b4f07b95a9373a7e",
+      "fix": "Command-scoped core.autocrlf=false on git archive preserves committed LF bytes. Hash/content assertions and frozen answers unchanged."
+    }
+  ],
+  "limits": [
+    "Hosted Node 22 results do not identify the native syscall/policy cause of Cloud Node 24 spawnSync EPERM.",
+    "Five historical masked errors cannot be retrospectively attributed.",
+    "No new latency benchmark; provider-call/retained-entry checks are not performance or token claims.",
+    "Source/compiled and OS counts repeat the same cases; 120 distinct selected tests, not 478 distinct tests.",
+    "Documentation follow-up changes require another complete run at their own published SHA."
+  ]
+}

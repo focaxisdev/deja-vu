@@ -1,12 +1,17 @@
 # Unreleased: explicit recall cues and recoverable memory lifecycle
 
-Local release-note draft. No new version, release date, tag, release or social
+Unreleased release-note draft. No new version, release date, tag, release or social
 publication is assigned. This follows the [first recall-efficiency changes](release-recall-efficiency.md)
 and uses `bad6b527409a44a693562fbe60c41be74126e573` as its comparison baseline.
 
 These results describe the second implementation batch. The subsequent
 [verification-loop checkpoint](verification-loop.md) fixes test-helper diagnostic
-loss and records current validation plus the unresolved native-execution blocker.
+loss and records the historical native-execution blocker. Complete hosted
+[acceptance now passes on Ubuntu and Windows](actions-acceptance-results.md),
+including 119 source cases, 119 compiled cases and one package/install/use case
+per platform, with no skipped tests. The verification branch is published; the
+package and social draft remain unreleased. The original Cloud EPERM cause is
+still unresolved, and the results below retain their original measurement scope.
 
 ## User introduction
 
